@@ -3,7 +3,7 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 import s from './Header.css';
 import Link from '../Link';
 import Navigation from '../Navigation';
-import eliftechBanner from './eliftech-banner.jpg';
+import eliftechBanner from './eliftech-banner.png';
 
 class Header extends React.Component {
   render() {
@@ -12,7 +12,7 @@ class Header extends React.Component {
         <div className={s.container}>
           <Navigation />
           <Link className={s.brand} to="/">
-            <img src={eliftechBanner} width="38" height="38" alt="ElifTech" />
+            <img src={eliftechBanner} alt="ElifTech" />
             {/* <span className={s.brandTxt}>ElifTech</span> */}
           </Link>
           <div className={s.banner}>
