@@ -39,7 +39,7 @@
     "@babel/node": "~7.5.5",
     "@babel/plugin-proposal-class-properties": "~7.5.5",
     "@babel/plugin-proposal-decorators": "~7.4.4",
-    "@babel/plugin-transform-react-constant-elements": "^7.5.0",
+    "@babel/plugin-transform-react-constant-elements": "~7.5.0",
     "@babel/preset-env": "~7.5.5",
     "@babel/preset-react": "~7.0.0",
     "babel-eslint": "~10.0.3",
@@ -61,6 +61,8 @@
     "eslint-plugin-react-hooks": "~2.0.1",
     "file-loader": "~4.2.0",
     "glob": "~7.1.4",
+    "husky": "~3.0.4",
+    "lint-staged": "~9.2.5",
     "mkdirp": "0.5.1",
     "pixrem": "~5.0.0",
     "pleeease-filters": "~4.0.0",
@@ -84,19 +86,22 @@
     "webpack-hot-middleware": "~2.25.0",
     "webpack-node-externals": "~1.7.2"
   },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint --no-ignore --fix",
-      "git add --force"
-    ],
-    "*.{json,md,graphql}": [
-      "prettier --write",
-      "git add --force"
-    ],
-    "*.{css,less,styl,scss,sass,sss}": [
-      "stylelint --fix",
-      "git add --force"
-    ]
+  "lint-staged-9": {
+    "gitDir": "../.",
+    "linters": {
+      "*.{js,jsx}": [
+        "eslint --no-ignore --fix",
+        "git add --force"
+      ],
+      "*.{json,md,graphql}": [
+        "prettier --write",
+        "git add --force"
+      ],
+      "*.{css,less,styl,scss,sass,sss}": [
+        "stylelint --fix",
+        "git add --force"
+      ]
+    }
   },
   "scripts": {
     "precommit": "lint-staged",
