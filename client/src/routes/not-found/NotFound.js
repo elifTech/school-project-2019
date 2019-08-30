@@ -3,21 +3,18 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import s from './NotFound.css';
 
-class NotFound extends React.Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-  };
-
-  render() {
-    const { title } = this.props;
-    return (
-      <div className={s.root}>
-        <div className={s.container}>
-          <h1>{title}</h1>
-          <p>Sorry, the page you were trying to view does not exist.</p>
-        </div>
+function NotFound(props) {
+  const { title } = props;
+  return (
+    <div className={s.root}>
+      <div className={s.container}>
+        <h1>{title}</h1>
+        <p>Sorry, the page you were trying to view does not exist.</p>
       </div>
-    );
-  }
+    </div>
+  );
 }
+NotFound.propTypes = {
+  title: PropTypes.string.isRequired,
+};
 export default withStyles(s)(NotFound);

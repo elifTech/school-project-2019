@@ -1,3 +1,5 @@
+const MAX_COMPLEXITY = 5;
+
 // ESLint configuration
 // http://eslint.org/docs/user-guide/configuring
 module.exports = {
@@ -73,15 +75,30 @@ module.exports = {
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-filename-extension.md
     'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
 
-    // Functional and class components are equivalent from React’s point of view
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md
-    'react/prefer-stateless-function': 'off',
-
     // ESLint plugin for prettier formatting
     // https://github.com/prettier/eslint-plugin-prettier
     'prettier/prettier': 'error',
 
     'react/static-property-placement': ['error', 'static public field'],
+    'no-async-promise-executor': 'error',
+    'no-await-in-loop': 'error',
+    'no-magic-numbers': ['error', { ignore: [0, 1, 2] }],
+    eqeqeq: ['error', 'always'],
+    complexity: ['error', MAX_COMPLEXITY],
+    'no-loop-func': 'error',
+    'no-return-await': 'error',
+    'no-unmodified-loop-condition': 'error',
+    radix: ['error', 'as-needed'],
+    'require-await': 'error',
+    'vars-on-top': 'error',
+    'react/boolean-prop-naming': 'error',
+    'react/no-direct-mutation-state': 'error',
+    'react/prefer-stateless-function': [
+      'error',
+      { ignorePureComponents: true },
+    ],
+    'react/jsx-handler-names': 'error',
+    'react/jsx-no-bind': 'error',
   },
 
   settings: {

@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import 'whatwg-fetch';
 import StyleContext from 'isomorphic-style-loader/StyleContext';
 import nodeFetch from 'node-fetch';

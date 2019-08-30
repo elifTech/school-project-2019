@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import path from 'path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
@@ -17,6 +18,10 @@ import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unr
 import config from './config';
 import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './actions/runtime';
+
+const FOUND = 302;
+const INTERNAL_SERVER_ERROR = 500;
+const OK = 200;
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -88,7 +93,7 @@ app.get('*', async (req, res, next) => {
     const route = await router.resolve(context);
 
     if (route.redirect) {
-      res.redirect(route.status || 302, route.redirect);
+      res.redirect(route.status || FOUND, route.redirect);
       return;
     }
 
@@ -119,7 +124,7 @@ app.get('*', async (req, res, next) => {
 
     // eslint-disable-next-line react/jsx-props-no-spreading
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
-    res.status(route.status || 200);
+    res.status(route.status || OK);
     res.send(`<!doctype html>${html}`);
   } catch (err) {
     next(err);
@@ -145,7 +150,7 @@ app.use((err, req, res, next) => {
       {ReactDOM.renderToString(<ErrorPageWithoutStyle error={err} />)}
     </Html>,
   );
-  res.status(err.status || 500);
+  res.status(err.status || INTERNAL_SERVER_ERROR);
   res.send(`<!doctype html>${html}`);
 });
 

@@ -4,6 +4,23 @@ import { writeFile, copyFile, makeDir, copyDir, cleanDir } from './lib/fs';
 import pkg from '../package.json';
 import { format } from './run';
 
+const JSON_SPACE_NUM = 2;
+
+async function handleChange(event, dist, filePath) {
+  switch (event) {
+    case 'add':
+    case 'change':
+      await makeDir(path.dirname(dist));
+      await copyFile(filePath, dist);
+      break;
+    case 'unlink':
+    case 'unlinkDir':
+      cleanDir(dist, { nosort: true, dot: true });
+      break;
+    default:
+  }
+}
+
 /**
  * Copies static files such as robots.txt, favicon.ico to the
  * output (build) folder.
@@ -23,7 +40,7 @@ export default async function copy() {
           },
         },
         null,
-        2,
+        JSON_SPACE_NUM,
       ),
     ),
     copyFile('../LICENSE', 'build/LICENSE.txt'),
@@ -41,19 +58,7 @@ export default async function copy() {
         'build/',
         src.startsWith('src') ? path.relative('src', src) : src,
       );
-      switch (event) {
-        case 'add':
-        case 'change':
-          await makeDir(path.dirname(dist));
-          await copyFile(filePath, dist);
-          break;
-        case 'unlink':
-        case 'unlinkDir':
-          cleanDir(dist, { nosort: true, dot: true });
-          break;
-        default:
-          return;
-      }
+      await handleChange(event, dist, filePath);
       const end = new Date();
       const time = end.getTime() - start.getTime();
       console.info(`[${format(end)}] ${event} '${dist}' after ${time} ms`);

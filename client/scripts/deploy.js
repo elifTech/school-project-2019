@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import path from 'path';
 import fetch from 'node-fetch';
 import { spawn } from './lib/cp';
