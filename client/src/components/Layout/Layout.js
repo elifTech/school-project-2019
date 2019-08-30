@@ -8,20 +8,18 @@ import s from './Layout.css';
 import Header from '../Header';
 import Footer from '../Footer';
 
-class Layout extends React.Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-  };
-
-  render() {
-    const { children } = this.props;
-    return (
-      <div>
-        <Header />
-        {children}
-        <Footer />
-      </div>
-    );
-  }
+function Layout(props) {
+  const { children } = props;
+  return (
+    <div>
+      <Header />
+      {children}
+      <Footer />
+    </div>
+  );
 }
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 export default withStyles(normalizeCss, s)(Layout);

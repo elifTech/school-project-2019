@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import StyleContext from 'isomorphic-style-loader/StyleContext';
 import nodeFetch from 'node-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -11,17 +12,18 @@ import { updateMeta } from './DOMUtils';
 import router from './router';
 import configureStore from './store/configureStore';
 
+// critical path CSS rendering
+function insertCss(...styles) {
+  // eslint-disable-next-line no-underscore-dangle
+  const removeCss = styles.map(x => x && x._insertCss());
+  return () => {
+    removeCss.forEach(f => f && f());
+  };
+}
+
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html
 const context = {
-  // Enables critical path CSS rendering
-  insertCss: (...styles) => {
-    // eslint-disable-next-line no-underscore-dangle
-    const removeCss = styles.map(x => x._insertCss());
-    return () => {
-      removeCss.forEach(f => f());
-    };
-  },
   // Universal HTTP client
   fetch: nodeFetch,
   // Initialize a new Redux store
@@ -71,7 +73,9 @@ async function onLocationChange(location, action) {
 
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
     appInstance = renderReactApp(
-      <App context={context}>{route.component}</App>,
+      <StyleContext.Provider value={{ insertCss }}>
+        <App context={context}>{route.component}</App>
+      </StyleContext.Provider>,
       container,
       () => {
         if (isInitialRender) {

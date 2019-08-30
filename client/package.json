@@ -89,23 +89,6 @@
     "webpack-hot-middleware": "~2.25.0",
     "webpack-node-externals": "~1.7.2"
   },
-  "lint-staged-9": {
-    "gitDir": "../.",
-    "linters": {
-      "*.{js,jsx}": [
-        "eslint --no-ignore --fix",
-        "git add --force"
-      ],
-      "*.{json,md,graphql}": [
-        "prettier --write",
-        "git add --force"
-      ],
-      "*.{css,less,styl,scss,sass,sss}": [
-        "stylelint --fix",
-        "git add --force"
-      ]
-    }
-  },
   "scripts": {
     "lint-js": "eslint --ignore-pattern \"!**/.*\" .",
     "lint-css": "stylelint \"src/**/*.{css,less,styl,scss,sass,sss}\"",

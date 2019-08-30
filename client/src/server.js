@@ -2,6 +2,7 @@ import path from 'path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import StyleContext from 'isomorphic-style-loader/StyleContext';
 import nodeFetch from 'node-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
@@ -59,9 +60,7 @@ app.get('*', async (req, res, next) => {
       // eslint-disable-next-line no-underscore-dangle
       styles.forEach(style => css.add(style._getCss()));
     };
-    const initialState = {
-      user: req.user || null,
-    };
+    const initialState = {};
 
     const store = configureStore(initialState, {
       fetch: nodeFetch,
@@ -77,7 +76,6 @@ app.get('*', async (req, res, next) => {
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
     const context = {
-      insertCss,
       fetch: nodeFetch,
       // The twins below are wild, be careful!
       pathname: req.path,
@@ -96,7 +94,9 @@ app.get('*', async (req, res, next) => {
 
     const data = { ...route };
     data.children = ReactDOM.renderToString(
-      <App context={context}>{route.component}</App>,
+      <StyleContext.Provider value={{ insertCss }}>
+        <App context={context}>{route.component}</App>
+      </StyleContext.Provider>,
     );
     data.styles = [{ id: 'css', cssText: [...css].join('') }];
 
