@@ -40,10 +40,12 @@
     "@babel/plugin-proposal-class-properties": "~7.5.5",
     "@babel/plugin-proposal-decorators": "~7.4.4",
     "@babel/plugin-transform-react-constant-elements": "~7.5.0",
+    "@babel/plugin-transform-react-inline-elements": "~7.2.0",
     "@babel/preset-env": "~7.5.5",
     "@babel/preset-react": "~7.0.0",
     "babel-eslint": "~10.0.3",
     "babel-loader": "~8.0.6",
+    "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "browser-sync": "~2.26.7",
     "chokidar": "~3.0.2",
     "css-loader": "~3.2.0",
@@ -64,6 +66,7 @@
     "husky": "~3.0.4",
     "lint-staged": "~9.2.5",
     "mkdirp": "0.5.1",
+    "null-loader": "~3.0.0",
     "pixrem": "~5.0.0",
     "pleeease-filters": "~4.0.0",
     "postcss-calc": "~7.0.1",
@@ -104,7 +107,6 @@
     }
   },
   "scripts": {
-    "precommit": "lint-staged",
     "lint-js": "eslint --ignore-pattern \"!**/.*\" .",
     "lint-css": "stylelint \"src/**/*.{css,less,styl,scss,sass,sss}\"",
     "lint": "yarn run lint-js && yarn run lint-css",

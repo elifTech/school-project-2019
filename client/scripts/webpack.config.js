@@ -276,7 +276,7 @@ const clientConfig = {
   target: 'web',
 
   entry: {
-    client: ['@babel/polyfill', './src/client.js'],
+    client: ['core-js/stable', './src/client.js'],
   },
 
   plugins: [
@@ -369,7 +369,7 @@ const serverConfig = {
   target: 'node',
 
   entry: {
-    server: ['@babel/polyfill', './src/server.js'],
+    server: ['core-js/stable', './src/server.js'],
   },
 
   output: {
