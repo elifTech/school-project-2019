@@ -13,7 +13,7 @@ const routes = {
 
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
-      path: '(.*)',
+      path: '(.+)',
       load: () => import(/* webpackChunkName: 'not-found' */ './not-found'),
     },
   ],
