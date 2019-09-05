@@ -43,6 +43,8 @@ class App extends React.PureComponent {
     store: PropTypes.any,
   };
 
+  static whyDidYouRender = true;
+
   static childContextTypes = ContextType;
 
   getChildContext() {

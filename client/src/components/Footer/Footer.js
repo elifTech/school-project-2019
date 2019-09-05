@@ -30,4 +30,5 @@ function Footer() {
     </div>
   );
 }
-export default withStyles(s)(Footer);
+Footer.whyDidYouRender = true;
+export default withStyles(s)(React.memo(Footer));

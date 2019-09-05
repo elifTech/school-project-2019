@@ -17,4 +17,5 @@ function NotFound(props) {
 NotFound.propTypes = {
   title: PropTypes.string.isRequired,
 };
-export default withStyles(s)(NotFound);
+NotFound.whyDidYouRender = true;
+export default withStyles(s)(React.memo(NotFound));

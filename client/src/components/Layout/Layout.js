@@ -21,5 +21,5 @@ function Layout(props) {
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
 };
-
-export default withStyles(normalizeCss, s)(Layout);
+Layout.whyDidYouRender = true;
+export default withStyles(normalizeCss, s)(React.memo(Layout));

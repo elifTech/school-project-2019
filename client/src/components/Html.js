@@ -75,5 +75,5 @@ Html.defaultProps = {
   styles: [],
   scripts: [],
 };
-
-export default Html;
+Html.whyDidYouRender = true;
+export default React.memo(Html);

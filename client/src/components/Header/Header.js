@@ -22,4 +22,5 @@ function Header() {
     </div>
   );
 }
-export default withStyles(s)(Header);
+Header.whyDidYouRender = true;
+export default withStyles(s)(React.memo(Header));

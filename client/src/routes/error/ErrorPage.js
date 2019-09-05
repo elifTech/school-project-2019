@@ -32,6 +32,6 @@ ErrorPage.propTypes = {
 ErrorPage.defaultProps = {
   error: null,
 };
-
+ErrorPage.whyDidYouRender = true;
 export { ErrorPage as ErrorPageWithoutStyle };
-export default withStyles(s)(ErrorPage);
+export default withStyles(s)(React.memo(ErrorPage));

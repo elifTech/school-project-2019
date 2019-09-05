@@ -10,7 +10,14 @@ function isModifiedEvent(event) {
   return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 }
 
-export default class Link extends React.Component {
+function isExternal(to) {
+  if (to && (to.startsWith('http://') || to.startsWith('https://'))) {
+    return true;
+  }
+  return false;
+}
+
+export default class Link extends React.PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
@@ -22,6 +29,8 @@ export default class Link extends React.Component {
     className: '',
     onClick: null,
   };
+
+  static whyDidYouRender = true;
 
   handleClick = event => {
     const { onClick, to } = this.props;
@@ -37,14 +46,21 @@ export default class Link extends React.Component {
       return;
     }
 
-    event.preventDefault();
-    history.push(to);
+    if (!isExternal(to)) {
+      event.preventDefault();
+      history.push(to);
+    }
   };
 
   render() {
     const { to, children, className } = this.props;
     return (
-      <a className={className} href={to} onClick={this.handleClick}>
+      <a
+        className={className}
+        href={to}
+        onClick={this.handleClick}
+        target={isExternal(to) ? '_blank' : undefined}
+      >
         {children}
       </a>
     );

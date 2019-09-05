@@ -12,5 +12,5 @@ function Navigation() {
     </div>
   );
 }
-
-export default withStyles(s)(Navigation);
+Navigation.whyDidYouRender = true;
+export default withStyles(s)(React.memo(Navigation));

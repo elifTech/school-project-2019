@@ -1,4 +1,4 @@
-const MAX_COMPLEXITY = 5;
+const MAX_COMPLEXITY = 10;
 
 // ESLint configuration
 // http://eslint.org/docs/user-guide/configuring

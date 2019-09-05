@@ -13,6 +13,12 @@ import { updateMeta } from './DOMUtils';
 import router from './router';
 import configureStore from './store/configureStore';
 
+if (__DEV__) {
+  // eslint-disable-next-line global-require
+  const whyDidYouRender = require('@welldone-software/why-did-you-render');
+  whyDidYouRender(React);
+}
+
 // critical path CSS rendering
 function insertCss(...styles) {
   // eslint-disable-next-line no-underscore-dangle

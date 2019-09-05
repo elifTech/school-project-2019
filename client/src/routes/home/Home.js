@@ -11,4 +11,5 @@ function Home() {
     </div>
   );
 }
-export default withStyles(s)(Home);
+Home.whyDidYouRender = true;
+export default withStyles(s)(React.memo(Home));
