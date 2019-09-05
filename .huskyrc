@@ -1,6 +1,6 @@
 {
   "hooks": {
     "pre-commit": "lint-staged && yarn audit",
-    "pre-push": "yarn audit"
+    "pre-push": "cd client && yarn audit"
   }
 }
