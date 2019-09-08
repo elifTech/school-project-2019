@@ -3,7 +3,6 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { name, version } from '../../package.json';
 import rootReducer from '../reducers';
-import createLogger from './logger';
 
 export default function configureStore(initialState) {
   const middleware = [thunk];
@@ -11,6 +10,8 @@ export default function configureStore(initialState) {
   let enhancer;
 
   if (__DEV__) {
+    // eslint-disable-next-line global-require
+    const createLogger = require('./logger').default;
     middleware.push(createLogger());
 
     // https://github.com/zalmoxisus/redux-devtools-extension#14-using-in-production
