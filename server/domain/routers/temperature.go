@@ -39,5 +39,5 @@ func PollTemperature(w http.ResponseWriter, r *http.Request, params httprouter.P
 
 	w.WriteHeader(http.StatusCreated)
 
-	fmt.Fprintf(w, "Post temperature event... %v", event)
+	fmt.Fprintf(w, "%s", payload)
 }
