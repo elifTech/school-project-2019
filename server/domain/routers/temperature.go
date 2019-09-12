@@ -17,6 +17,11 @@ func TemperatureInit(router *httprouter.Router) {
 }
 
 func PingTemperature(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+
+	//temperature := devices.Temperature{}
+	//temperature.Get(1)
+	//temperature.Get(2)
+
 	fmt.Fprint(w, "Pong...")
 }
 
