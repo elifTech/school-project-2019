@@ -1,0 +1,56 @@
+@import '../variables.css';
+
+.container {
+  margin: 0 auto;
+  padding: 20px 15px;
+  max-width: var(--max-content-width);
+  text-align: center;
+}
+
+.spoiler {
+  background: #1958a8;
+  width: 500px;
+  margin: 25px auto 0 auto;
+}
+.spoilerTitle {
+  padding: 5px 10px;
+  text-align: left;
+  font-size: 24px;
+  position: relative;
+  color: #fff;
+}
+.spoilerTitle:before,
+.spoilerTitle:after {
+  position: absolute;
+  content: '';
+  width: 20px;
+  height: 2px;
+  right: 10px;
+  top: calc(50% - 1px);
+  background-color: #fff;
+}
+.spoilerTitle:before {
+  transform: rotate(90deg)
+}
+
+.spoilerText {
+  text-align: left;
+  padding: 5px 10px;
+  color: #fff;
+}
+
+.spoilerInp {
+  margin-top: 15px;
+}
+.spoilerInp > input,
+.spoilerInp > textarea {
+  width: 250px;
+}
+
+.hide {
+  background-color: #fff;
+}
+
+.spoilerHidden {
+  display: none;
+}
