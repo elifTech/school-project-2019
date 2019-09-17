@@ -18,7 +18,7 @@ func main() {
 	//	return
 	//}
 	//defer db.Close()
-
+	log.Print("Hello")
 	//s := &domain.IoTService{DB: db}
 	//s.DB.AutoMigrate()
 	// init server
