@@ -28,6 +28,8 @@ func Connect() (*gorm.DB, error) {
 		return nil, err
 	}
 
+	db = db.Debug()
+
 	err = db.DB().Ping()
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Can't ping the DB: %v \n", err))

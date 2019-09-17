@@ -1,41 +1,68 @@
 package devices
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"school-project-2019/server/storage"
-	"time"
 )
 
 type Temperature struct {
-	Device `gorm:"device"`
-	Status DeviceState
-	Events []TemperatureEvent `gorm:"foreignkey:DeviceType"`
+	Sensor
+	Events []TemperatureEvent `gorm:"foreignkey:SensorType;association_foreignkey:Type"`
 }
 
 type TemperatureEvent struct {
-	Event  `gorm:"event"`
+	Event
 	Name   string `json:"name"`
 	Degree float32
 }
 
-func (t *Temperature) Get(db *gorm.DB, id int) (device *Temperature, err error) {
+var sensorType = "temperature"
 
-	db.Table("temperature").Where("id", id).First(&device)
-	if device == nil {
+func (Temperature) TableName() string {
+	return "devices"
+}
+
+func init() {
+	fmt.Printf("Initalising %s sensor... \n", sensorType)
+}
+
+func (t *Temperature) Get(db *gorm.DB) (*Temperature, error) {
+	device := new(Temperature)
+	err := db.Where(&Sensor{Type: sensorType}).Select("status").First(&device).Error
+	if err != nil {
+		// returning custom DB error message
 		err = storage.NOT_FOUND
 	}
 
 	return device, err
 }
 
-func (t *Temperature) CreateEvent(db *gorm.DB, payload *TemperatureEvent) (err error) {
-	//
-	//d.Service.DB.AutoMigrate(&Temperature{})
-	// setup current date if empty
-	if payload.Created.IsZero() {
-		payload.Created = time.Now()
+// just for device initialising
+func (t *Temperature) CreateSensor(db *gorm.DB) error {
+	// if device is found - do not do anything
+	var err error
+	r, err := t.Get(db)
+	if err == nil {
+		fmt.Printf("Not Creating Sensor: %v \n", r)
+		return nil
 	}
 
-	err = db.Table("temperature_events").Create(&payload).Error
-	return err
+	fmt.Printf("Creating Sensor: %v \n", err)
+
+	temperatureSensor := Sensor{
+		Name:   "Temperature Sensor",
+		Type:   sensorType,
+		Status: StatusOffline,
+	}
+	return db.Create(&temperatureSensor).Error
+}
+
+func (t *Temperature) CreateEvent(db *gorm.DB, payload *TemperatureEvent) (err error) {
+	// event should be populate with sensor type
+	if len(payload.SensorType) == 0 {
+		payload.SensorType = sensorType
+	}
+	// a good example: we are returning the error directly from the Create method
+	return db.Create(&payload).Error
 }

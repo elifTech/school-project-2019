@@ -2,32 +2,46 @@ package routers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/julienschmidt/httprouter"
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
+	"school-project-2019/server/storage"
 )
 
-var storage *gorm.DB
+var db *gorm.DB
 
-func TemperatureInit(router *httprouter.Router, db *gorm.DB) {
-
-	storage = db
+func TemperatureInit(router *httprouter.Router, database *gorm.DB) {
+	// our DB instance passed as a local variable
+	db = database
 
 	router.GET("/temperature/ping", PingTemperature)
 
 	router.POST("/temperature/poll", PollTemperature)
 }
 
-func PingTemperature(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func PingTemperature(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	temperature := devices.Temperature{}
-	device, err := temperature.Get(storage, 1)
-	device2, err := temperature.Get(storage, 2)
+	device, err := temperature.Get(db)
+	// testing custom error response
+	if err == storage.NOT_FOUND {
+		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
+		return
+	}
 
-	fmt.Fprint(w, fmt.Sprintf("Pong... %v %v  ---- ERR: %v \n", device, device2, err))
+	response, err := json.Marshal(device)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+
+	//fmt.Fprint(w, fmt.Sprintf("Pong... %v  ---- ERR: %v \n", device, err))
 }
 
 // test payload {"name": "dat", "degree": 20.123}
@@ -48,7 +62,7 @@ func PollTemperature(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 	}
 
 	temperature := devices.Temperature{}
-	err = temperature.CreateEvent(storage, &event)
+	err = temperature.CreateEvent(db, &event)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

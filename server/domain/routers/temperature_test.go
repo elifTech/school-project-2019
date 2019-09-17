@@ -2,6 +2,7 @@ package routers_test
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"math/rand"
@@ -15,19 +16,27 @@ import (
 	"time"
 )
 
+func createNewService() *domain.IoTService {
+	db, err := storage.Connect()
+	if err != nil {
+		log.Fatal(fmt.Printf("Error connecting: %v \n", err))
+		return nil
+	}
+
+	return &domain.IoTService{DB: db}
+}
+
 func TestPollTemperature(t *testing.T) {
 	// creating the http test recorder to record the http request
 	rr := httptest.NewRecorder()
 
-	db, err := storage.Connect()
-	if err != nil {
-		log.Fatal(fmt.Printf("Error connecting: %v \n", err))
-		return
+	s := createNewService()
+	if s == nil {
+		t.Fatal(errors.New("can't create new service"))
 	}
 	// we will close the DB connection when close the app process
-	defer db.Close()
+	defer s.DB.Close()
 
-	s := &domain.IoTService{DB: db}
 	router := s.NewRouter()
 	// creating the new http router from our main router struct
 	//router := domain.NewRouter()

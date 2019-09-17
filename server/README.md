@@ -6,7 +6,6 @@
 
 run `./server` - will be served on `localhost:8080`
 
-
 DB init
 
 Create user and schema for the work
@@ -17,7 +16,7 @@ Create user and schema for the work
 
 `psql`
 
-`CREATE school jerry;`
+`CREATE school school;`
 
 `CREATE USER school PASSWORD 'eliftech';`
 

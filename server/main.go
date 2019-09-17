@@ -26,7 +26,17 @@ func main() {
 
 	s := &domain.IoTService{DB: db}
 	router := s.NewRouter()
-	s.DB.AutoMigrate(devices.Temperature{}, devices.TemperatureEvent{})
+
+	s.DB.AutoMigrate(devices.TemperatureEvent{}, devices.Sensor{})
+	// prepare device
+
+	t := devices.Temperature{}
+	err = t.CreateSensor(db)
+	if err != nil {
+		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
+		return
+	}
+
 	// init server
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
