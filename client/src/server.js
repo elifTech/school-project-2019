@@ -7,6 +7,7 @@ import StyleContext from 'isomorphic-style-loader/StyleContext';
 import nodeFetch from 'node-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
+import { Provider as ReduxProvider } from 'react-redux';
 import PrettyError from 'pretty-error';
 import App from './components/App';
 import Html from './components/Html';
@@ -100,7 +101,9 @@ app.get('*', async (req, res, next) => {
     const data = { ...route };
     data.children = ReactDOM.renderToString(
       <StyleContext.Provider value={{ insertCss }}>
-        <App context={context}>{route.component}</App>
+        <ReduxProvider store={context.store}>
+          <App context={context}>{route.component}</App>
+        </ReduxProvider>
       </StyleContext.Provider>,
     );
     data.styles = [{ id: 'css', cssText: [...css].join('') }];

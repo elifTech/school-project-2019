@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import history from '../../history';
 
@@ -17,7 +17,7 @@ function isExternal(to) {
   return false;
 }
 
-export default class Link extends React.PureComponent {
+class Link extends React.PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
@@ -66,3 +66,5 @@ export default class Link extends React.PureComponent {
     );
   }
 }
+
+export default memo(Link);

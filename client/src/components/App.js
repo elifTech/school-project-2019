@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { Provider as ReduxProvider } from 'react-redux';
 
 const ContextType = {
   // Universal HTTP client
@@ -11,6 +12,7 @@ const ContextType = {
   store: PropTypes.any,
   // eslint-disable-next-line
   storeSubscription: PropTypes.any,
+  ...ReduxProvider.childContextTypes,
 };
 
 /**
@@ -60,4 +62,4 @@ class App extends React.PureComponent {
   }
 }
 
-export default App;
+export default memo(App);
