@@ -16,10 +16,10 @@ Create user and schema for the work
 
 `psql`
 
-`CREATE school school;`
+`CREATE DATABASE school;`
 
 `CREATE USER school PASSWORD 'eliftech';`
 
-`GRANT ALL PRIVILEGES ON DATABASE school to school;`
+`GRANT ALL PRIVILEGES ON DATABASE school TO school;`
 
 `\q`
