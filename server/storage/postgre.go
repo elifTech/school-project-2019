@@ -18,6 +18,8 @@ const (
 
 var NOT_FOUND = errors.New("record not found")
 
+type Storage *gorm.DB
+
 func Connect() (*gorm.DB, error) {
 	db, err := gorm.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
 		host, port, user, dbname, password))
@@ -26,6 +28,12 @@ func Connect() (*gorm.DB, error) {
 		return nil, err
 	}
 
+	db = db.Debug()
+
+	err = db.DB().Ping()
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("Can't ping the DB: %v \n", err))
+	}
 	log.Printf("Successfully connected to the DB... \n")
 
 	return db, nil

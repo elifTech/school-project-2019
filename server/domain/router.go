@@ -5,10 +5,10 @@ import (
 	"school-project-2019/server/domain/routers"
 )
 
-func NewRouter() *httprouter.Router {
+func (s *IoTService) NewRouter() *httprouter.Router {
 	router := httprouter.New()
 	// init our router
-	routers.TemperatureInit(router)
+	routers.TemperatureInit(router, s.DB)
 
 	return router
 }
