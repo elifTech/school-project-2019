@@ -1,3 +1,7 @@
-/* eslint-disable import/prefer-default-export */
-
 export const SET_RUNTIME_VARIABLE = 'SET_RUNTIME_VARIABLE';
+
+export const REQUEST_RECENT_TRACKS = 'REQUEST_RECENT_TRACKS';
+export const FAIL_RECENT_TRACKS = 'FAIL_RECENT_TRACKS';
+export const GOT_RECENT_TRACKS = 'GOT_RECENT_TRACKS';
+
+export const SET_USER_DATA = 'SET_USER_DATA';
