@@ -5,6 +5,7 @@ import nodeFetch from 'node-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import deepForceUpdate from 'react-deep-force-update';
+import { Provider as ReduxProvider } from 'react-redux';
 import queryString from 'query-string';
 import { createPath } from 'history';
 import App from './components/App';
@@ -81,7 +82,9 @@ async function onLocationChange(location, action) {
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
     appInstance = renderReactApp(
       <StyleContext.Provider value={{ insertCss }}>
-        <App context={context}>{route.component}</App>
+        <ReduxProvider store={context.store}>
+          <App context={context}>{route.component}</App>
+        </ReduxProvider>
       </StyleContext.Provider>,
       container,
       () => {
