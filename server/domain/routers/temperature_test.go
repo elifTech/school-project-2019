@@ -10,20 +10,23 @@ import (
 	"net/http/httptest"
 	"school-project-2019/server/domain"
 	"school-project-2019/server/domain/devices"
-	"school-project-2019/server/storage"
 	"strings"
 	"testing"
 	"time"
 )
 
 func createNewService() *domain.IoTService {
-	db, err := storage.Connect()
+	db, err := devices.Connect()
 	if err != nil {
 		log.Fatal(fmt.Printf("Error connecting: %v \n", err))
 		return nil
 	}
 
-	return &domain.IoTService{DB: db}
+	d := domain.Devices{
+		Temperature: &devices.Temperature{},
+	}
+
+	return &domain.IoTService{DB: db, Devices: &d}
 }
 
 func TestPollTemperature(t *testing.T) {
@@ -34,6 +37,8 @@ func TestPollTemperature(t *testing.T) {
 	if s == nil {
 		t.Fatal(errors.New("can't create new service"))
 	}
+	// auto migration for tests
+	s.DB.AutoMigrate(devices.TemperatureEvent{}, devices.Sensor{})
 	// we will close the DB connection when close the app process
 	defer s.DB.Close()
 
@@ -45,10 +50,13 @@ func TestPollTemperature(t *testing.T) {
 	s1 := rand.NewSource(time.Now().UnixNano())
 	r1 := rand.New(s1)
 
+	creationTime := time.Now()
+
 	// preparing test payload
 	payload := devices.TemperatureEvent{
 		Name:   "Heat Device: 1 floor",
 		Degree: r1.Float32() * 100,
+		Event:  devices.Event{Created: creationTime},
 	}
 	// converting struct into byte slice
 	payloadJson, _ := json.Marshal(payload)
@@ -73,10 +81,17 @@ func TestPollTemperature(t *testing.T) {
 		return
 	}
 
+	expect, err := s.Devices.Temperature.FindOneEvent(devices.TemperatureEvent{Event: devices.Event{Created: creationTime}})
+	if err != nil {
+		t.Errorf("can't get the event from DB: %v",
+			err.Error())
+		return
+	}
+
 	// Check if the body returned is what we expected
-	expected := string(payloadJson)
-	if rr.Body.String() != fmt.Sprintf("%v", payload) {
+	//expected := string(payloadJson)
+	if fmt.Sprintf("%v", expect) != fmt.Sprintf("%v", payload) {
 		t.Errorf("temperature handler returned unexpected body: got %v want %v",
-			rr.Body.String(), expected)
+			payload, expect)
 	}
 }

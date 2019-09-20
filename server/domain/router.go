@@ -8,7 +8,7 @@ import (
 func (s *IoTService) NewRouter() *httprouter.Router {
 	router := httprouter.New()
 	// init our router
-	routers.TemperatureInit(router, s.DB)
+	routers.TemperatureInit(router)
 
 	return router
 }
