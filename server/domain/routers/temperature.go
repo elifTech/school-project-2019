@@ -4,15 +4,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/jinzhu/gorm"
-	"github.com/julienschmidt/httprouter"
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
 	"school-project-2019/server/storage"
-)
 
-var db *gorm.DB
+	"github.com/jinzhu/gorm"
+	"github.com/julienschmidt/httprouter"
+)
 
 func TemperatureInit(router *httprouter.Router, database *gorm.DB) {
 	// our DB instance passed as a local variable
