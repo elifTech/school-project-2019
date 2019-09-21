@@ -11,7 +11,7 @@ const (
 	StatusOffline SensorState = iota
 	StatusPending
 	StatusEnabling
-	StatusOnline
+	StatusOnline SensorState = 10
 	StatusFailure
 )
 
@@ -25,6 +25,7 @@ const (
 const (
 	TemperatureSensor  string = "temperature"
 	TemperatureSensor2 string = "temperature2"
+  WaterQualitySensor string = "waterQuality"
 )
 
 type Sensor struct {
