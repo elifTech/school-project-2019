@@ -4,11 +4,11 @@ import webpack from 'webpack';
 import WebpackAssetsManifest from 'webpack-assets-manifest';
 import nodeExternals from 'webpack-node-externals';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import overrideRules from './lib/overrideRules';
+import overrideRules from './lib/override-rules';
 import pkg from '../package.json';
 
 const ROOT_DIR = path.resolve(__dirname, '..');
-const resolvePath = (...args) => path.resolve(ROOT_DIR, ...args);
+const resolvePath = (...parameters) => path.resolve(ROOT_DIR, ...parameters);
 const SRC_DIR = resolvePath('src');
 const BUILD_DIR = resolvePath('build');
 
@@ -23,6 +23,8 @@ const reImage = /\.(bmp|gif|jpg|jpeg|png|svg)$/;
 const staticAssetName = isDebug
   ? '[path][name].[ext]?[hash:8]'
   : '[hash:8].[ext]';
+const BABEL_PRESET_ENV = '@babel/preset-env';
+const FILE_LOADER = 'file-loader';
 
 //
 // Common configuration chunk to be used for both
@@ -30,65 +32,31 @@ const staticAssetName = isDebug
 // -----------------------------------------------------------------------------
 
 const config = {
+  bail: !isDebug,
+
+  cache: isDebug,
+
   context: ROOT_DIR,
+
+  devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
 
   mode: isDebug ? 'development' : 'production',
 
-  output: {
-    path: resolvePath(BUILD_DIR, 'public/assets'),
-    publicPath: '/assets/',
-    pathinfo: isVerbose,
-    filename: isDebug ? '[name].js' : '[name].[chunkhash:8].js',
-    chunkFilename: isDebug
-      ? '[name].chunk.js'
-      : '[name].[chunkhash:8].chunk.js',
-    // Point sourcemap entries to original disk location (format as URL on Windows)
-    devtoolModuleFilenameTemplate: info =>
-      path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
-  },
-
-  resolve: {
-    // Allow absolute paths in imports, e.g. import Button from 'components/Button'
-    // Keep in sync with .flowconfig and .eslintrc
-    modules: ['node_modules', 'src'],
-  },
-
+  // Don't attempt to continue if there are any errors.
   module: {
     // Make missing exports an error instead of warning
-    strictExportPresence: true,
-
     rules: [
       // Rules for JS / JSX
       {
-        test: reScript,
         include: [SRC_DIR, resolvePath('scripts')],
         loader: 'babel-loader',
         options: {
           // https://github.com/babel/babel-loader#options
-          cacheDirectory: isDebug,
+          babelrc: false,
 
           // https://babeljs.io/docs/usage/options/
-          babelrc: false,
+          cacheDirectory: isDebug,
           configFile: false,
-          presets: [
-            // A Babel preset that can automatically determine the Babel plugins and polyfills
-            // https://github.com/babel/babel-preset-env
-            [
-              '@babel/preset-env',
-              {
-                targets: {
-                  browsers: pkg.browserslist,
-                },
-                forceAllTransforms: !isDebug, // for UglifyJS
-                modules: false,
-                useBuiltIns: false,
-                debug: false,
-              },
-            ],
-            // JSX
-            // https://github.com/babel/babel/tree/master/packages/babel-preset-react
-            ['@babel/preset-react', { development: isDebug }],
-          ],
           plugins: [
             // Experimental ECMAScript proposals
             '@babel/plugin-proposal-class-properties',
@@ -103,12 +71,31 @@ const config = {
             // https://github.com/oliviertassinari/babel-plugin-transform-react-remove-prop-types
             ...(isDebug ? [] : ['transform-react-remove-prop-types']),
           ],
+          presets: [
+            // A Babel preset that can automatically determine the Babel plugins and polyfills
+            // https://github.com/babel/babel-preset-env
+            [
+              BABEL_PRESET_ENV,
+              {
+                debug: false,
+                forceAllTransforms: !isDebug, // for UglifyJS
+                modules: false,
+                targets: {
+                  browsers: pkg.browserslist,
+                },
+                useBuiltIns: false,
+              },
+            ],
+            // JSX
+            // https://github.com/babel/babel/tree/master/packages/babel-preset-react
+            ['@babel/preset-react', { development: isDebug }],
+          ],
         },
+        test: reScript,
       },
 
       // Rules for Style Sheets
       {
-        test: reStyle,
         rules: [
           // Convert CSS into JS module
           {
@@ -133,13 +120,13 @@ const config = {
             options: {
               // CSS Loader https://github.com/webpack/css-loader
               importLoaders: 1,
-              sourceMap: isDebug,
-              // CSS Modules https://github.com/css-modules/css-modules
               modules: {
                 localIdentName: isDebug
                   ? '[name]-[local]-[hash:base64:5]'
                   : '[hash:base64:5]',
               },
+              // CSS Modules https://github.com/css-modules/css-modules
+              sourceMap: isDebug,
             },
           },
 
@@ -169,11 +156,11 @@ const config = {
           //   loader: 'sass-loader',
           // },
         ],
+        test: reStyle,
       },
 
       // Rules for images
       {
-        test: reImage,
         oneOf: [
           // Inline lightweight images into CSS
           {
@@ -181,20 +168,20 @@ const config = {
             oneOf: [
               // Inline lightweight SVGs as UTF-8 encoded DataUrl string
               {
-                test: /\.svg$/,
                 loader: 'svg-url-loader',
                 options: {
-                  name: staticAssetName,
-                  limit: 4096, // 4kb
+                  limit: 4096,
+                  name: staticAssetName, // 4kb
                 },
+                test: /\.svg$/,
               },
 
               // Inline lightweight images as Base64 encoded DataUrl string
               {
                 loader: 'url-loader',
                 options: {
-                  name: staticAssetName,
-                  limit: 4096, // 4kb
+                  limit: 4096,
+                  name: staticAssetName, // 4kb
                 },
               },
             ],
@@ -202,25 +189,26 @@ const config = {
 
           // Or return public URL to image resource
           {
-            loader: 'file-loader',
+            loader: FILE_LOADER,
             options: {
               name: staticAssetName,
             },
           },
         ],
+        test: reImage,
       },
 
       // Convert plain text into JS module
       {
-        test: /\.txt$/,
         loader: 'raw-loader',
+        test: /\.txt$/,
       },
 
       // Return public URL for all assets unless explicitly excluded
       // DO NOT FORGET to update `exclude` list when you adding a new loader
       {
         exclude: [reScript, reStyle, reImage, /\.json$/, /\.txt$/, /\.md$/],
-        loader: 'file-loader',
+        loader: FILE_LOADER,
         options: {
           name: staticAssetName,
         },
@@ -231,27 +219,45 @@ const config = {
         ? []
         : [
             {
+              loader: 'null-loader',
               test: resolvePath(
                 'node_modules/react-deep-force-update/lib/index.js',
               ),
-              loader: 'null-loader',
             },
           ]),
     ],
+
+    strictExportPresence: true,
   },
 
-  // Don't attempt to continue if there are any errors.
-  bail: !isDebug,
-
-  cache: isDebug,
+  output: {
+    chunkFilename: isDebug
+      ? '[name].chunk.js'
+      : '[name].[chunkhash:8].chunk.js',
+    devtoolModuleFilenameTemplate: info =>
+      path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
+    filename: isDebug ? '[name].js' : '[name].[chunkhash:8].js',
+    path: resolvePath(BUILD_DIR, 'public/assets'),
+    pathinfo: isVerbose,
+    // Point sourcemap entries to original disk location (format as URL on Windows)
+    publicPath: '/assets/',
+  },
 
   // Specify what bundle information gets displayed
   // https://webpack.js.org/configuration/stats/
+  resolve: {
+    // Allow absolute paths in imports, e.g. import Button from 'components/Button'
+    // Keep in sync with .flowconfig and .eslintrc
+    modules: ['node_modules', 'src'],
+  },
+
+  // Choose a developer tool to enhance debugging
+  // https://webpack.js.org/configuration/devtool/#devtool
   stats: {
     cached: isVerbose,
     cachedAssets: isVerbose,
-    chunks: isVerbose,
     chunkModules: isVerbose,
+    chunks: isVerbose,
     colors: true,
     hash: isVerbose,
     modules: isVerbose,
@@ -259,10 +265,6 @@ const config = {
     timings: true,
     version: isVerbose,
   },
-
-  // Choose a developer tool to enhance debugging
-  // https://webpack.js.org/configuration/devtool/#devtool
-  devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
 };
 
 //
@@ -272,27 +274,41 @@ const config = {
 const clientConfig = {
   ...config,
 
-  name: 'client',
-  target: 'web',
-
   entry: {
     client: ['core-js/stable', './src/client.js'],
   },
+  name: 'client',
 
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+  },
+
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          name: 'vendors',
+          test: /[\\/]node_modules[\\/]/,
+        },
+      },
+    },
+  },
+
+  // Move modules that occur in multiple entry chunks to a new entry chunk (the commons chunk).
   plugins: [
     // Define free variables
     // https://webpack.js.org/plugins/define-plugin/
     new webpack.DefinePlugin({
-      'process.env.BROWSER': true,
       __DEV__: isDebug,
+      'process.env.BROWSER': true,
     }),
 
     // Emit a file with assets paths
     // https://github.com/webdeveric/webpack-assets-manifest#options
     new WebpackAssetsManifest({
-      output: `${BUILD_DIR}/asset-manifest.json`,
-      publicPath: true,
-      writeToDisk: true,
       customize: ({ key, value }) => {
         // You can prevent adding items to the manifest by returning false.
         if (key.toLowerCase().endsWith('.map')) return false;
@@ -304,58 +320,43 @@ const clientConfig = {
         try {
           const fileFilter = file => !file.endsWith('.map');
           const addPath = file => manifest.getPublicPath(file);
-          const chunkFiles = stats.compilation.chunkGroups.reduce((acc, c) => {
-            acc[c.name] = [
-              ...(acc[c.name] || []),
-              ...c.chunks.reduce(
-                (files, cc) => [
-                  ...files,
-                  ...cc.files.filter(fileFilter).map(addPath),
-                ],
-                [],
-              ),
-            ];
-            return acc;
-          }, Object.create(null));
+          const chunkFiles = stats.compilation.chunkGroups.reduce(
+            (accumulator, c) => {
+              accumulator[c.name] = [
+                ...(accumulator[c.name] || []),
+                ...c.chunks.reduce(
+                  (files, cc) => [
+                    ...files,
+                    ...cc.files.filter(fileFilter).map(addPath),
+                  ],
+                  [],
+                ),
+              ];
+              return accumulator;
+            },
+            Object.create(null),
+          );
           fs.writeFileSync(chunkFileName, JSON.stringify(chunkFiles, null, 2));
-        } catch (err) {
-          console.error(`ERROR: Cannot write ${chunkFileName}: `, err);
-          if (!isDebug) process.exit(1);
+        } catch (error) {
+          console.error(`ERROR: Cannot write ${chunkFileName}:`, error);
+          if (!isDebug) throw new Error('Failed to build');
         }
       },
+      output: `${BUILD_DIR}/asset-manifest.json`,
+      publicPath: true,
+      writeToDisk: true,
     }),
 
     ...(isDebug
       ? []
-      : [
-          // Webpack Bundle Analyzer
-          // https://github.com/th0r/webpack-bundle-analyzer
-          ...(isAnalyze ? [new BundleAnalyzerPlugin()] : []),
-        ]),
+      : Array.from(isAnalyze ? [new BundleAnalyzerPlugin()] : [])),
   ],
-
-  // Move modules that occur in multiple entry chunks to a new entry chunk (the commons chunk).
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        commons: {
-          chunks: 'initial',
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-        },
-      },
-    },
-  },
 
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
   // https://webpack.js.org/configuration/node/
   // https://github.com/webpack/node-libs-browser/tree/master/mock
-  node: {
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-  },
+  target: 'web',
 };
 
 //
@@ -365,26 +366,16 @@ const clientConfig = {
 const serverConfig = {
   ...config,
 
-  name: 'server',
-  target: 'node',
-
   entry: {
     server: ['core-js/stable', './src/server.js'],
   },
-
-  output: {
-    ...config.output,
-    path: BUILD_DIR,
-    filename: '[name].js',
-    chunkFilename: 'chunks/[name].js',
-    libraryTarget: 'commonjs2',
-  },
-
-  // Webpack mutates resolve object, so clone it to avoid issues
-  // https://github.com/webpack/webpack/issues/4817
-  resolve: {
-    ...config.resolve,
-  },
+  externals: [
+    './chunk-manifest.json',
+    './asset-manifest.json',
+    nodeExternals({
+      whitelist: [reStyle, reImage],
+    }),
+  ],
 
   module: {
     ...config.module,
@@ -397,17 +388,17 @@ const serverConfig = {
           options: {
             ...rule.options,
             presets: rule.options.presets.map(preset =>
-              preset[0] !== '@babel/preset-env'
+              preset[0] !== BABEL_PRESET_ENV
                 ? preset
                 : [
-                    '@babel/preset-env',
+                    BABEL_PRESET_ENV,
                     {
+                      debug: false,
+                      modules: false,
                       targets: {
                         node: pkg.engines.node.match(/(\d+\.?)+/)[0],
                       },
-                      modules: false,
                       useBuiltIns: false,
-                      debug: false,
                     },
                   ],
             ),
@@ -417,7 +408,7 @@ const serverConfig = {
 
       // Override paths to static assets
       if (
-        rule.loader === 'file-loader' ||
+        rule.loader === FILE_LOADER ||
         rule.loader === 'url-loader' ||
         rule.loader === 'svg-url-loader'
       ) {
@@ -434,41 +425,51 @@ const serverConfig = {
     }),
   },
 
-  externals: [
-    './chunk-manifest.json',
-    './asset-manifest.json',
-    nodeExternals({
-      whitelist: [reStyle, reImage],
-    }),
-  ],
+  name: 'server',
+
+  // Webpack mutates resolve object, so clone it to avoid issues
+  // https://github.com/webpack/webpack/issues/4817
+  node: {
+    Buffer: false,
+    __dirname: false,
+    __filename: false,
+    console: false,
+    global: false,
+    process: false,
+  },
+
+  output: {
+    ...config.output,
+    chunkFilename: 'chunks/[name].js',
+    filename: '[name].js',
+    libraryTarget: 'commonjs2',
+    path: BUILD_DIR,
+  },
 
   plugins: [
     // Define free variables
     // https://webpack.js.org/plugins/define-plugin/
     new webpack.DefinePlugin({
-      'process.env.BROWSER': false,
       __DEV__: isDebug,
+      'process.env.BROWSER': false,
     }),
 
     // Adds a banner to the top of each generated chunk
     // https://webpack.js.org/plugins/banner-plugin/
     new webpack.BannerPlugin({
       banner: 'require("source-map-support").install();',
-      raw: true,
       entryOnly: false,
+      raw: true,
     }),
   ],
 
+  resolve: {
+    ...config.resolve,
+  },
+
   // Do not replace node globals with polyfills
   // https://webpack.js.org/configuration/node/
-  node: {
-    console: false,
-    global: false,
-    process: false,
-    Buffer: false,
-    __filename: false,
-    __dirname: false,
-  },
+  target: 'node',
 };
 
 export default [clientConfig, serverConfig];

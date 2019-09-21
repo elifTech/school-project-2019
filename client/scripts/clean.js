@@ -1,14 +1,14 @@
-import { cleanDir } from './lib/fs';
+import { cleanDirectory } from './lib/fs';
 
 /**
  * Cleans up the output (build) directory.
  */
 export default function clean() {
   return Promise.all([
-    cleanDir('build/*', {
-      nosort: true,
+    cleanDirectory('build/*', {
       dot: true,
       ignore: ['build/.git'],
+      nosort: true,
     }),
   ]);
 }

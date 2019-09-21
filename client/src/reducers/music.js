@@ -9,13 +9,13 @@ export default function music(state = {}, action = {}) {
     case REQUEST_RECENT_TRACKS:
       return {
         ...state,
-        isFetching: action.isFetching,
+        isFetching: true,
       };
     case GOT_RECENT_TRACKS:
       return {
         ...state,
-        error: action.error,
-        isFetching: action.isFetching,
+        error: null,
+        isFetching: false,
         recentTracks: action.recentTracks,
       };
 
@@ -23,8 +23,7 @@ export default function music(state = {}, action = {}) {
       return {
         ...state,
         error: action.error,
-        isFetching: action.isFetching,
-        recentTracks: action.recentTracks,
+        isFetching: false,
       };
     default:
       return state;

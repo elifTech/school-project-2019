@@ -1,7 +1,7 @@
 import path from 'path';
 import fetch from 'node-fetch';
-import { writeFile, makeDir } from './lib/fs';
-import runServer from './runServer';
+import { writeFile, makeDirectory } from './lib/fs';
+import runServer from './run-server';
 
 // Enter your paths here which you want to render as static
 // Example:
@@ -33,16 +33,16 @@ async function render() {
       const fileName = route.endsWith('/')
         ? 'index.html'
         : `${path.basename(route, '.html')}.html`;
-      const dirName = path.join(
+      const directoryPath = path.join(
         'build/public',
         route.endsWith('/') ? route : path.dirname(route),
       );
-      const dist = path.join(dirName, fileName);
+      const dist = path.join(directoryPath, fileName);
       const timeStart = new Date();
       const response = await fetch(url);
       const timeEnd = new Date();
       const text = await response.text();
-      await makeDir(dirName);
+      await makeDirectory(directoryPath);
       await writeFile(dist, text);
       const time = timeEnd.getTime() - timeStart.getTime();
       console.info(

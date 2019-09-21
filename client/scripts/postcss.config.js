@@ -25,9 +25,9 @@ module.exports = () => ({
     // See what features in which stage in https://preset-env.cssdb.org/features
     // https://github.com/csstools/postcss-preset-env
     require('postcss-preset-env')({
-      stage: 3,
-      browsers: pkg.browserslist,
       autoprefixer: { flexbox: 'no-2009' },
+      browsers: pkg.browserslist,
+      stage: 3,
     }),
     process.argv.includes('--release')
       ? undefined

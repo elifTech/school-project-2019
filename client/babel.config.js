@@ -1,4 +1,5 @@
 module.exports = {
+  ignore: ['node_modules', 'build'],
   plugins: [
     ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
     '@babel/plugin-proposal-class-properties',
@@ -15,5 +16,4 @@ module.exports = {
     ],
     '@babel/preset-react',
   ],
-  ignore: ['node_modules', 'build'],
 };

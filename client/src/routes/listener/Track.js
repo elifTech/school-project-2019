@@ -18,6 +18,7 @@ function Track({ track }) {
     <div className={style.root}>
       <div
         className={style.sublay}
+        // eslint-disable-next-line  react-perf/jsx-no-new-object-as-prop
         style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : undefined }}
       />
       <div>
@@ -43,8 +44,8 @@ Track.propTypes = {
     artist: musicbrainzShape.isRequired,
     image: PropTypes.arrayOf(
       PropTypes.shape({
-        size: PropTypes.string.isRequired,
         '#text': PropTypes.string.isRequired,
+        size: PropTypes.string.isRequired,
       }),
     ).isRequired,
     name: PropTypes.string.isRequired,
