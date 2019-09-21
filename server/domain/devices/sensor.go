@@ -15,6 +15,18 @@ const (
 	StatusFailure
 )
 
+// we may use it for some future logic
+// defining sensor types
+//type SensorType string
+//func (st SensorType) String() string {
+//  return string(st)
+//}
+
+const (
+	TemperatureSensor  string = "temperature"
+	TemperatureSensor2 string = "temperature2"
+)
+
 type Sensor struct {
 	gorm.Model
 	SensorID uint `gorm:"primary_key;AUTO_INCREMENT"`

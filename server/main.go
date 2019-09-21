@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"school-project-2019/server/domain/devices"
+	//"school-project-2019/server/domain/devices"
 
 	//"fmt"
 	//"github.com/jinzhu/gorm"
@@ -10,13 +10,13 @@ import (
 	"log"
 	"net/http"
 	"school-project-2019/server/domain"
-	"school-project-2019/server/storage"
+	"school-project-2019/server/domain/devices"
 	//"school-project-2019/server/storage"
 )
 
 func main() {
 	// init DB
-	db, err := storage.Connect()
+	db, err := devices.Connect()
 	if err != nil {
 		log.Fatal(fmt.Printf("Error connecting: %v \n", err))
 		return
@@ -24,14 +24,18 @@ func main() {
 	// we will close the DB connection when close the app process
 	defer db.Close()
 
-	s := &domain.IoTService{DB: db}
+	// init your devices here
+	d := domain.Devices{
+		Temperature: &devices.Temperature{},
+	}
+
+	s := &domain.IoTService{DB: db, Devices: &d}
+	//storage.Storage = db
 	router := s.NewRouter()
 
 	s.DB.AutoMigrate(devices.TemperatureEvent{}, devices.Sensor{})
 	// prepare device
-
-	t := devices.Temperature{}
-	err = t.CreateSensor(db)
+	err = s.Devices.Temperature.CreateSensor()
 	if err != nil {
 		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
 		return

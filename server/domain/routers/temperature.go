@@ -4,18 +4,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/julienschmidt/httprouter"
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
-	"school-project-2019/server/storage"
-
-	"github.com/jinzhu/gorm"
-	"github.com/julienschmidt/httprouter"
 )
 
-func TemperatureInit(router *httprouter.Router, database *gorm.DB) {
+func TemperatureInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
-	db = database
+	//db = database
 
 	router.GET("/temperature/ping", PingTemperature)
 
@@ -23,11 +20,10 @@ func TemperatureInit(router *httprouter.Router, database *gorm.DB) {
 }
 
 func PingTemperature(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-
 	temperature := devices.Temperature{}
-	device, err := temperature.Get(db)
+	device, err := temperature.Get()
 	// testing custom error response
-	if err == storage.NOT_FOUND {
+	if err == devices.NOT_FOUND {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
 		return
 	}
@@ -61,7 +57,7 @@ func PollTemperature(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 	}
 
 	temperature := devices.Temperature{}
-	err = temperature.CreateEvent(db, &event)
+	err = temperature.CreateEvent(&event)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

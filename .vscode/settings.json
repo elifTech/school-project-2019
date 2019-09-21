@@ -1,4 +1,5 @@
 {
   "eslint.packageManager": "yarn",
-  "eslint.workingDirectories": ["client"]
+  "eslint.workingDirectories": ["client"],
+  "eslint.autoFixOnSave": true,
 }

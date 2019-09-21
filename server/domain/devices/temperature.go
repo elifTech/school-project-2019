@@ -2,9 +2,7 @@ package devices
 
 import (
 	"fmt"
-	"school-project-2019/server/storage"
-
-	"github.com/jinzhu/gorm"
+	//"github.com/jinzhu/gorm"
 )
 
 type Temperature struct {
@@ -18,14 +16,12 @@ type TemperatureEvent struct {
 	Degree float32
 }
 
-var sensorType = "temperature"
-
 func (Temperature) TableName() string {
 	return "sensors"
 }
 
 func init() {
-	fmt.Printf("Initalising %s sensor... \n", sensorType)
+	fmt.Printf("Initalising %s sensor... \n", TemperatureSensor)
 }
 
 func (t *Temperature) Get(db *gorm.DB) (*Temperature, error) {
@@ -33,17 +29,32 @@ func (t *Temperature) Get(db *gorm.DB) (*Temperature, error) {
 	err := db.Where(&Sensor{Type: sensorType}).First(&device).Error
 	if err != nil {
 		// returning custom DB error message
-		err = storage.NOT_FOUND
+		err = NOT_FOUND
 	}
 
 	return device, err
 }
 
+func (t *Temperature) FindOneEvent(query TemperatureEvent) (*TemperatureEvent, error) {
+	event := new(TemperatureEvent)
+
+	if len(query.SensorType) == 0 {
+		query.SensorType = TemperatureSensor
+	}
+	err := Storage.Where(&query).First(&event).Error
+	if err != nil {
+		// returning custom DB error message
+		err = NOT_FOUND
+	}
+
+	return event, err
+}
+
 // just for device initialising
-func (t *Temperature) CreateSensor(db *gorm.DB) error {
+func (t *Temperature) CreateSensor() error {
 	// if device is found - do not do anything
 	var err error
-	r, err := t.Get(db)
+	r, err := t.Get()
 	if err == nil {
 		fmt.Printf("Not Creating Sensor: %v \n", r)
 		return nil
@@ -53,17 +64,17 @@ func (t *Temperature) CreateSensor(db *gorm.DB) error {
 
 	temperatureSensor := Sensor{
 		Name:   "Temperature Sensor",
-		Type:   sensorType,
+		Type:   TemperatureSensor,
 		Status: StatusOffline,
 	}
-	return db.Create(&temperatureSensor).Error
+	return Storage.Create(&temperatureSensor).Error
 }
 
-func (t *Temperature) CreateEvent(db *gorm.DB, payload *TemperatureEvent) (err error) {
+func (t *Temperature) CreateEvent(payload *TemperatureEvent) (err error) {
 	// event should be populate with sensor type
 	if len(payload.SensorType) == 0 {
-		payload.SensorType = sensorType
+		payload.SensorType = TemperatureSensor
 	}
 	// a good example: we are returning the error directly from the Create method
-	return db.Create(&payload).Error
+	return Storage.Create(&payload).Error
 }
