@@ -17,14 +17,15 @@ const (
 
 // we may use it for some future logic
 // defining sensor types
-//type SensorType string
-//func (st SensorType) String() string {
+// type SensorType string
+// func (st SensorType) String() string {
 //  return string(st)
-//}
+// }
 
 const (
 	TemperatureSensor  string = "temperature"
 	TemperatureSensor2 string = "temperature2"
+	WaterMeter string = "WaterConsumption" // my water meter
 )
 
 type Sensor struct {
