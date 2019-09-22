@@ -8,9 +8,9 @@ const ContextType = {
   pathname: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   query: PropTypes.object,
-  // eslint-disable-next-line
+  // eslint-disable-next-line react/forbid-prop-types
   store: PropTypes.any,
-  // eslint-disable-next-line
+  // eslint-disable-next-line react/forbid-prop-types
   storeSubscription: PropTypes.any,
   ...ReduxProvider.childContextTypes,
 };
@@ -39,10 +39,8 @@ const ContextType = {
  */
 class App extends React.PureComponent {
   static propTypes = {
-    context: PropTypes.shape(ContextType).isRequired,
     children: PropTypes.element.isRequired,
-    // eslint-disable-next-line
-    store: PropTypes.any,
+    context: PropTypes.shape(ContextType).isRequired,
   };
 
   static whyDidYouRender = true;

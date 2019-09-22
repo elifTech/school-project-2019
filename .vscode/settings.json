@@ -1,5 +1,10 @@
 {
   "eslint.packageManager": "yarn",
-  "eslint.workingDirectories": ["client"],
-  "eslint.autoFixOnSave": true,
+  "eslint.workingDirectories": [
+    {
+      "directory": "./client",
+      "changeProcessCWD": true
+    }
+  ],
+  "eslint.autoFixOnSave": true
 }

@@ -1,6 +1,12 @@
 import path from 'path';
 import chokidar from 'chokidar';
-import { writeFile, copyFile, makeDir, copyDir, cleanDir } from './lib/fs';
+import {
+  writeFile,
+  copyFile,
+  makeDirectory,
+  copyDirectory,
+  cleanDirectory,
+} from './lib/fs';
 import pkg from '../package.json';
 import { format } from './run';
 
@@ -10,12 +16,12 @@ async function handleChange(event, dist, filePath) {
   switch (event) {
     case 'add':
     case 'change':
-      await makeDir(path.dirname(dist));
+      await makeDirectory(path.dirname(dist));
       await copyFile(filePath, dist);
       break;
     case 'unlink':
     case 'unlinkDir':
-      cleanDir(dist, { nosort: true, dot: true });
+      cleanDirectory(dist, { dot: true, nosort: true });
       break;
     default:
   }
@@ -26,15 +32,15 @@ async function handleChange(event, dist, filePath) {
  * output (build) folder.
  */
 export default async function copy() {
-  await makeDir('build');
+  await makeDirectory('build');
   await Promise.all([
     writeFile(
       'build/package.json',
       JSON.stringify(
         {
-          private: true,
-          engines: pkg.engines,
           dependencies: pkg.dependencies,
+          engines: pkg.engines,
+          private: true,
           scripts: {
             start: 'node server.js',
           },
@@ -45,7 +51,7 @@ export default async function copy() {
     ),
     copyFile('../LICENSE', 'build/LICENSE.txt'),
     copyFile('yarn.lock', 'build/yarn.lock'),
-    copyDir('public', 'build/public'),
+    copyDirectory('public', 'build/public'),
   ]);
 
   if (process.argv.includes('--watch')) {
@@ -53,10 +59,10 @@ export default async function copy() {
 
     watcher.on('all', async (event, filePath) => {
       const start = new Date();
-      const src = path.relative('./', filePath);
+      const source = path.relative('./', filePath);
       const dist = path.join(
         'build/',
-        src.startsWith('src') ? path.relative('src', src) : src,
+        source.startsWith('src') ? path.relative('src', source) : source,
       );
       await handleChange(event, dist, filePath);
       const end = new Date();

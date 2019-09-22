@@ -1,4 +1,5 @@
-/* eslint-disable complexity */
+/* eslint-disable complexity, react-perf/jsx-no-new-object-as-prop */
+/* eslint-disable promise/prefer-await-to-callbacks */
 import path from 'path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
@@ -17,7 +18,7 @@ import router from './router';
 // import assets from './asset-manifest.json'; // eslint-disable-line import/no-unresolved
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
-import configureStore from './store/configureStore';
+import configureStore from './store/configure-store';
 import { setRuntimeVariable } from './actions/runtime';
 
 const FOUND = 302;
@@ -56,7 +57,7 @@ app.use(bodyParser.json());
 //
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
-app.get('*', async (req, res, next) => {
+app.get('*', async (request, response, next) => {
   try {
     const css = new Set();
 
@@ -84,8 +85,8 @@ app.get('*', async (req, res, next) => {
     const context = {
       fetch: nodeFetch,
       // The twins below are wild, be careful!
-      pathname: req.path,
-      query: req.query,
+      pathname: request.path,
+      query: request.query,
       // You can access redux through react-redux connect
       store,
       storeSubscription: null,
@@ -94,7 +95,7 @@ app.get('*', async (req, res, next) => {
     const route = await router.resolve(context);
 
     if (route.redirect) {
-      res.redirect(route.status || FOUND, route.redirect);
+      response.redirect(route.status || FOUND, route.redirect);
       return;
     }
 
@@ -106,7 +107,7 @@ app.get('*', async (req, res, next) => {
         </ReduxProvider>
       </StyleContext.Provider>,
     );
-    data.styles = [{ id: 'css', cssText: [...css].join('') }];
+    data.styles = [{ cssText: Array.from(css).join(''), id: 'css' }];
 
     const scripts = new Set();
     const addChunk = chunk => {
@@ -127,10 +128,10 @@ app.get('*', async (req, res, next) => {
 
     // eslint-disable-next-line react/jsx-props-no-spreading
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
-    res.status(route.status || OK);
-    res.send(`<!doctype html>${html}`);
-  } catch (err) {
-    next(err);
+    response.status(route.status || OK);
+    response.send(`<!doctype html>${html}`);
+  } catch (error) {
+    next(error);
   }
 });
 
@@ -142,19 +143,19 @@ pe.skipNodeFiles();
 pe.skipPackage('express');
 
 // eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-  console.error(pe.render(err));
+app.use((error, request, response, next) => {
+  console.error(pe.render(error));
   const html = ReactDOM.renderToStaticMarkup(
     <Html
       title="Internal Server Error"
-      description={err.message}
-      styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]} // eslint-disable-line no-underscore-dangle
+      description={error.message}
+      styles={[{ cssText: errorPageStyle._getCss(), id: 'css' }]} // eslint-disable-line no-underscore-dangle, react-perf/jsx-no-new-array-as-prop
     >
-      {ReactDOM.renderToString(<ErrorPageWithoutStyle error={err} />)}
+      {ReactDOM.renderToString(<ErrorPageWithoutStyle error={error} />)}
     </Html>,
   );
-  res.status(err.status || INTERNAL_SERVER_ERROR);
-  res.send(`<!doctype html>${html}`);
+  response.status(error.status || INTERNAL_SERVER_ERROR);
+  response.send(`<!doctype html>${html}`);
 });
 
 //

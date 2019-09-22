@@ -1,0 +1,17 @@
+.error {
+  background-color: red;
+  padding: 5px;
+}
+
+.root {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}

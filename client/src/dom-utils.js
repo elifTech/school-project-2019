@@ -1,18 +1,24 @@
-export function updateTag(tagName, keyName, keyValue, attrName, attrValue) {
+export function updateTag(
+  tagName,
+  keyName,
+  keyValue,
+  attributeName,
+  attributeValue,
+) {
   const node = document.head.querySelector(
     `${tagName}[${keyName}="${keyValue}"]`,
   );
-  if (node && node.getAttribute(attrName) === attrValue) return;
+  if (node && node.getAttribute(attributeName) === attributeValue) return;
 
   // Remove and create a new tag in order to make it work with bookmarks in Safari
   if (node) {
-    node.parentNode.removeChild(node);
+    node.remove();
   }
-  if (typeof attrValue === 'string') {
+  if (typeof attributeValue === 'string') {
     const nextNode = document.createElement(tagName);
     nextNode.setAttribute(keyName, keyValue);
-    nextNode.setAttribute(attrName, attrValue);
-    document.head.appendChild(nextNode);
+    nextNode.setAttribute(attributeName, attributeValue);
+    document.head.append(nextNode);
   }
 }
 
@@ -24,6 +30,6 @@ export function updateCustomMeta(property, content) {
   updateTag('meta', 'property', property, 'content', content);
 }
 
-export function updateLink(rel, href) {
-  updateTag('link', 'rel', rel, 'href', href);
+export function updateLink(related, href) {
+  updateTag('link', 'rel', related, 'href', href);
 }
