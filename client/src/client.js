@@ -1,4 +1,4 @@
-/* eslint-disable complexity */
+/* eslint-disable sonarjs/cognitive-complexity */
 import 'whatwg-fetch';
 import StyleContext from 'isomorphic-style-loader/StyleContext';
 import nodeFetch from 'node-fetch';
@@ -10,9 +10,9 @@ import queryString from 'query-string';
 import { createPath } from 'history';
 import App from './components/App';
 import history from './history';
-import { updateMeta } from './DOMUtils';
+import { updateMeta } from './dom-utils';
 import router from './router';
-import configureStore from './store/configureStore';
+import configureStore from './store/configure-store';
 
 if (__DEV__) {
   // eslint-disable-next-line global-require
@@ -28,7 +28,7 @@ function insertCss(...styles) {
     removeCss.forEach(f => f && f());
   };
 }
-
+const styleContextProviderValue = { insertCss };
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html
 const context = {
@@ -81,7 +81,7 @@ async function onLocationChange(location, action) {
 
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
     appInstance = renderReactApp(
-      <StyleContext.Provider value={{ insertCss }}>
+      <StyleContext.Provider value={styleContextProviderValue}>
         <ReduxProvider store={context.store}>
           <App context={context}>{route.component}</App>
         </ReduxProvider>
@@ -95,8 +95,8 @@ async function onLocationChange(location, action) {
             window.history.scrollRestoration = 'manual';
           }
 
-          const elem = document.getElementById('css');
-          if (elem) elem.parentNode.removeChild(elem);
+          const element = document.getElementById('css');
+          if (element) element.remove();
           return;
         }
 

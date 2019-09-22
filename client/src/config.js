@@ -10,12 +10,12 @@ const DEFAULT_PORT = 3000;
 
 module.exports = {
   // Node.js app
-  port: process.env.PORT || DEFAULT_PORT,
+  analytics: {
+    // https://analytics.google.com/
+    googleTrackingId: process.env.GOOGLE_TRACKING_ID, // UA-XXXXX-X
+  },
 
   // https://expressjs.com/en/guide/behind-proxies.html
-  trustProxy: process.env.TRUST_PROXY || 'loopback',
-
-  // API Gateway
   api: {
     // API URL to be used in the client-side code
     clientUrl: process.env.API_CLIENT_URL || '',
@@ -25,27 +25,21 @@ module.exports = {
       `http://localhost:${process.env.PORT || DEFAULT_PORT}`,
   },
 
-  // Web analytics
-  analytics: {
-    // https://analytics.google.com/
-    googleTrackingId: process.env.GOOGLE_TRACKING_ID, // UA-XXXXX-X
-  },
-
-  // Authentication
+  // API Gateway
   auth: {
-    jwt: { secret: process.env.JWT_SECRET },
-
-    // https://developers.facebook.com/
     facebook: {
       id: process.env.FACEBOOK_APP_ID,
       secret: process.env.FACEBOOK_APP_SECRET,
     },
 
-    // https://cloud.google.com/console/project
+    // https://developers.facebook.com/
     google: {
       id: process.env.GOOGLE_CLIENT_ID,
       secret: process.env.GOOGLE_CLIENT_SECRET,
     },
+
+    // https://cloud.google.com/console/project
+    jwt: { secret: process.env.JWT_SECRET },
 
     // https://apps.twitter.com/
     twitter: {
@@ -53,4 +47,10 @@ module.exports = {
       secret: process.env.TWITTER_CONSUMER_SECRET,
     },
   },
+
+  // Web analytics
+  port: process.env.PORT || DEFAULT_PORT,
+
+  // Authentication
+  trustProxy: process.env.TRUST_PROXY || 'loopback',
 };

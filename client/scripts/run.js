@@ -1,3 +1,6 @@
+/* eslint-disable promise/prefer-await-to-callbacks */
+/* eslint-disable promise/prefer-await-to-then */
+/* eslint-disable unicorn/no-process-exit */
 export function format(time) {
   return time.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, '$1');
 }
@@ -29,8 +32,8 @@ if (require.main === module && process.argv.length > 2) {
   // eslint-disable-next-line global-require, import/no-dynamic-require
   const module = require(`./${process.argv[2]}.js`).default;
 
-  run(module).catch(err => {
-    console.error(err.stack);
+  run(module).catch(error => {
+    console.error(error.stack);
     process.exit(1);
   });
 }

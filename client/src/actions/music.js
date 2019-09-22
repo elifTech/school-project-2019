@@ -21,7 +21,7 @@ export function getRecentTracksSuccess(data) {
 }
 
 export function getRecentTracksFailure(error) {
-  return { type: FAIL_RECENT_TRACKS, error: String(error), isFetching: false };
+  return { error: String(error), isFetching: false, type: FAIL_RECENT_TRACKS };
 }
 
 export function getRecentTracks() {

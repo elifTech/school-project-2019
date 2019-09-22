@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import withStyles from 'isomorphic-style-loader/withStyles';
 import { getRecentTracks } from '../../actions/music';
 import Track from './Track';
+import style from './Listener.css';
 
 class Listener extends PureComponent {
   static propTypes = {
@@ -35,25 +37,10 @@ class Listener extends PureComponent {
       track: tracks = [],
     } = recentTracks;
     return (
-      <article
-        style={{
-          alignItems: 'center',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <article className={style.root}>
         User: {username || requestedUsername}
-        {error && (
-          <p style={{ backgroundColor: 'red', padding: '5px' }}>{error}</p>
-        )}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'space-around',
-          }}
-        >
+        {error && <p className={style.error}>{error}</p>}
+        <div className={style.wrapper}>
           {tracks.map(trackItem => {
             const key =
               (trackItem && trackItem.date && trackItem.date.uts) ||
@@ -76,4 +63,4 @@ export default connect(
   {
     dispatchGetRecentTracks: getRecentTracks,
   },
-)(Listener);
+)(withStyles(style)(Listener));

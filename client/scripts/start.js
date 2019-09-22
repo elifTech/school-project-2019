@@ -1,3 +1,7 @@
+/* eslint-disable sonarjs/cognitive-complexity */
+/* eslint-disable promise/prefer-await-to-then */
+/* eslint-disable promise/catch-or-return */
+/* eslint-disable promise/no-promise-in-callback */
 import path from 'path';
 import express from 'express';
 import browserSync from 'browser-sync';
@@ -63,7 +67,7 @@ async function start() {
 
   // Configure client-side hot module replacement
   const clientConfig = webpackConfig.find(config => config.name === 'client');
-  clientConfig.entry.client = ['./scripts/lib/webpackHotDevClient']
+  clientConfig.entry.client = ['./scripts/lib/webpack-hot-development-client']
     .concat(clientConfig.entry.client)
     .sort((a, b) => b.includes('polyfill') - a.includes('polyfill'));
   clientConfig.output.filename = clientConfig.output.filename.replace(
@@ -112,8 +116,8 @@ async function start() {
   // https://github.com/webpack/webpack-dev-middleware
   server.use(
     webpackDevMiddleware(clientCompiler, {
-      publicPath: clientConfig.output.publicPath,
       logLevel: 'silent',
+      publicPath: clientConfig.output.publicPath,
       watchOptions,
     }),
   );
@@ -132,14 +136,14 @@ async function start() {
   });
 
   let app;
-  server.use((req, res) => {
+  server.use((request, response) => {
     appPromise
-      .then(() => app.handle(req, res))
+      .then(() => app.handle(request, response))
       .catch(error => console.error(error));
   });
 
   function checkForUpdate(fromUpdate) {
-    const hmrPrefix = '[\x1b[35mHMR\x1b[0m] ';
+    const hmrPrefix = '[\u001B[35mHMR\u001B[0m] ';
     if (!app.hot) {
       throw new Error(`${hmrPrefix}Hot Module Replacement is disabled.`);
     }
@@ -207,9 +211,9 @@ async function start() {
     browserSync.create().init(
       {
         // https://www.browsersync.io/docs/options
-        server: 'src/server.js',
         middleware: [server],
         open: !process.argv.includes('--silent'),
+        server: 'src/server.js',
         ...(isDebug ? {} : { notify: false, ui: false }),
       },
       (error, bs) => (error ? reject(error) : resolve(bs)),

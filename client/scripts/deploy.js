@@ -2,16 +2,16 @@
 import path from 'path';
 import fetch from 'node-fetch';
 import { spawn } from './lib/cp';
-import { makeDir, moveDir, cleanDir } from './lib/fs';
+import { makeDirectory, moveDirectory, cleanDirectory } from './lib/fs';
 import run from './run';
 
 // GitHub Pages
 const remote = {
-  name: 'github',
-  url: 'https://github.com/<user>/<repo>.git',
   branch: 'gh-pages',
-  website: 'https://eliftech.github.io/school-project-2019/',
+  name: 'github',
   static: true,
+  url: 'https://github.com/<user>/<repo>.git',
+  website: 'https://eliftech.github.io/school-project-2019/',
 };
 
 // Heroku
@@ -40,7 +40,7 @@ const options = {
  */
 export default async function deploy() {
   // Initialize a new repository
-  await makeDir('build');
+  await makeDirectory('build');
   await spawn('git', ['init', '--quiet'], options);
 
   // Changing a remote's URL
@@ -62,18 +62,18 @@ export default async function deploy() {
   );
 
   // Fetch the remote repository if it exists
-  let isRefExists = false;
+  let doesReferenceExist = false;
   try {
     await spawn(
       'git',
       ['ls-remote', '--quiet', '--exit-code', remote.url, remote.branch],
       options,
     );
-    isRefExists = true;
+    doesReferenceExist = true;
   } catch (error) {
     await spawn('git', ['update-ref', '-d', 'HEAD'], options);
   }
-  if (isRefExists) {
+  if (doesReferenceExist) {
     await spawn('git', ['fetch', remote.name], options);
     await spawn(
       'git',
@@ -89,12 +89,12 @@ export default async function deploy() {
   if (remote.static) process.argv.push('--static');
   await run(require('./build').default); // eslint-disable-line global-require
   if (process.argv.includes('--static')) {
-    await cleanDir('build/*', {
-      nosort: true,
+    await cleanDirectory('build/*', {
       dot: true,
       ignore: ['build/.git', 'build/public'],
+      nosort: true,
     });
-    await moveDir('build/public', 'build');
+    await moveDirectory('build/public', 'build');
   }
 
   // Push the contents of the build folder to the remote server via Git

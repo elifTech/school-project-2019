@@ -97,12 +97,14 @@ export default memo(
   withStyles(s)(
     connect(
       // mapStateToProps
-      state => ({
-        apiKey: state.user.apiKey,
-        username: state.user.username,
-      }),
+      function mapStateToProps(state) {
+        return {
+          apiKey: state.user.apiKey,
+          username: state.user.username,
+        };
+      },
       // mapDispatchToProps
-      { setUserData: setUser, dispatchGetRecentTracks: getRecentTracks },
+      { dispatchGetRecentTracks: getRecentTracks, setUserData: setUser },
       // dispatchGetRecentTracks <- dispatch(getRecentTracks)
     )(Header),
   ),

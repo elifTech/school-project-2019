@@ -19,6 +19,9 @@ setEditorHandler(errorLocation => {
 });
 
 hotClient.useCustomOverlay({
+  clear() {
+    dismissBuildError();
+  },
   showProblems(type, errors) {
     const formatted = formatWebpackMessages({
       errors,
@@ -26,9 +29,6 @@ hotClient.useCustomOverlay({
     });
 
     reportBuildError(formatted.errors[0]);
-  },
-  clear() {
-    dismissBuildError();
   },
 });
 

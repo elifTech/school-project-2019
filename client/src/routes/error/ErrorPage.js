@@ -23,8 +23,8 @@ function ErrorPage(props) {
 }
 ErrorPage.propTypes = {
   error: PropTypes.shape({
-    name: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     stack: PropTypes.string.isRequired,
   }),
 };

@@ -11,7 +11,7 @@ export default function configureStore(initialState) {
 
   if (__DEV__) {
     // eslint-disable-next-line global-require
-    const createLogger = require('./logger').default;
+    const createLogger = require('./logger/logger.server').default;
     middleware.push(createLogger());
 
     // https://github.com/zalmoxisus/redux-devtools-extension#14-using-in-production
