@@ -2,8 +2,6 @@ package devices
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
-	"school-project-2019/server/storage"
 )
 
 type Wind struct {
@@ -13,35 +11,69 @@ type Wind struct {
 
 type WindEvent struct {
 	Event
-	Name   string `json:"name"`
-	Power float32
-	Direction string
+	Name      string  `json:"name"`
+	Power     float32 `json:"power"`
+	Direction string  `json:"direction"`
 }
 
 func (Wind) TableName() string {
-	return "devices"
+	return "sensors"
 }
 
 func init() {
-	fmt.Printf("Initalising %s sensor... \n", "wind")
+	fmt.Printf("Initalising %s sensor... \n", WindSensor)
 }
 
-func (t *Wind) Get(db *gorm.DB) (*Wind, error) {
+func (t *Wind) Get() (*Wind, error) {
 	device := new(Wind)
-	err := db.Where(&Sensor{Type: "wind"}).Select("status").First(&device).Error
+	err := Storage.Where(&Sensor{Type: WindSensor}).First(&device).Error
 	if err != nil {
 		// returning custom DB error message
-		err = storage.NOT_FOUND
+		err = NOT_FOUND
 	}
 
 	return device, err
 }
 
+func (t *Wind) FindManyEvents(from string, to string) ([]WindEvent, error) {
+	var events []WindEvent
+
+	var err error
+	if from != "" && to != "" {
+		// in case user provides filter options
+		err = Storage.Where("created_at BETWEEN ? AND ?", from, to).Find(&events).Error
+	} else {
+		err = Storage.Find(&events).Error
+	}
+
+	if err != nil {
+		// returning custom DB error message
+		err = NOT_FOUND
+	}
+
+	return events, err
+}
+
+func (t *Wind) FindOneEvent(query WindEvent) (*WindEvent, error) {
+	event := new(WindEvent)
+
+	if len(query.SensorType) == 0 {
+		query.SensorType = WindSensor
+	}
+	err := Storage.Where(&query).First(&event).Error
+	if err != nil {
+		// returning custom DB error message
+		err = NOT_FOUND
+	}
+
+	return event, err
+}
+
 // just for device initialising
-func (t *Wind) CreateSensor(db *gorm.DB) error {
+func (t *Wind) CreateSensor() error {
 	// if device is found - do not do anything
 	var err error
-	r, err := t.Get(db)
+	r, err := t.Get()
 	if err == nil {
 		fmt.Printf("Not Creating Sensor: %v \n", r)
 		return nil
@@ -51,17 +83,17 @@ func (t *Wind) CreateSensor(db *gorm.DB) error {
 
 	windSensor := Sensor{
 		Name:   "Wind Sensor",
-		Type:   "wind",
+		Type:   WindSensor,
 		Status: StatusOffline,
 	}
-	return db.Create(&windSensor).Error
+	return Storage.Create(&windSensor).Error
 }
 
-func (t *Wind) CreateEvent(db *gorm.DB, payload *WindEvent) (err error) {
+func (t *Wind) CreateEvent(payload *WindEvent) (err error) {
 	// event should be populate with sensor type
 	if len(payload.SensorType) == 0 {
-		payload.SensorType = sensorType
+		payload.SensorType = WindSensor
 	}
 	// a good example: we are returning the error directly from the Create method
-	return db.Create(&payload).Error
+	return Storage.Create(&payload).Error
 }

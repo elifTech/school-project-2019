@@ -4,31 +4,23 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/jinzhu/gorm"
-	"github.com/julienschmidt/httprouter"
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
-	"school-project-2019/server/storage"
+	"github.com/julienschmidt/httprouter"
 )
 
-var db *gorm.DB
-
-func WindInit(router *httprouter.Router, database *gorm.DB) {
-	// our DB instance passed as a local variable
-	db = database
-
-	router.GET("/wind/ping", PingWind)
-
-	router.POST("/wind/poll", PollWind)
+func WindInit(router *httprouter.Router) {
+	router.GET("/wind", GetWindSensor)
+	router.GET("/wind/events", FindWindEvents)
+	router.POST("/wind/event", CreateWindEvent)
 }
 
-func PingWind(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-
+func GetWindSensor(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	wind := devices.Wind{}
-	device, err := wind.Get(db)
+	device, err := wind.Get()
 	// testing custom error response
-	if err == storage.NOT_FOUND {
+	if err == devices.NOT_FOUND {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
 		return
 	}
@@ -40,12 +32,31 @@ func PingWind(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(response)
-
-	//fmt.Fprint(w, fmt.Sprintf("Pong... %v  ---- ERR: %v \n", device, err))
 }
 
-// test payload {"name": "dat", "degree": 20.123}
-func PollWind(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func FindWindEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	keys := r.URL.Query()
+	from := keys.Get("from")
+	to := keys.Get("to")
+
+	wind := devices.Wind{}
+	windEvents, err := wind.FindManyEvents(from, to)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	response, err := json.Marshal(windEvents)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+}
+
+func CreateWindEvent(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	payload, err := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
 
@@ -62,7 +73,7 @@ func PollWind(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	wind := devices.Wind{}
-	err = wind.CreateEvent(db, &event)
+	err = wind.CreateEvent(&event)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
