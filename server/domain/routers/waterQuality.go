@@ -6,8 +6,15 @@ import (
   "fmt"
   "github.com/julienschmidt/httprouter"
   "io/ioutil"
+  "math/rand"
   "net/http"
   "school-project-2019/server/domain/devices"
+  "time"
+)
+
+const (
+  minQualityWater = 0
+  maxQualityWater = 16
 )
 
 func WaterQualityInit(router *httprouter.Router) {
@@ -15,6 +22,8 @@ func WaterQualityInit(router *httprouter.Router) {
   //db = database
 
   router.GET("/water_quality/ping", PingWaterQuality)
+
+  router.PUT("/water_quality/status", ChangeWaterQualityStatus)
 
   router.POST("/water_quality/event", CreateWaterQualityEvent)
 }
@@ -37,6 +46,32 @@ func PingWaterQuality(w http.ResponseWriter, r *http.Request, ps httprouter.Para
   _, _ = w.Write(response)
 
   //fmt.Fprint(w, fmt.Sprintf("Pong... %v  ---- ERR: %v \n", device, err))
+}
+// test payload {"status: 10"}
+func ChangeWaterQualityStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+  var waterQuality devices.WaterQuality
+
+  payload, err := ioutil.ReadAll(r.Body)
+  defer r.Body.Close()
+
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusNotAcceptable)
+    return
+  }
+  err = json.Unmarshal(payload, &waterQuality)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  err = waterQuality.ChangeSensorStatus(waterQuality.Status)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+  w.WriteHeader(http.StatusOK)
+
+  _, _ = fmt.Fprintf(w, "%v", waterQuality)
 }
 
 // test payload {"name": "dat", "quality": 10.234}
@@ -66,4 +101,30 @@ func CreateWaterQualityEvent(w http.ResponseWriter, r *http.Request, _ httproute
   w.WriteHeader(http.StatusCreated)
 
   _, _ = fmt.Fprintf(w, "%v", event)
+}
+
+func CreateWaterQualityEventRand() {
+  var event devices.WaterQualityEvent
+  event.Name = "Quality of water"
+  event.Quality = random(minQualityWater, maxQualityWater)
+
+  waterQuality := devices.WaterQuality{}
+  err := waterQuality.CreateEvent(&event)
+
+  fmt.Printf("New event: %v \n", err)
+}
+
+func GenerateEvents() {
+  doEvery(1*time.Second, CreateWaterQualityEventRand)
+}
+
+func doEvery(d time.Duration, f func()) {
+  for range time.Tick(d) {
+    f()
+  }
+}
+
+func random(min, max float32) float32 {
+  rand.Seed(time.Now().Unix())
+  return min + rand.Float32() * (max - min)
 }

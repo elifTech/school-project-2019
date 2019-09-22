@@ -26,7 +26,7 @@ func init() {
 
 func (w *WaterQuality) Get() (*WaterQuality, error) {
   waterQualitySensor := new(WaterQuality)
-  err := Storage.Where(&Sensor{Type: WaterQualitySensor}).Select("Status").First(&waterQualitySensor).Error
+  err := Storage.Where(&Sensor{Type: WaterQualitySensor}).First(&waterQualitySensor).Error
   if err != nil {
     // returning custom DB error message
     err = NOT_FOUND
@@ -70,6 +70,15 @@ func (w *WaterQuality) CreateSensor() error {
   fmt.Printf("Sensor is created %v \n", waterQualitySensor)
 
   return Storage.Create(&waterQualitySensor).Error
+}
+
+func (w *WaterQuality) ChangeSensorStatus(status SensorState) error {
+  sensor, err := w.Get()
+  if err != nil {
+    fmt.Printf("Sensor is not found: %v \n", sensor)
+    return nil
+  }
+  return Storage.Model(&sensor).Update("status", status).Error
 }
 
 func (w *WaterQuality) CreateEvent(payload *WaterQualityEvent) (err error) {
