@@ -123,6 +123,7 @@ module.exports = {
         ],
       },
     ],
+    'react/state-in-constructor': ['error', 'never'],
     'react/static-property-placement': ['error', 'static public field'],
     'require-await': 'error',
     'sonarjs/no-small-switch': 'off',
