@@ -51,7 +51,7 @@ func main() {
 
     cron := gocron.NewScheduler()
     cron.Every(1).Seconds().Do(s.Devices.WaterQuality.CreateWaterQualityEventRand)
-    <- cron.Start()
+    cron.Start()
 
     // init server
     log.Fatal(http.ListenAndServe(":8080", router))

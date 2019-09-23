@@ -18,7 +18,9 @@ func WaterQualityInit(router *httprouter.Router) {
 
     router.PUT("/water_quality/status", ChangeWaterQualityStatus)
 
-    //router.POST("/water_quality/event", CreateWaterQualityEvent)
+    router.GET("/water_quality/event", GetEvents)
+
+  //router.POST("/water_quality/event", CreateWaterQualityEvent)
 }
 
 func PingWaterQuality(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -26,7 +28,7 @@ func PingWaterQuality(w http.ResponseWriter, r *http.Request, ps httprouter.Para
     device, err := waterQuality.Get()
     // testing custom error response
     if err == devices.NOT_FOUND {
-        http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
+        http.Error(w, errors.New("the water quality sensor is not found").Error(), http.StatusNotFound)
         return
     }
 
@@ -66,6 +68,26 @@ func ChangeWaterQualityStatus(w http.ResponseWriter, r *http.Request, ps httprou
     w.WriteHeader(http.StatusOK)
 
     _, _ = fmt.Fprintf(w, "%v", waterQuality)
+}
+
+func GetEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    var waterQuality devices.WaterQuality
+    _, err := waterQuality.Get()
+    if err == devices.NOT_FOUND {
+        http.Error(w, errors.New("the water quality sensor is not found").Error(), http.StatusNotFound)
+        return
+    }
+    events, err := waterQuality.GetAllEvents()
+    //if len(events) == 0 {
+    //    // no events
+    //}
+    response, err := json.Marshal(events)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusNotFound)
+        return
+    }
+    w.Header().Set("Content-Type", "application/json")
+    _, _ = w.Write(response)
 }
 
 // test payload {"name": "dat", "quality": 10.234}

@@ -43,6 +43,15 @@ func (w *WaterQuality) Get() (*WaterQuality, error) {
     return waterQualitySensor, err
 }
 
+func (w *WaterQuality) GetAllEvents() ([] WaterQualityEvent, error) {
+    var events [] WaterQualityEvent
+    err := Storage.Find(&events).Error
+    if err != nil {
+        err = NOT_FOUND
+    }
+    return events, err
+}
+
 func (w *WaterQuality) FindOneEvent(query WaterQualityEvent) (*WaterQualityEvent, error) {
     event := new(WaterQualityEvent)
 
