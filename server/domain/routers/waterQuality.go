@@ -111,6 +111,10 @@ func CreateWaterQualityEventRand() {
   waterQuality := devices.WaterQuality{}
   err := waterQuality.CreateEvent(&event)
 
+  if err != nil {
+    fmt.Printf("Error: %s \n", err.Error())
+    return
+  }
   fmt.Printf("New event: %v \n", err)
 }
 
