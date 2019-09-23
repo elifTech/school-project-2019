@@ -12,6 +12,7 @@ import (
 	"school-project-2019/server/domain"
 	"school-project-2019/server/domain/devices"
 	//"school-project-2019/server/storage"
+    "github.com/jasonlvhit/gocron"
 )
 
 func main() {
@@ -48,6 +49,10 @@ func main() {
 		return
 	}
 
-	// init server
-	log.Fatal(http.ListenAndServe(":8080", router))
+    cron := gocron.NewScheduler()
+    cron.Every(1).Seconds().Do(s.Devices.WaterQuality.CreateWaterQualityEventRand)
+    <- cron.Start()
+
+    // init server
+    log.Fatal(http.ListenAndServe(":8080", router))
 }
