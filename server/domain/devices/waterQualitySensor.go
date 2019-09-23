@@ -101,7 +101,7 @@ func (w *WaterQuality) CreateEvent(payload *WaterQualityEvent) (err error) {
 func (w *WaterQuality) CreateWaterQualityEventRand() {
     var event WaterQualityEvent
     event.Name = "Quality of water"
-    event.Quality = random(minQualityWater, maxQualityWater)
+    event.Quality = Random(minQualityWater, maxQualityWater)
 
     sensor, err := w.Get()
     if sensor.Status == StatusOffline {
@@ -117,7 +117,7 @@ func (w *WaterQuality) CreateWaterQualityEventRand() {
     fmt.Printf("New event for water quality sensor is created \n")
 }
 
-func random(min, max float32) float32 {
+func Random(min, max float32) float32 {
     rand.Seed(time.Now().Unix())
     return min + rand.Float32()*(max-min)
 }

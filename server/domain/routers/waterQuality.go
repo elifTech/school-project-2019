@@ -18,7 +18,7 @@ func WaterQualityInit(router *httprouter.Router) {
 
     router.PUT("/water_quality/status", ChangeWaterQualityStatus)
 
-    router.POST("/water_quality/event", CreateWaterQualityEvent)
+    //router.POST("/water_quality/event", CreateWaterQualityEvent)
 }
 
 func PingWaterQuality(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
