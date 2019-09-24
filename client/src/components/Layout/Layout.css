@@ -193,3 +193,8 @@ textarea {
   width: 100vw;
   height: 100vh;
 }
+
+.paddingLeft {
+  padding-left: 50px !important;
+  padding-top: 20px;
+}

@@ -1,20 +1,19 @@
 import React from 'react';
+import Wind from './Wind';
 import Layout from '../../components/Layout';
-import NotFound from './NotFound';
 import setCurrentTab from '../../actions/menu';
-
-const title = 'Page Not Found';
+import getWindSensorData from '../../actions/wind-sensor';
 
 export default function action({ store: { dispatch } }) {
-  dispatch(setCurrentTab(''));
+  dispatch(setCurrentTab('Wind'));
+  dispatch(getWindSensorData());
   return {
-    chunks: ['not-found'],
+    chunks: ['wind'],
     component: (
       <Layout>
-        <NotFound title={title} />
+        <Wind />
       </Layout>
     ),
-    status: 404,
-    title,
+    title: 'Wind Sensor',
   };
 }

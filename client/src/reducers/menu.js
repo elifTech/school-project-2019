@@ -1,7 +1,7 @@
 import { SET_CURRENT_TAB } from '../constants';
 
 const initialState = {
-  currentTab: 'Dashboard',
+  currentTab: '',
 };
 
 export default (state = initialState, action = {}) => {

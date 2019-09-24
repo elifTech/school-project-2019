@@ -5,9 +5,7 @@ import s from './Home.css';
 function Dashboard() {
   return (
     <div className={s.root}>
-      <div className={s.container}>
-        <h1>Hello, Eliftech School</h1>
-      </div>
+      <div className={s.container}>Dashboard</div>
     </div>
   );
 }
