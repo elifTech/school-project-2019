@@ -35,6 +35,17 @@ func (t *Wind) Get() (*Wind, error) {
 	return device, err
 }
 
+func (t *Wind) UpdateWindStatus(status SensorState) error {
+	sensor, err := t.Get()
+	if err != nil {
+		fmt.Printf("Wind Sensor is not created")
+		return NOT_FOUND
+	}
+
+	sensor.Status = status
+	return Storage.Save(&sensor).Error
+}
+
 func (t *Wind) FindManyEvents(from string, to string) ([]WindEvent, error) {
 	var events []WindEvent
 
