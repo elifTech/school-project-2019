@@ -12,7 +12,8 @@ import (
 	"school-project-2019/server/domain"
 	"school-project-2019/server/domain/devices"
 	//"school-project-2019/server/storage"
-    "github.com/jasonlvhit/gocron"
+	"github.com/jasonlvhit/gocron"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -53,6 +54,7 @@ func main() {
     cron.Every(1).Seconds().Do(s.Devices.WaterQuality.CreateWaterQualityEventRand)
     cron.Start()
 
+    handler := cors.Default().Handler(router)
     // init server
-    log.Fatal(http.ListenAndServe(":8080", router))
+    log.Fatal(http.ListenAndServe(":8080", handler))
 }

@@ -14,6 +14,13 @@ const routes = {
       path: '/listener',
       load: () => import(/* webpackChunkName: 'listener' */ './listener'),
     },
+    {
+      path: '/water-quality',
+      load: () =>
+        import(
+          /* webpackChunkName: 'water-quality-sensor' */ './water-quality-sensor'
+        ),
+    },
 
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
