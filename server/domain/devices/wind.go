@@ -13,6 +13,8 @@ type WindEvent struct {
 	Event
 	Name      string  `json:"name"`
 	Power     float32 `json:"power"`
+	BeaufortValue uint8 `json:"beaufort"`
+	State string `json:"state"`
 	Direction string  `json:"direction"`
 }
 

@@ -14,7 +14,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case WIND_SENSOR_DATA_SUCCESS:
-      return { ...action.payload, error: '', loading: false };
+      return { ...state, ...action.payload, error: '', loading: false };
     case WIND_SENSOR_DATA_LOADING:
       return { ...state, loading: true };
     case WIND_SENSOR_DATA_FAILURE:

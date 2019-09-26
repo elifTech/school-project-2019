@@ -1,29 +1,33 @@
 import moment from 'moment';
 
-export default (events, label) => {
+export default events => {
   const chartColor = 'rgba(63, 73, 111, .6)';
+  const backgroundFill = 'rgba(63, 73, 111, .1)';
+  const pointColor = '#66729b';
+
+  const dataPoints = events.map(({ power }) => power);
+  const labels = events.map(({ CreatedAt }) =>
+    moment(CreatedAt).format('HH:mm'),
+  );
+
   return {
-    datasets: [
-      {
-        backgroundColor: 'none',
-        borderCapStyle: 'butt',
-        borderColor: chartColor,
-        borderDash: [],
-        borderDashOffset: 0,
-        borderJoinStyle: 'miter',
-        data: events.map(({ power }) => power),
-        fill: false,
-        label,
-        lineTension: 0.3,
-        pointBackgroundColor: '#fff',
-        pointBorderWidth: 0,
-        pointHitRadius: 10,
-        pointHoverBackgroundColor: chartColor,
-        pointHoverBorderWidth: 0,
-        pointHoverRadius: 4,
-        pointRadius: 1,
-      },
-    ],
-    labels: events.map(({ CreatedAt }) => moment(CreatedAt).format('HH:mm')),
+    data: {
+      datasets: [
+        {
+          backgroundColor: backgroundFill,
+          borderColor: chartColor,
+          borderWidth: 2,
+          data: dataPoints,
+          pointBackgroundColor: pointColor,
+          pointBorderWidth: 0,
+          pointHitRadius: 10,
+          pointHoverRadius: 2.5,
+          pointRadius: 2.5,
+        },
+      ],
+      labels,
+    },
+    options: { legend: { display: false } },
+    type: 'line',
   };
 };

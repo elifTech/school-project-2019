@@ -5,13 +5,18 @@ import setCurrentTab from '../../actions/menu';
 import getWindSensorData from '../../actions/wind-sensor';
 
 export default function action({ store: { dispatch } }) {
+  const delay = 5000;
   dispatch(setCurrentTab('Wind'));
-  dispatch(getWindSensorData());
+  const interval = setInterval(() => dispatch(getWindSensorData()), delay);
+  function resetInterval() {
+    clearInterval(interval);
+  }
+
   return {
     chunks: ['wind'],
     component: (
       <Layout>
-        <Wind />
+        <Wind handleUnmount={resetInterval} />
       </Layout>
     ),
     title: 'Wind Sensor',

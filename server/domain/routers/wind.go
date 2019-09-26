@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"school-project-2019/server/domain/devices"
 	"strconv"
-
 	"github.com/julienschmidt/httprouter"
 )
 
