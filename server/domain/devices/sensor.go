@@ -1,8 +1,9 @@
 package devices
 
 import (
-	"github.com/jinzhu/gorm"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 type SensorState int
@@ -25,7 +26,7 @@ const (
 const (
 	TemperatureSensor  string = "temperature"
 	TemperatureSensor2 string = "temperature2"
-	WaterMeter string = "WaterConsumption" // my water meter
+	WaterMeter         string = "WaterConsumption" // my water meter
 )
 
 type Sensor struct {

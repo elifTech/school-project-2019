@@ -26,7 +26,7 @@ func init() {
 
 func (t *Temperature) Get() (*Temperature, error) {
 	device := new(Temperature)
-	err := Storage.Where(&Sensor{Type: TemperatureSensor}).Select("status").First(&device).Error
+	err := Storage.Where(&Sensor{Type: TemperatureSensor}).First(&device).Error
 	if err != nil {
 		// returning custom DB error message
 		err = NOT_FOUND
@@ -36,6 +36,21 @@ func (t *Temperature) Get() (*Temperature, error) {
 }
 
 func (t *Temperature) FindOneEvent(query TemperatureEvent) (*TemperatureEvent, error) {
+	event := new(TemperatureEvent)
+
+	if len(query.SensorType) == 0 {
+		query.SensorType = TemperatureSensor
+	}
+	err := Storage.Where(&query).Error
+	if err != nil {
+		// returning custom DB error message
+		err = NOT_FOUND
+	}
+
+	return event, err
+}
+
+func (t *Temperature) FindAllEvent(query TemperatureEvent) (*TemperatureEvent, error) {
 	event := new(TemperatureEvent)
 
 	if len(query.SensorType) == 0 {

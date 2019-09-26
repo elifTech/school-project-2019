@@ -12,7 +12,7 @@ type WaterConsumption struct {
 
 type WaterConsumptionEvent struct {
 	Event
-	Name   string `json:"name"`
+	Name        string `json:"name"`
 	Consumption float32
 }
 
@@ -24,15 +24,15 @@ func init() {
 	fmt.Printf("Initalising %s sensor... \n", WaterMeter)
 }
 
-func (m3 *WaterConsumption) Get() (*WaterConsumption, error) {
-	device := new(WaterConsumption)
-	err := Storage.Where(&Sensor{Type: WaterMeter}).Select("status").First(&device).Error
+func (m3 *WaterConsumption) Get() (*[]WaterConsumptionEvent, error) {
+	events := new([]WaterConsumptionEvent)
+	err := Storage.Table("water_consumption_events").Where("sensor_type = ?", WaterMeter).Find(&events).Error
 	if err != nil {
 		// returning custom DB error message
 		err = NOT_FOUND
 	}
 
-	return device, err
+	return events, err
 }
 
 func (m3 *WaterConsumption) FindOneEvent(query WaterConsumptionEvent) (*WaterConsumptionEvent, error) {

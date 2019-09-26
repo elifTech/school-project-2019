@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/julienschmidt/httprouter"
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
-)
 
+	"github.com/julienschmidt/httprouter"
+)
+//WaterConsumptionInit ...
 func WaterConsumptionInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
@@ -17,8 +18,10 @@ func WaterConsumptionInit(router *httprouter.Router) {
 	router.GET("/waterconsumtion/ping", PingWaterConsumption)
 
 	router.POST("/waterconsumtion/poll", PollWaterConsumption)
-}
 
+	router.GET("/waterconsumtion/all", AllWaterConsumption)
+}
+// PingWaterConsumption ...
 func PingWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	waterconsumtion := devices.WaterConsumption{}
 	device, err := waterconsumtion.Get()
@@ -39,7 +42,7 @@ func PingWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.
 	//fmt.Fprint(w, fmt.Sprintf("Pong... %v  ---- ERR: %v \n", device, err))
 }
 
-// test payload {"name": "dat", "degree": 20.123}
+// PollWaterConsumption test payload {"name": "dat", "degree": 20.123}
 func PollWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	payload, err := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
@@ -66,4 +69,23 @@ func PollWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.P
 	w.WriteHeader(http.StatusCreated)
 
 	fmt.Fprintf(w, "%v", event)
+}
+//AllWaterConsumption ...
+func AllWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	waterconsumtionEvent := devices.WaterConsumption{}
+	device, err := waterconsumtionEvent.Get()
+	// testing custom error response
+	if err == devices.NOT_FOUND {
+		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
+		return
+	}
+
+	response, err := json.Marshal(device)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+
 }
