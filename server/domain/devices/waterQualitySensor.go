@@ -13,8 +13,10 @@ import (
 )
 
 const (
-  minQualityWater = 0
-  maxQualityWater = 16
+  mean = 6
+  stdDev = 3
+  //minQualityWater = 0
+  //maxQualityWater = 16
 )
 
 type WaterQuality struct {
@@ -25,7 +27,7 @@ type WaterQuality struct {
 type WaterQualityEvent struct {
   Event
   Name    string  `json:"name"`
-  Quality float32 `json:"quality"`
+  Quality float64 `json:"quality"`
 }
 
 func (WaterQuality) TableName() string {
@@ -121,7 +123,7 @@ func (w *WaterQuality) CreateEvent(payload *WaterQualityEvent) (err error) {
 func PostCreateEvent() {
   payload := WaterQualityEvent{
     Name:    "Quality of water",
-    Quality: Random(minQualityWater, maxQualityWater),
+    Quality: NormGeneration(),
   }
   payloadJson, _ := json.Marshal(payload)
   _, err := http.Post("http://localhost:8080/water_quality/event", "application/json", bytes.NewReader(payloadJson))
@@ -133,6 +135,10 @@ func PostCreateEvent() {
 func Random(min, max float32) float32 {
   rand.Seed(time.Now().Unix())
   return min + rand.Float32()*(max-min)
+}
+
+func NormGeneration() float64 {
+  return rand.NormFloat64() * stdDev + mean
 }
 
 //func (w *WaterQuality) CreateWaterQualityEventRand() {
