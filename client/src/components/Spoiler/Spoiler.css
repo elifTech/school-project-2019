@@ -1,3 +1,33 @@
 .spoiler {
   width: 100%;
+  max-width: 420px;
+  display: block;
+  margin: auto;
+  margin-bottom: 25px;
+  background: #1958a8;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.spoilerTitle {
+  padding: 5px 40px 5px 10px;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.spoilerTitle::before,
+.spoilerTitle::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 3px;
+  background: #fff;
+  right: 9px;
+  top: calc(50% - 1px);
+}
+
+.spoilerText {
+  padding: 0 10px 5px 10px;
+  font-size: 14px;
 }

@@ -7,6 +7,7 @@ import normalizeCss from 'normalize.css';
 import s from './Layout.css';
 import Header from '../Header';
 import Footer from '../Footer';
+import Spoiler from '../Spoiler';
 
 function Layout(props) {
   const { children } = props;
@@ -14,6 +15,10 @@ function Layout(props) {
     <div>
       <Header />
       {children}
+      <Spoiler
+        title="Spoiler title"
+        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      />
       <Footer />
     </div>
   );
