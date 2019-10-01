@@ -1,0 +1,6 @@
+{
+  "name": "Spoiler",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Spoiler.js"
+}
