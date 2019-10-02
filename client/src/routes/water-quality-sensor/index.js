@@ -1,8 +1,10 @@
 import React from 'react';
 import Layout from '../../components/Layout';
 import WaterQualitySensor from './WaterQualitySensor';
+import setCurrentTab from '../../actions/menu';
 
-export default function action() {
+export default function action({ store: { dispatch } }) {
+  dispatch(setCurrentTab('Water Quality'));
   return {
     chunks: ['water-quality-sensor'],
     component: (

@@ -7,13 +7,11 @@ import (
   "fmt"
   "math/rand"
   "net/http"
-  "time"
-
   //"github.com/jinzhu/gorm"
 )
 
 const (
-  mean = 6
+  mean   = 7
   stdDev = 3
   //minQualityWater = 0
   //maxQualityWater = 16
@@ -132,30 +130,30 @@ func PostCreateEvent() {
   }
 }
 
-func Random(min, max float32) float32 {
-  rand.Seed(time.Now().Unix())
-  return min + rand.Float32()*(max-min)
-}
-
 func NormGeneration() float64 {
-  return rand.NormFloat64() * stdDev + mean
+  return rand.NormFloat64()*stdDev + mean
 }
 
 //func (w *WaterQuality) CreateWaterQualityEventRand() {
-  //  var event WaterQualityEvent
-  //  event.Name = "Quality of water"
-  //  event.Quality = Random(minQualityWater, maxQualityWater)
-  //
-  //  sensor, err := w.Get()
-  //  if sensor.Status == StatusOffline {
-  //    fmt.Printf("Water quality sensor is offline \n")
-  //    return
-  //  }
-  //
-  //  err = w.CreateEvent(&event)
-  //  if err != nil {
-  //    fmt.Printf("Error: %s \n", err.Error())
-  //    return
-  //  }
-  //  fmt.Printf("New event for water quality sensor is created \n")
-  //}
+//  var event WaterQualityEvent
+//  event.Name = "Quality of water"
+//  event.Quality = Random(minQualityWater, maxQualityWater)
+//
+//  sensor, err := w.Get()
+//  if sensor.Status == StatusOffline {
+//    fmt.Printf("Water quality sensor is offline \n")
+//    return
+//  }
+//
+//  err = w.CreateEvent(&event)
+//  if err != nil {
+//    fmt.Printf("Error: %s \n", err.Error())
+//    return
+//  }
+//  fmt.Printf("New event for water quality sensor is created \n")
+//}
+
+//func Random(min, max float32) float32 {
+//  rand.Seed(time.Now().Unix())
+//  return min + rand.Float32()*(max-min)
+//}

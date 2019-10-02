@@ -1,8 +1,8 @@
 package devices
 
 import (
-  "time"
   "github.com/jinzhu/gorm"
+  "time"
 )
 
 type SensorState int
