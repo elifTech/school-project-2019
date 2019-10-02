@@ -1,13 +1,24 @@
-import { REQUEST_EVENTS, SUCCESS_EVENTS, FAIL_EVENTS } from '../constants';
+import {
+  WATER_QUALITY_REQUEST_EVENTS,
+  WATER_QUALITY_SUCCESS_EVENTS,
+  WATER_QUALITY_FAIL_EVENTS,
+} from '../constants';
 
-export default function music(state = {}, action = {}) {
+const initialState = {
+  error: '',
+  events: [],
+  info: { Name: '', Status: 0, Type: '' },
+  isFetching: false,
+};
+
+export default (state = initialState, action = {}) => {
   switch (action.type) {
-    case REQUEST_EVENTS:
+    case WATER_QUALITY_REQUEST_EVENTS:
       return {
         ...state,
         isFetching: true,
       };
-    case SUCCESS_EVENTS:
+    case WATER_QUALITY_SUCCESS_EVENTS:
       return {
         ...state,
         error: null,
@@ -15,7 +26,7 @@ export default function music(state = {}, action = {}) {
         isFetching: false,
       };
 
-    case FAIL_EVENTS:
+    case WATER_QUALITY_FAIL_EVENTS:
       return {
         ...state,
         error: action.error,
@@ -24,4 +35,4 @@ export default function music(state = {}, action = {}) {
     default:
       return state;
   }
-}
+};

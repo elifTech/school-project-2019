@@ -1,10 +1,14 @@
 import fetch from 'node-fetch';
-import { REQUEST_EVENTS, SUCCESS_EVENTS, FAIL_EVENTS } from '../constants';
+import {
+  WATER_QUALITY_REQUEST_EVENTS,
+  WATER_QUALITY_SUCCESS_EVENTS,
+  WATER_QUALITY_FAIL_EVENTS,
+} from '../constants';
 
 export function getEventsRequest() {
   return {
     isFetching: true,
-    type: REQUEST_EVENTS,
+    type: WATER_QUALITY_REQUEST_EVENTS,
   };
 }
 
@@ -12,12 +16,16 @@ export function getEventsSuccess(data) {
   return {
     events: data,
     isFetching: false,
-    type: SUCCESS_EVENTS,
+    type: WATER_QUALITY_SUCCESS_EVENTS,
   };
 }
 
 export function getEventsFailure(error) {
-  return { error: String(error), isFetching: false, type: FAIL_EVENTS };
+  return {
+    error: String(error),
+    isFetching: false,
+    type: WATER_QUALITY_FAIL_EVENTS,
+  };
 }
 
 export function getEvents() {
