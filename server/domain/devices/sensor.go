@@ -1,18 +1,16 @@
 package devices
 
 import (
-	"github.com/jinzhu/gorm"
-	"time"
+  "time"
+  "github.com/jinzhu/gorm"
 )
 
 type SensorState int
 
 const (
-	StatusOffline SensorState = iota
-	StatusPending
-	StatusEnabling
-	StatusOnline SensorState = 10
-	StatusFailure
+  StatusOffline SensorState = iota
+  StatusOnline  SensorState = 10
+  StatusFailure
 )
 
 // we may use it for some future logic
@@ -23,30 +21,35 @@ const (
 //}
 
 const (
-	TemperatureSensor  string = "temperature"
-	TemperatureSensor2 string = "temperature2"
+  TemperatureSensor  string = "temperature"
   WaterQualitySensor string = "waterQuality"
+  WindSensor         string = "wind"
 )
 
 type Sensor struct {
-	gorm.Model
-	SensorID uint `gorm:"primary_key;AUTO_INCREMENT"`
-	Name     string
-	Type     string
-	Status   SensorState
+  gorm.Model
+  SensorID uint `gorm:"primary_key;AUTO_INCREMENT"`
+  Name     string
+  Type     string
+  Status   SensorState
 }
 
 type Event struct {
-	gorm.Model
-	EventID    uint `gorm:"primary_key;AUTO_INCREMENT"`
-	Created    time.Time
-	SensorType string `json:"device_type"`
+  gorm.Model
+  EventID    uint `gorm:"primary_key;AUTO_INCREMENT"`
+  Created    time.Time
+  SensorType string `json:"device_type"`
 }
 
-func (e *Event) BeforeSave() (err error) {
-	if e.Created.IsZero() {
-		e.Created = time.Now()
-	}
+func (s *Sensor) FindManySensors() ([]Sensor, error) {
+  var sensors []Sensor
 
-	return err
+  err := Storage.Find(&sensors).Error
+
+  if err != nil {
+    // returning custom DB error message
+    err = NOT_FOUND
+  }
+
+  return sensors, err
 }

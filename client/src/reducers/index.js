@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux';
-import music from './music';
+import menu from './menu';
 import runtime from './runtime';
-import user from './user';
 
 export default combineReducers({
-  music,
+  menu,
   runtime,
-  user,
 });

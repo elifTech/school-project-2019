@@ -2,7 +2,6 @@ package devices
 
 import (
 	"fmt"
-	//"github.com/jinzhu/gorm"
 )
 
 type Temperature struct {
@@ -13,7 +12,7 @@ type Temperature struct {
 type TemperatureEvent struct {
 	Event
 	Name   string `json:"name"`
-	Degree float32
+	Degree float32 `json:"degree"`
 }
 
 func (Temperature) TableName() string {
@@ -26,7 +25,7 @@ func init() {
 
 func (t *Temperature) Get() (*Temperature, error) {
 	device := new(Temperature)
-	err := Storage.Where(&Sensor{Type: TemperatureSensor}).Select("status").First(&device).Error
+	err := Storage.Where(&Sensor{Type: TemperatureSensor}).First(&device).Error
 	if err != nil {
 		// returning custom DB error message
 		err = NOT_FOUND
