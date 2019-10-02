@@ -10,6 +10,7 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 )
+
 //WaterConsumptionInit ...
 func WaterConsumptionInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
@@ -21,12 +22,13 @@ func WaterConsumptionInit(router *httprouter.Router) {
 
 	router.GET("/waterconsumtion/all", AllWaterConsumption)
 }
+
 // PingWaterConsumption ...
 func PingWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	waterconsumtion := devices.WaterConsumption{}
 	device, err := waterconsumtion.Get()
 	// testing custom error response
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
 		return
 	}
@@ -70,12 +72,13 @@ func PollWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.P
 
 	fmt.Fprintf(w, "%v", event)
 }
+
 //AllWaterConsumption ...
 func AllWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	waterconsumtionEvent := devices.WaterConsumption{}
 	device, err := waterconsumtionEvent.Get()
 	// testing custom error response
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
 		return
 	}

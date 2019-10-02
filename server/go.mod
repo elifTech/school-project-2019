@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go v0.46.3 // indirect
 	github.com/Shopify/sarama v1.23.1 // indirect
 	github.com/alecthomas/units v0.0.0-20190910110746-680d30ca3117 // indirect
+	github.com/carlescere/scheduler v0.0.0-20170109141437-ee74d2f83d82
 	github.com/denisenkom/go-mssqldb v0.0.0-20190920000552-128d9f4ae1cd // indirect
 	github.com/eapache/go-resiliency v1.2.0 // indirect
 	github.com/gogo/protobuf v1.3.0 // indirect

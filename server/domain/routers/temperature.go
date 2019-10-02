@@ -28,7 +28,7 @@ func PingTemperature(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 	temperature := devices.Temperature{}
 	device, err := temperature.Get()
 	// testing custom error response
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
 		return
 	}
@@ -73,12 +73,13 @@ func PollTemperature(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 
 	fmt.Fprintf(w, "%v", event)
 }
+
 // AllTemperature ...
 func AllTemperature(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	temperatureEvent := devices.Temperature{}
 	device, err := temperatureEvent.Get()
 	// testing custom error response
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
 		return
 	}

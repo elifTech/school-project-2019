@@ -6,8 +6,10 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// SensorState ...
 type SensorState int
 
+// SensorState ...
 const (
 	StatusOffline SensorState = iota
 	StatusPending
@@ -22,13 +24,13 @@ const (
 // func (st SensorType) String() string {
 //  return string(st)
 // }
-
+// Sensors ...
 const (
-	TemperatureSensor  string = "temperature"
-	TemperatureSensor2 string = "temperature2"
-	WaterMeter         string = "WaterConsumption" // my water meter
+	TemperatureSensor string = "temperature"
+	WaterMeter        string = "WaterConsumption" // my water meter
 )
 
+// Sensor ...
 type Sensor struct {
 	gorm.Model
 	SensorID uint `gorm:"primary_key;AUTO_INCREMENT"`
@@ -37,6 +39,7 @@ type Sensor struct {
 	Status   SensorState
 }
 
+// Event ...
 type Event struct {
 	gorm.Model
 	EventID    uint `gorm:"primary_key;AUTO_INCREMENT"`
@@ -44,6 +47,7 @@ type Event struct {
 	SensorType string `json:"device_type"`
 }
 
+// BeforeSave ...
 func (e *Event) BeforeSave() (err error) {
 	if e.Created.IsZero() {
 		e.Created = time.Now()
