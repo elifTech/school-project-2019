@@ -8,7 +8,7 @@ const initialState = {
   error: '',
   events: [],
   info: { Name: '', Status: 0, Type: '' },
-  isFetching: false,
+  isFetching: true,
 };
 
 export default (state = initialState, action = {}) => {
