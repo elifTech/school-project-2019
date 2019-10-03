@@ -1,61 +1,55 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Chart from 'chart.js';
 import withStyles from 'isomorphic-style-loader/withStyles';
-import moment from 'moment';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import style from '../../routes/water-quality-sensor/WaterQualitySensor.css';
+import setData from '../../routes/water-quality-sensor/HelperChartData';
 
-const LineChart = ({ events, isFetching }) => {
-  console.info(11, events)
-  const chartColor = 'rgba(63, 73, 111, .6)';
-  const lineChart = new Chart(React.createRef().current, {
-    data: {
-      datasets: [
-        {
-          backgroundColor: 'none',
-          borderColor: chartColor,
-          borderWidth: 1,
-          data: events.map(event => event.quality),
-          fill: 'none',
-          label: 'Label',
-          lineTension: 0,
-          pointRadius: 2,
-        },
-      ],
-      labels: events.map(({ CreatedAt }) =>
-        moment(CreatedAt).format('HH:mm:ss'),
-      ),
-    },
-    type: 'line',
-  });
+class LineChart extends PureComponent {
+  static propTypes = {
+    events: PropTypes.arrayOf(
+      PropTypes.shape({
+        CreatedAt: PropTypes.string.isRequired,
+        ID: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        quality: PropTypes.number.isRequired,
+      }),
+    ).isRequired,
+  };
 
-  return isFetching ? (
-    <div> Loading ... </div>
-  ) : (
-    <div>
-      <canvas id="lineChart" />
-    </div>
-  );
-};
+  constructor(props) {
+    super(props);
+    this.chartRef = React.createRef();
+  }
 
-LineChart.propTypes = {
-  events: PropTypes.arrayOf(
-    PropTypes.shape({
-      CreatedAt: PropTypes.string.isRequired,
-      ID: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      quality: PropTypes.number.isRequired,
-    }),
-  ).isRequired,
-  isFetching: PropTypes.bool.isRequired,
-};
+  componentDidMount() {
+    this.buildChart();
+  }
 
-export default connect(
-  ({ waterQuality: { events, isFetching, error } }) => ({
-    error,
-    events,
-    isFetching,
-  }),
-  null,
-)(withStyles(style)(React.memo(LineChart)));
+  componentDidUpdate() {
+    const { events } = this.props;
+    this.myLineChart.data = setData(events);
+    this.myLineChart.update();
+    // this.buildChart();
+  }
+
+  render() {
+    return (
+      <div>
+        <canvas id="myChart" ref={this.chartRef} />
+      </div>
+    );
+  }
+
+  buildChart = () => {
+    const { events } = this.props;
+    const myChartReference = this.chartRef.current;
+    this.myLineChart = new Chart(myChartReference, {
+      data: setData(events),
+      // options: { legend: { display: false } },
+      type: 'line',
+    });
+  };
+}
+
+export default withStyles(style)(React.memo(LineChart));
