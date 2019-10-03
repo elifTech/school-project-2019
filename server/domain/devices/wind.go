@@ -11,11 +11,10 @@ type Wind struct {
 
 type WindEvent struct {
 	Event
-	Name      string  `json:"name"`
-	Power     float32 `json:"power"`
-	BeaufortValue uint8 `json:"beaufort"`
-	State string `json:"state"`
-	Direction string  `json:"direction"`
+	Name          string  `json:"name"`
+	Power         float32 `json:"power"`
+	BeaufortValue uint8   `json:"beaufort"`
+	Direction     string  `json:"direction"`
 }
 
 func (Wind) TableName() string {
@@ -37,15 +36,19 @@ func (t *Wind) Get() (*Wind, error) {
 	return device, err
 }
 
-func (t *Wind) UpdateWindStatus(status SensorState) error {
+func (t *Wind) UpdateWindStatus(status SensorState) (SensorState, error) {
+	if status != StatusOnline && status != StatusOffline && status != StatusFailure {
+		return StatusFailure, BAD_STATUS
+	}
+
 	sensor, err := t.Get()
 	if err != nil {
 		fmt.Printf("Wind Sensor is not created")
-		return NOT_FOUND
+		return StatusFailure, NOT_FOUND
 	}
 
 	sensor.Status = status
-	return Storage.Save(&sensor).Error
+	return status, Storage.Save(&sensor).Error
 }
 
 func (t *Wind) FindManyEvents(from string, to string) ([]WindEvent, error) {

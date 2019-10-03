@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
-	"strconv"
+
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -47,21 +47,35 @@ func UpdateWindSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 		return
 	}
 
-	r.ParseForm()
-	status, convErr := strconv.Atoi(r.Form.Get("status"))
-	// if user provides string or not supported status number
-	if convErr != nil || status != 0 && status != 1 && status != 2 {
-		http.Error(w, errors.New("Status is not correct").Error(), http.StatusBadRequest)
+	type Data struct {
+		Status devices.SensorState
+	}
+	var data Data
+
+	rBytes, err := ioutil.ReadAll(r.Body)
+	convErr := json.Unmarshal(rBytes, &data)
+	if convErr != nil || err != nil {
+		http.Error(w, devices.BAD_STATUS.Error(), http.StatusBadRequest)
 		return
 	}
-	err = wind.UpdateWindStatus(devices.SensorState(status))
 
+	updatedStatus, err := wind.UpdateWindStatus(data.Status)
+	fmt.Println("status", updatedStatus)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
+	response, err := json.Marshal(updatedStatus)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "PUT, OPTIONS")
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Write(response)
 }
 
 func FindWindEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {

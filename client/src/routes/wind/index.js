@@ -2,7 +2,7 @@ import React from 'react';
 import Wind from './Wind';
 import Layout from '../../components/Layout';
 import setCurrentTab from '../../actions/menu';
-import getWindSensorData from '../../actions/wind-sensor';
+import { getWindSensorData } from '../../actions/wind-sensor';
 
 export default function action({ store: { dispatch } }) {
   const delay = 5000;

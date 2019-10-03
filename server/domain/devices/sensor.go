@@ -21,6 +21,7 @@ const (
 //  return string(st)
 //}
 
+
 const (
 	TemperatureSensor string = "temperature"
 	WindSensor        string = "wind"

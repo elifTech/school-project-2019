@@ -6,9 +6,7 @@ export default events => {
   const pointColor = '#66729b';
 
   const dataPoints = events.map(({ power }) => power);
-  const labels = events.map(({ CreatedAt }) =>
-    moment(CreatedAt).format('HH:mm'),
-  );
+  const labels = events.map(({ CreatedAt }) => moment(CreatedAt).format('HH:mm'));
 
   return {
     data: {

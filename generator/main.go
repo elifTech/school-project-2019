@@ -7,6 +7,7 @@ import (
 	"math"
 	"math/rand"
 	"net/http"
+	"io/ioutil"
 	"time"
 
 	"github.com/jasonlvhit/gocron"
@@ -20,7 +21,15 @@ func main() {
 	time.Sleep(10 * time.Minute)
 }
 
+type Event struct {
+		Status int
+	}
+
 func GenerateWindEvents() {
+	if checkForStatus() != 1 {
+		return
+	}
+
 	const (
 		minPower float64 = 2
 		maxPower float64 = 120
@@ -37,7 +46,6 @@ func GenerateWindEvents() {
 		"power":     windPower,
 		"direction": "se",
 		"beaufort":  beaufortValue,
-		"state":     "Moderate",
 		"Event": map[string]string{
 			"device_type": "wind",
 		},
@@ -55,6 +63,25 @@ func GenerateWindEvents() {
 		fmt.Println("Wind event created")
 		defer res.Body.Close()
 	}
+}
+
+func checkForStatus() int {
+	res, err := http.Get("http://localhost:8080/wind")
+	if err != nil {
+		return -1
+	}
+
+	data, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return -1
+	}
+
+	var event Event
+	err = json.Unmarshal(data, &event)
+	if err != nil || event.Status != 1 {
+		return -1
+	}
+	return event.Status
 }
 
 func random(min, max float64) float64 {

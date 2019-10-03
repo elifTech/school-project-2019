@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+  padding: 0 30px;
+  border-top: 1px solid #f8f8f8;
+}
+
+.indicator {
+  flex-basis: 20%;
+}
+
+.speed {
+  flex-basis: 25%;
+}
+
+.description {
+  flex-basis: 35%;
+}
+
+.date {
+  color: #bdbdbd;
+  text-align: center;
+  flex-basis: 20%;
+}

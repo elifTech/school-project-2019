@@ -18,6 +18,7 @@ const (
 )
 
 var NOT_FOUND = errors.New("record not found")
+var BAD_STATUS = errors.New("status is not correct")
 
 //type Storage *gorm.DB
 var Storage *gorm.DB
