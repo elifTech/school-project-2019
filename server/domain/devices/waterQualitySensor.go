@@ -92,18 +92,18 @@ func (w *WaterQuality) CreateSensor() error {
   return Storage.Create(&waterQualitySensor).Error
 }
 
-func (w *WaterQuality) ChangeSensorStatus(status SensorState) error {
+func (w *WaterQuality) ChangeSensorStatus(status SensorState) (SensorState, error) {
   sensor, err := w.Get()
   if err != nil {
     fmt.Printf("Sensor is not found: %v \n", sensor)
-    return nil
+    return StatusFailure, errors.New("sensor is not found")
   }
-  return Storage.Model(&sensor).Update("status", status).Error
+  return sensor.Status, Storage.Model(&sensor).Update("status", status).Error
 }
 
 func (w *WaterQuality) CreateEvent(payload *WaterQualityEvent) (err error) {
   sensor, _ := w.Get()
-  if sensor.Status == StatusOffline {
+  if sensor.Status != StatusOnline {
     fmt.Printf("Water quality sensor is offline \n")
     return errors.New("sensor is offline")
   }

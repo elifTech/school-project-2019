@@ -16,7 +16,7 @@ class WaterQualitySensor extends PureComponent {
     dispatchGetInfo: PropTypes.func.isRequired,
     eventsQuality: PropTypes.arrayOf(PropTypes.string),
     isFetching: PropTypes.bool,
-    status: PropTypes.bool,
+    status: PropTypes.number,
     time: PropTypes.arrayOf(PropTypes.string),
   };
 
@@ -26,16 +26,6 @@ class WaterQualitySensor extends PureComponent {
     status: 0,
     time: [],
   };
-
-  // constructor() {
-  //   super();
-  //   this.state = { checked: false };
-  // }
-  //
-  // handleChange = checked => {
-  //   console.log(22, checked)
-  //   this.setState({ checked });
-  // };
 
   componentDidMount() {
     const { dispatchGetEvents, dispatchGetInfo } = this.props;
@@ -51,7 +41,7 @@ class WaterQualitySensor extends PureComponent {
       dispatchChangeStatus,
       status,
     } = this.props;
-    return isFetching || eventsQuality.length === 0 ? (
+    return isFetching ? (
       this.loading()
     ) : (
       <Container className={style.container}>

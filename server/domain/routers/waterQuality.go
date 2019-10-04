@@ -3,7 +3,6 @@ package routers
 import (
   "encoding/json"
   "errors"
-  "fmt"
   "github.com/jasonlvhit/gocron"
   "github.com/julienschmidt/httprouter"
   "io/ioutil"
@@ -66,14 +65,21 @@ func ChangeWaterQualityStatus(w http.ResponseWriter, r *http.Request, ps httprou
     return
   }
 
-  err = waterQuality.ChangeSensorStatus(waterQuality.Status)
+  status, err := waterQuality.ChangeSensorStatus(waterQuality.Status)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
+  type Status struct {
+    Status devices.SensorState
+  }
+  response, err := json.Marshal(Status{ Status: status })
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusNotFound)
+    return
+  }
   w.WriteHeader(http.StatusOK)
-
-  _, _ = fmt.Fprintf(w, "%v", waterQuality)
+  _, _ = w.Write(response)
 }
 
 func GetEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -121,6 +127,4 @@ func CreateWaterQualityEvent(w http.ResponseWriter, r *http.Request, _ httproute
   }
 
   w.WriteHeader(http.StatusCreated)
-
-  _, _ = fmt.Fprintf(w, "%v", event)
 }

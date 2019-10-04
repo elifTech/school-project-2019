@@ -76,28 +76,23 @@ const changeStatusSuccess = status => {
   };
 };
 
-export function changeStatus(status) {
-  console.info(3, status);
-
+export function changeStatus(newStatus) {
   return async dispatch => {
     dispatch(getEventsRequest());
-    const body = { Status: status ? 1 : 0 };
-    console.log('body', body)
+    const body = { Status: newStatus ? 1 : 0 };
     try {
       const response = await fetch(
         `http://localhost:8080/water_quality/status`,
         {
-          body,
-          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+          headers: {
+            'Content-Type': 'application/json',
+          },
           method: 'PUT',
         },
       );
-      //   if (!response.ok) {
-      //     throw new Error(`${response.status} ${response.statusText}`);
-      //   }
-      // const responseStatus = await response.json();
-      console.log(53, await response.json())
-      return dispatch(changeStatusSuccess(status));
+      const { Status } = await response.json();
+      return dispatch(changeStatusSuccess(Status));
     } catch (error) {
       return dispatch(getEventsFailure(error));
     }
