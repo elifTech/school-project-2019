@@ -15,9 +15,9 @@ func TemperatureInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
 
-	router.GET("/temperature/ping", middlewares.Authorize(httprouter.Handle(PingTemperature)))
+	router.GET("/temperature/ping", middlewares.Authorize(PingTemperature))
 
-	router.POST("/temperature/poll", middlewares.Authorize(httprouter.Handle(PollTemperature)))
+	router.POST("/temperature/poll", middlewares.Authorize(PollTemperature))
 }
 
 func PingTemperature(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
