@@ -17,6 +17,7 @@ const (
 )
 
 var NOT_FOUND = errors.New("record not found")
+var SENSOR_OFFLINE = errors.New("sensor is currently offline")
 
 //type Storage *gorm.DB
 var Storage *gorm.DB
