@@ -2,12 +2,14 @@ import {
   WATER_QUALITY_REQUEST_EVENTS,
   WATER_QUALITY_SUCCESS_EVENTS,
   WATER_QUALITY_FAIL_EVENTS,
+  WATER_QUALITY_SUCCESS_STATUS,
+  WATER_QUALITY_SUCCESS_INFO,
 } from '../constants';
 
 const initialState = {
   error: '',
   events: [],
-  info: { Name: '', Status: 0, Type: '' },
+  info: { Name: '', Status: 0 },
   isFetching: true,
 };
 
@@ -16,21 +18,32 @@ export default (state = initialState, action = {}) => {
     case WATER_QUALITY_REQUEST_EVENTS:
       return {
         ...state,
-        isFetching: true,
+        isFetching: action.isFetching,
       };
     case WATER_QUALITY_SUCCESS_EVENTS:
       return {
         ...state,
         error: null,
         events: action.events,
-        isFetching: false,
+        isFetching: action.isFetching,
       };
-
+    case WATER_QUALITY_SUCCESS_STATUS:
+      return {
+        ...state,
+        info: { ...state.info, Status: action.status },
+        isFetching: action.isFetching,
+      };
+    case WATER_QUALITY_SUCCESS_INFO:
+      return {
+        ...state,
+        info: action.info,
+        isFetching: action.isFetching,
+      };
     case WATER_QUALITY_FAIL_EVENTS:
       return {
         ...state,
         error: action.error,
-        isFetching: false,
+        isFetching: action.isFetching,
       };
     default:
       return state;

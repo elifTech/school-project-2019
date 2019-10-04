@@ -49,7 +49,7 @@ func PingWaterQuality(w http.ResponseWriter, r *http.Request, ps httprouter.Para
   //fmt.Fprint(w, fmt.Sprintf("Pong... %v  ---- ERR: %v \n", device, err))
 }
 
-// test payload {"status: 10"}
+// test payload {"status": 10}
 func ChangeWaterQualityStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
   var waterQuality devices.WaterQuality
 

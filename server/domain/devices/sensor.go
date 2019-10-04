@@ -9,7 +9,7 @@ type SensorState int
 
 const (
   StatusOffline SensorState = iota
-  StatusOnline  SensorState = 10
+  StatusOnline
   StatusFailure
 )
 

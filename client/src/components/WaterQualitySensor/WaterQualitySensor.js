@@ -4,27 +4,69 @@ import PropTypes from 'prop-types';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Switch from 'react-switch';
 import style from './WaterQualitySensor.css';
 import LineChart from '../LineChart/LineChart';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
-    dispatchGetEvents: PropTypes.func,
-    eventsQuality: PropTypes.PropTypes.arrayOf(PropTypes.string),
+    dispatchChangeStatus: PropTypes.func.isRequired,
+    dispatchGetEvents: PropTypes.func.isRequired,
+    dispatchGetInfo: PropTypes.func.isRequired,
+    eventsQuality: PropTypes.arrayOf(PropTypes.string),
     isFetching: PropTypes.bool,
-    time: PropTypes.PropTypes.arrayOf(PropTypes.string),
+    status: PropTypes.bool,
+    time: PropTypes.arrayOf(PropTypes.string),
   };
 
   static defaultProps = {
-    dispatchGetEvents: undefined,
     eventsQuality: [],
     isFetching: false,
+    status: 0,
     time: [],
   };
 
+  // constructor() {
+  //   super();
+  //   this.state = { checked: false };
+  // }
+  //
+  // handleChange = checked => {
+  //   console.log(22, checked)
+  //   this.setState({ checked });
+  // };
+
   componentDidMount() {
-    const { dispatchGetEvents } = this.props;
+    const { dispatchGetEvents, dispatchGetInfo } = this.props;
     if (dispatchGetEvents) dispatchGetEvents();
+    if (dispatchGetInfo) dispatchGetInfo();
+  }
+
+  render() {
+    const {
+      eventsQuality,
+      time,
+      isFetching,
+      dispatchChangeStatus,
+      status,
+    } = this.props;
+    return isFetching || eventsQuality.length === 0 ? (
+      this.loading()
+    ) : (
+      <Container className={style.container}>
+        Water quality sensor
+        <Switch
+          onChange={dispatchChangeStatus}
+          checked={this.checkStatus(status)}
+        />
+        <Row>
+          <Col md={9}>
+            <LineChart quality={eventsQuality} time={time} />
+          </Col>
+        </Row>
+      </Container>
+    );
   }
 
   loading = () => {
@@ -39,19 +81,9 @@ class WaterQualitySensor extends PureComponent {
     );
   };
 
-  render() {
-    const { eventsQuality, time, isFetching } = this.props;
-    return isFetching || eventsQuality.length === 0 ? (
-      this.loading()
-    ) : (
-      <div className={style.container}>
-        Water quality sensor
-        <div>
-          <LineChart quality={eventsQuality} time={time} />
-        </div>
-      </div>
-    );
-  }
+  checkStatus = status => {
+    return !!status;
+  };
 }
 
 export default withStyles(style)(WaterQualitySensor);
