@@ -21,6 +21,10 @@ func WaterConsumptionInit(router *httprouter.Router) {
 	router.POST("/waterconsumtion/poll", PollWaterConsumption)
 
 	router.GET("/waterconsumtion/all", AllWaterConsumption)
+
+	router.GET("/waterconsumtion/today", DayWaterConsumption)
+
+	router.GET("/waterconsumtion/week", WeekWaterConsumption)
 }
 
 // PingWaterConsumption ...
@@ -76,10 +80,50 @@ func PollWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.P
 //AllWaterConsumption ...
 func AllWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	waterconsumtionEvent := devices.WaterConsumption{}
-	device, err := waterconsumtionEvent.Get()
+	device, err := waterconsumtionEvent.GetAll()
 	// testing custom error response
 	if err == devices.ErrNotFound {
-		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
+		http.Error(w, errors.New("Events are not found").Error(), http.StatusNotFound)
+		return
+	}
+
+	response, err := json.Marshal(device)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+
+}
+
+//DayWaterConsumption ...
+func DayWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	waterconsumtionEvent := devices.WaterConsumption{}
+	device, err := waterconsumtionEvent.GetToday()
+	// testing custom error response
+	if err == devices.ErrNotFound {
+		http.Error(w, errors.New("Events per day are not found").Error(), http.StatusNotFound)
+		return
+	}
+
+	response, err := json.Marshal(device)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+
+}
+
+// WeekWaterConsumption ...
+func WeekWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	waterconsumtionEvent := devices.WaterConsumption{}
+	device, err := waterconsumtionEvent.GetWeek()
+	// testing custom error response
+	if err == devices.ErrNotFound {
+		http.Error(w, errors.New("Week events are not found").Error(), http.StatusNotFound)
 		return
 	}
 

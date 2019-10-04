@@ -2,6 +2,7 @@ package devices
 
 import (
 	"fmt"
+	"time"
 	//"github.com/jinzhu/gorm"
 )
 
@@ -30,7 +31,34 @@ func init() {
 // Get ...
 func (wc *WaterConsumption) Get() (*[]WaterConsumptionEvent, error) {
 	events := new([]WaterConsumptionEvent)
+	err := Storage.Table("water_consumption_events").Where("sensor_type = ?", WaterMeter).First(&events).Error
+	if err != nil {
+		// returning custom DB error message
+		err = ErrNotFound
+	}
+
+	return events, err
+}
+
+// GetAll ...
+func (wc *WaterConsumption) GetAll() (*[]WaterConsumptionEvent, error) {
+	events := new([]WaterConsumptionEvent)
 	err := Storage.Table("water_consumption_events").Where("sensor_type = ?", WaterMeter).Find(&events).Error
+	if err != nil {
+		// returning custom DB error message
+		err = ErrNotFound
+	}
+
+	return events, err
+}
+
+// GetToday today events ...
+func (wc *WaterConsumption) GetToday() (*[]WaterConsumptionEvent, error) {
+	events := new([]WaterConsumptionEvent)
+	dt := time.Now()
+	dbefore := dt.AddDate(0, 0, -1)
+
+	err := Storage.Table("water_consumption_events").Where("created BETWEEN ? AND ?", dbefore, dt).Find(&events).Error
 	if err != nil {
 		// returning custom DB error message
 		err = ErrNotFound
@@ -83,4 +111,27 @@ func (wc *WaterConsumption) CreateEvent(payload *WaterConsumptionEvent) (err err
 	}
 	// a good example: we are returning the error directly from the Create method
 	return Storage.Create(&payload).Error
+}
+
+// WeekEvents ...
+type WeekEvents struct {
+	Date  time.Time
+	Total float32
+}
+
+// GetWeek today events ...
+func (wc *WaterConsumption) GetWeek() (*[]WeekEvents, error) {
+
+	events := new([]WeekEvents)
+
+	dt := time.Now()
+	dbefore := dt.AddDate(0, 0, -7)
+
+	err := Storage.Table("water_consumption_events").Select("date(created) as date, sum(consumption) as total").Where("created BETWEEN ? AND ?", dbefore, dt).Group("date(created)").Find(&events).Error
+	if err != nil {
+		// returning custom DB error message
+		err = ErrNotFound
+	}
+
+	return events, err
 }

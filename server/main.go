@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand"
+	"strings"
 	"time"
 
 	"github.com/carlescere/scheduler"
@@ -14,6 +16,7 @@ import (
 	//_ "github.com/jinzhu/gorm/dialects/postgres"
 	"log"
 	"net/http"
+	"net/http/httptest"
 	"school-project-2019/server/domain"
 	"school-project-2019/server/domain/devices"
 	//"school-project-2019/server/storage"
@@ -53,9 +56,11 @@ func main() {
 		return
 	}
 
+	rr := httptest.NewRecorder()
 	// Gun for water consumtion ...
 	gun := func() {
-		// Theoretical min max consumtion per minute, liters
+		rand.Seed(time.Now().UnixNano())
+		// Theoretical min max consumtion per minute/10, liters
 		min := 1
 		max := 150
 
@@ -69,20 +74,27 @@ func main() {
 			Name:        "Water Meter main",
 			Consumption: randomConsumtion,
 		}
-		// // converting struct into byte slice
-		// payloadJSON, _ := json.Marshal(payload)
 
-		// req, err := http.NewRequest("POST", "/waterconsumtion/poll", strings.NewReader(string(payloadJSON)))
-		// if err != nil {
-		// 	log.Fatal(fmt.Printf("Error creating new random event: %v \n", err))
-		// }
-		// req.Header.Add("Content-Type", "application/json")
+		// waterconsumtion := devices.WaterConsumption{}
+		// err = waterconsumtion.CreateEvent(&payload)
 
-		waterconsumtion := devices.WaterConsumption{}
-		err = waterconsumtion.CreateEvent(&payload)
+		payloadJSON, _ := json.Marshal(payload)
+
+		req, _ := http.NewRequest("POST", "/waterconsumtion/poll", strings.NewReader(string(payloadJSON)))
+
+		req.Header.Add("Content-Type", "application/json")
+
+		// serving http with our test request
+		router.ServeHTTP(rr, req)
 
 		fmt.Println("Random valie is ", randomConsumtion, creationTime, payload)
+		// const layout = "2006-01-02 15:04:05"
+		// dt := time.Now()
+		// dbefore := dt.AddDate(0, 0, -1)
+		// fmt.Printf("Time now is: %v \n", dt.Format(layout))
+		// fmt.Printf("and day before is: %v \n", dbefore.Format(layout))
 	}
+
 	scheduler.Every(60).Seconds().Run(gun)
 
 	// init server
