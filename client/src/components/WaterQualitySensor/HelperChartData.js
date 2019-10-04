@@ -1,7 +1,4 @@
-import moment from 'moment';
-
-export default function setData(events) {
-  const qualityFixed = 2;
+export default function setData(quality, time) {
   const chartColor = 'rgba(63, 73, 111, .6)';
   return {
     datasets: [
@@ -9,7 +6,7 @@ export default function setData(events) {
         backgroundColor: 'none',
         borderColor: chartColor,
         borderWidth: 2,
-        data: events.map(event => event.quality.toFixed(qualityFixed)),
+        data: quality,
         fill: 'none',
         label: 'Water quality',
         lineTension: 0.2,
@@ -17,6 +14,6 @@ export default function setData(events) {
         pointRadius: 2,
       },
     ],
-    labels: events.map(({ CreatedAt }) => moment(CreatedAt).format('HH:mm:ss')),
+    labels: time,
   };
 }

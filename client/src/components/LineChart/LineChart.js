@@ -2,19 +2,18 @@ import React, { PureComponent } from 'react';
 import Chart from 'chart.js';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
-import style from '../../routes/water-quality-sensor/WaterQualitySensor.css';
-import setData from '../../routes/water-quality-sensor/HelperChartData';
+import style from '../WaterQualitySensor/WaterQualitySensor.css';
+import setData from '../WaterQualitySensor/HelperChartData';
 
 class LineChart extends PureComponent {
   static propTypes = {
-    events: PropTypes.arrayOf(
-      PropTypes.shape({
-        CreatedAt: PropTypes.string.isRequired,
-        ID: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        quality: PropTypes.number.isRequired,
-      }),
-    ).isRequired,
+    quality: PropTypes.PropTypes.arrayOf(PropTypes.string),
+    time: PropTypes.PropTypes.arrayOf(PropTypes.string),
+  };
+
+  static defaultProps = {
+    quality: [],
+    time: [],
   };
 
   constructor(props) {
@@ -27,8 +26,8 @@ class LineChart extends PureComponent {
   }
 
   componentDidUpdate() {
-    const { events } = this.props;
-    this.myLineChart.data = setData(events);
+    const { quality, time } = this.props;
+    this.myLineChart.data = setData(quality, time);
     this.myLineChart.update();
     // this.buildChart();
   }
@@ -42,10 +41,10 @@ class LineChart extends PureComponent {
   }
 
   buildChart = () => {
-    const { events } = this.props;
+    const { quality, time } = this.props;
     const myChartReference = this.chartRef.current;
     this.myLineChart = new Chart(myChartReference, {
-      data: setData(events),
+      data: setData(quality, time),
       // options: { legend: { display: false } },
       type: 'line',
     });

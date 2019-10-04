@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../../components/Layout';
-import WaterQualitySensor from './WaterQualitySensor';
+import WaterQualitySensor from '../../containers/WaterQualitySensor';
 import setCurrentTab from '../../actions/menu';
 
 export default function action({ store: { dispatch } }) {
