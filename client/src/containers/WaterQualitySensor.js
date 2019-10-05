@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getEvents, changeStatus, getInfo } from '../actions/water-quality';
+import { changeStatus } from '../actions/water-quality';
 import WaterQualitySensor from '../components/WaterQualitySensor/WaterQualitySensor';
 import {
   getFixedQuality,
@@ -15,8 +15,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   dispatchChangeStatus: changeStatus,
-  dispatchGetEvents: getEvents,
-  dispatchGetInfo: getInfo,
 };
 
 export default connect(

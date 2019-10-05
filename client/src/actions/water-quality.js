@@ -35,11 +35,7 @@ export function getEvents() {
     dispatch(getEventsRequest());
     try {
       const response = await fetch(`http://localhost:8080/water_quality/event`);
-      //   if (!response.ok) {
-      //     throw new Error(`${response.status} ${response.statusText}`);
-      //   }
       const events = await response.json();
-      console.info(2, events);
       return dispatch(getEventsSuccess(events));
     } catch (error) {
       return dispatch(getEventsFailure(error));

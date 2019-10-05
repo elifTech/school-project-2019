@@ -9,7 +9,7 @@ export default function setData(quality, time) {
         borderWidth: 2,
         data: quality,
         label: 'Water quality',
-        lineTension: 0.2,
+        lineTension: 0.4,
         pointHoverRadius: 3,
         pointRadius: 2,
       },

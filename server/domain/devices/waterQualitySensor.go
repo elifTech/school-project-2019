@@ -12,7 +12,7 @@ import (
 
 const (
   mean   = 7
-  stdDev = 2
+  stdDev = 3
   //minQualityWater = 0
   //maxQualityWater = 16
 )

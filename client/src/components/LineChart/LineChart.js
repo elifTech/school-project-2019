@@ -27,14 +27,14 @@ class LineChart extends PureComponent {
 
   componentDidUpdate() {
     const { quality, time } = this.props;
-    this.myLineChart.data = setData(quality, time);
+    this.myLineChart.data.labels = time;
+    this.myLineChart.data.datasets[0].data = quality;
     this.myLineChart.update();
-    // this.buildChart();
   }
 
   render() {
     return (
-      <div>
+      <div className={style.container}>
         <canvas id="myChart" ref={this.chartRef} />
       </div>
     );
@@ -46,6 +46,17 @@ class LineChart extends PureComponent {
     this.myLineChart = new Chart(myChartReference, {
       data: setData(quality, time),
       // options: { legend: { display: false } },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                max: 18,
+              },
+            },
+          ],
+        },
+      },
       type: 'line',
     });
   };

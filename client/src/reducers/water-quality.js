@@ -10,7 +10,7 @@ const initialState = {
   error: '',
   events: [],
   info: { Name: '', Status: 0 },
-  isFetching: true,
+  isFetching: false,
 };
 
 export default (state = initialState, action = {}) => {

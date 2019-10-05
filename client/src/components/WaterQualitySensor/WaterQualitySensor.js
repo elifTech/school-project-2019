@@ -12,38 +12,34 @@ import LineChart from '../LineChart/LineChart';
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
     dispatchChangeStatus: PropTypes.func.isRequired,
-    dispatchGetEvents: PropTypes.func.isRequired,
-    dispatchGetInfo: PropTypes.func.isRequired,
     eventsQuality: PropTypes.arrayOf(PropTypes.string),
-    isFetching: PropTypes.bool,
+    resetInterval: PropTypes.func.isRequired,
+    // isFetching: PropTypes.bool,
     status: PropTypes.number,
     time: PropTypes.arrayOf(PropTypes.string),
   };
 
   static defaultProps = {
     eventsQuality: [],
-    isFetching: false,
+    // isFetching: false,
     status: 0,
     time: [],
   };
 
-  componentDidMount() {
-    const { dispatchGetEvents, dispatchGetInfo } = this.props;
-    if (dispatchGetEvents) dispatchGetEvents();
-    if (dispatchGetInfo) dispatchGetInfo();
+  componentWillUnmount() {
+    const { resetInterval } = this.props;
+    resetInterval();
   }
 
   render() {
     const {
       eventsQuality,
       time,
-      isFetching,
+      // isFetching,
       dispatchChangeStatus,
       status,
     } = this.props;
-    return isFetching ? (
-      this.loading()
-    ) : (
+    return (
       <Container className={style.container}>
         Water quality sensor
         <Switch
@@ -72,7 +68,7 @@ class WaterQualitySensor extends PureComponent {
   };
 
   checkStatus = status => {
-    return !!status;
+    return status === 0 ? false : status === 1;
   };
 }
 
