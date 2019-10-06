@@ -9,6 +9,7 @@ import {
 const mapStateToProps = state => ({
   eventsQuality: getFixedQuality(state),
   isFetching: state.waterQuality.isFetching,
+  name: state.waterQuality.info.Name,
   status: state.waterQuality.info.Status,
   time: getEventsTime(state),
 });
