@@ -75,27 +75,20 @@ func main() {
 			Consumption: randomConsumtion,
 		}
 
-		// waterconsumtion := devices.WaterConsumption{}
-		// err = waterconsumtion.CreateEvent(&payload)
-
 		payloadJSON, _ := json.Marshal(payload)
 
 		req, _ := http.NewRequest("POST", "/waterconsumtion/poll", strings.NewReader(string(payloadJSON)))
 
 		req.Header.Add("Content-Type", "application/json")
 
-		// serving http with our test request
+		// serving http with our request
 		router.ServeHTTP(rr, req)
 
 		fmt.Println("Random valie is ", randomConsumtion, creationTime, payload)
-		// const layout = "2006-01-02 15:04:05"
-		// dt := time.Now()
-		// dbefore := dt.AddDate(0, 0, -1)
-		// fmt.Printf("Time now is: %v \n", dt.Format(layout))
-		// fmt.Printf("and day before is: %v \n", dbefore.Format(layout))
+
 	}
 
-	scheduler.Every(60).Seconds().Run(gun)
+	scheduler.Every(120).Seconds().Run(gun)
 
 	// init server
 	log.Fatal(http.ListenAndServe(":8080", router))

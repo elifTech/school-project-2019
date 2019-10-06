@@ -53,10 +53,10 @@ func TestWaterConsumption(t *testing.T) {
 	creationTime := time.Now()
 
 	// preparing test payload
-	payload := devices.WaterConsumption{
-		Name:   "Main Water Meter",
+	payload := devices.WaterConsumptionEvent{
+		Name:        "Main Water Meter",
 		Consumption: r1.Float32() * 10,
-		Event:  devices.Event{Created: creationTime},
+		Event:       devices.Event{Created: creationTime},
 	}
 	// converting struct into byte slice
 	payloadJson, _ := json.Marshal(payload)
