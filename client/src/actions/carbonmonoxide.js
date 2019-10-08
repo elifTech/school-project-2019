@@ -1,8 +1,10 @@
+/* eslint-disable unicorn/consistent-function-scoping */
 import axios from 'axios';
 import {
-  CARBON_MONOXIDE_SENSOR_DATA_LOADING,
+  // CARBON_MONOXIDE_SENSOR_DATA_LOADING,
   CARBON_MONOXIDE_SENSOR_DATA_SUCCESS,
   CARBON_MONOXIDE_SENSOR_DATA_FAILURE,
+  CARBON_MONOXIDE_SENSOR_STATUS_UPDATE,
 } from '../constants';
 
 const carbonSensorSuccess = payload => ({
@@ -15,13 +17,30 @@ const carbonSensorFailure = error => ({
   type: CARBON_MONOXIDE_SENSOR_DATA_FAILURE,
 });
 
-const carbonSensorLoading = () => ({
-  type: CARBON_MONOXIDE_SENSOR_DATA_LOADING,
+const updateCarbonStatus = status => ({
+  status,
+  type: CARBON_MONOXIDE_SENSOR_STATUS_UPDATE,
 });
 
+// const carbonSensorLoading = () => ({
+//   type: CARBON_MONOXIDE_SENSOR_DATA_LOADING,
+// });
+
+export const changeCarbonStatus = status => async dispatch => {
+  try {
+    const { data } = await axios.put('http://localhost:8080/sensor/carbon', {
+      Status: status ? 1 : 0,
+    });
+    const delay = 1000;
+    setTimeout(() => dispatch(updateCarbonStatus(data)), delay);
+  } catch (error) {
+    dispatch(carbonSensorFailure(error.message));
+  }
+};
+
 // eslint-disable-next-line unicorn/consistent-function-scoping
-export default () => async dispatch => {
-  dispatch(carbonSensorLoading());
+export const getCarbonSensorsData = () => async dispatch => {
+  // dispatch(carbonSensorLoading());
   try {
     const [{ data: info }, { data: events }] = await Promise.all([
       axios.get('http://localhost:8080/carbon'),

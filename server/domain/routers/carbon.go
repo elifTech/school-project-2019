@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"strconv"
+	//"strconv"
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
@@ -82,12 +82,15 @@ func UpdateSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 	
 	r.ParseForm()
-	status, convErr := strconv.Atoi(r.Form.Get("status"))
-	if convErr != nil || status != 0 && status != 1 && status != 2 {
+	//status, convErr := strconv.Atoi(r.Form.Get("status"))
+	errStatus := json.NewDecoder(r.Body).Decode(&carbon)
+
+	fmt.Println(carbon.Status)
+	if errStatus != nil || carbon.Status != 0 && carbon.Status != 1 {
 		http.Error(w, errors.New("Status is not correct").Error(), http.StatusBadRequest)
 		return
 	}
-	err = device.UpdateSensorStatus(devices.SensorState(status))
+	err = device.UpdateSensorStatus(devices.SensorState(carbon.Status))
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

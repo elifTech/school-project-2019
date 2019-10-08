@@ -57,7 +57,7 @@ func TestPollCarbon(t *testing.T) {
 	for {
 		count = count + 1
 		if(count == 36){
-			max = 800
+			max = 999
 			count = 0
 		}
 		sensorStatus := false
