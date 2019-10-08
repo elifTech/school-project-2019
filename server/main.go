@@ -26,13 +26,14 @@ func main() {
 	d := domain.Devices{
 		Temperature:      &devices.Temperature{},
 		WaterConsumption: &devices.WaterConsumption{},
+		Wind:             &devices.Wind{},
 	}
 
 	s := &domain.IoTService{DB: db, Devices: &d}
 	//storage.Storage = db
 	router := s.NewRouter()
 
-	s.DB.AutoMigrate(devices.TemperatureEvent{}, devices.WaterConsumptionEvent{}, devices.Sensor{})
+	s.DB.AutoMigrate(devices.TemperatureEvent{}, devices.WindEvent{}, devices.WaterConsumptionEvent{}, devices.Sensor{})
 	// prepare device
 	err = s.Devices.Temperature.CreateSensor()
 	if err != nil {
@@ -41,6 +42,12 @@ func main() {
 	}
 
 	err = s.Devices.WaterConsumption.CreateSensor()
+	if err != nil {
+		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
+		return
+	}
+
+	err = s.Devices.Wind.CreateSensor()
 	if err != nil {
 		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
 		return

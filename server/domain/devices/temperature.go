@@ -2,7 +2,6 @@ package devices
 
 import (
 	"fmt"
-	//"github.com/jinzhu/gorm"
 )
 
 // Temperature ...
@@ -15,7 +14,7 @@ type Temperature struct {
 type TemperatureEvent struct {
 	Event
 	Name   string `json:"name"`
-	Degree float32
+	Degree float32 `json:"degree"`
 }
 
 // TableName ...

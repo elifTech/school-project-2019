@@ -13,8 +13,6 @@ import (
 
 // TemperatureInit ...
 func TemperatureInit(router *httprouter.Router) {
-	// our DB instance passed as a local variable
-	//db = database
 
 	router.GET("/temperature/ping", PingTemperature)
 
@@ -57,6 +55,7 @@ func PollTemperature(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 
 	var event devices.TemperatureEvent
 	err = json.Unmarshal(payload, &event)
+	fmt.Println(event)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

@@ -30,7 +30,7 @@ export function getWaterMeterEvents() {
     dispatch(getWaterMeterEventsRequest());
     try {
       const { data: waterMeterEvents } = await axios.get(
-        `http://localhost:8080//waterconsumtion/all`,
+        `http://localhost:8080//waterconsumtion/today`,
       );
       console.info({ waterMeterEvents });
       // const {

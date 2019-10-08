@@ -1,12 +1,10 @@
 import { combineReducers } from 'redux';
-import music from './music';
+import menu from './menu';
 import runtime from './runtime';
-import user from './user';
 import waterMeter from './water-meter';
 
 export default combineReducers({
-  music,
+  menu,
   runtime,
-  user,
   waterMeter,
 });

@@ -12,8 +12,6 @@ type SensorState int
 // SensorState ...
 const (
 	StatusOffline SensorState = iota
-	StatusPending
-	StatusEnabling
 	StatusOnline
 	StatusFailure
 )
@@ -28,6 +26,7 @@ const (
 const (
 	TemperatureSensor string = "temperature"
 	WaterMeter        string = "WaterConsumption" // my water meter
+	WindSensor        string = "wind"
 )
 
 // Sensor ...
@@ -54,4 +53,16 @@ func (e *Event) BeforeSave() (err error) {
 	}
 
 	return err
+}
+func (s *Sensor) FindManySensors() ([]Sensor, error) {
+	var sensors []Sensor
+
+	err := Storage.Find(&sensors).Error
+
+	if err != nil {
+		// returning custom DB error message
+		err = ErrNotFound
+	}
+
+	return sensors, err
 }

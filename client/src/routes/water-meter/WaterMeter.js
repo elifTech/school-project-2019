@@ -13,10 +13,19 @@ const options = {
     display: true,
     position: 'bottom',
   },
+  scales: {
+    xAxes: [
+      {
+        ticks: {
+          beginAtZero: true,
+        },
+      },
+    ],
+  },
   title: {
     display: true,
     fontSize: 25,
-    text: `Water consumption per September`,
+    text: `Water consumption per day`,
   },
 };
 
@@ -35,9 +44,7 @@ WaterMeterChart.propTypes = {
   waterMeterEvents: PropTypes.arrayOf(
     PropTypes.shape({
       Consumption: PropTypes.number.isRequired,
-      CreatedAt: PropTypes.string.isRequired,
-      ID: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
+      Created: PropTypes.string,
     }),
   ).isRequired,
 };

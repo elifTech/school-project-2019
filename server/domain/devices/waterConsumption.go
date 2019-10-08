@@ -29,7 +29,19 @@ func init() {
 }
 
 // Get ...
-func (wc *WaterConsumption) Get() (*[]WaterConsumptionEvent, error) {
+func (wc *WaterConsumption) Get() (*WaterConsumption, error) {
+	device := new(WaterConsumption)
+	err := Storage.Where(&Sensor{Type: WaterMeter}).First(&device).Error
+	if err != nil {
+		// returning custom DB error message
+		err = ErrNotFound
+	}
+
+	return device, err
+}
+
+// Ping ...
+func (wc *WaterConsumption) Ping() (*[]WaterConsumptionEvent, error) {
 	events := new([]WaterConsumptionEvent)
 	err := Storage.Table("water_consumption_events").Where("sensor_type = ?", WaterMeter).First(&events).Error
 	if err != nil {
@@ -100,8 +112,8 @@ func (wc *WaterConsumption) CreateEvent(payload *WaterConsumptionEvent) (err err
 
 // DayEvents ...
 type DayEvents struct {
-	Hour  time.Time
-	Total float32
+	Hour        time.Time
+	Consumption float32
 }
 
 // GetToday today events ...
@@ -115,7 +127,7 @@ func (wc *WaterConsumption) GetToday() (*[]DayEvents, error) {
 	now := time.Now()
 	bod := begd(now)
 
-	err := Storage.Table("water_consumption_events").Select("date_trunc('hour', created) as hour, sum(consumption) as total").Where("created BETWEEN ? AND ?", bod, now).Group("hour").Find(&events).Error
+	err := Storage.Table("water_consumption_events").Select("date_trunc('hour', created) as hour, sum(consumption) as consumption").Where("created BETWEEN ? AND ?", bod, now).Group("hour").Find(&events).Error
 
 	if err != nil {
 		// returning custom DB error message
@@ -127,8 +139,8 @@ func (wc *WaterConsumption) GetToday() (*[]DayEvents, error) {
 
 // WeekEvents ...
 type WeekEvents struct {
-	Day   time.Time
-	Total float32
+	Day         time.Time
+	Consumption float32
 }
 
 // GetWeek events ...
@@ -157,7 +169,7 @@ func (wc *WaterConsumption) GetWeek() (*[]WeekEvents, error) {
 	now := time.Now()
 	bow := begw(now)
 
-	err := Storage.Table("water_consumption_events").Select("date_trunc('day', created) as day, sum(consumption) as total").Where("created BETWEEN ? AND ?", bow, now).Group("day").Find(&events).Error
+	err := Storage.Table("water_consumption_events").Select("date_trunc('day', created) as day, sum(consumption) as consumption").Where("created BETWEEN ? AND ?", bow, now).Group("day").Find(&events).Error
 	if err != nil {
 		// returning custom DB error message
 		err = ErrNotFound
@@ -168,8 +180,8 @@ func (wc *WaterConsumption) GetWeek() (*[]WeekEvents, error) {
 
 // MonthEvents ...
 type MonthEvents struct {
-	Day   time.Time
-	Total float32
+	Day         time.Time
+	Consumption float32
 }
 
 // GetMonth  events ...
@@ -182,7 +194,7 @@ func (wc *WaterConsumption) GetMonth() (*[]MonthEvents, error) {
 	now := time.Now()
 	bom := begm(now)
 
-	err := Storage.Table("water_consumption_events").Select("date_trunc('day', created) as day, sum(consumption) as total").Where("created BETWEEN ? AND ?", bom, now).Group("day").Find(&events).Error
+	err := Storage.Table("water_consumption_events").Select("date_trunc('day', created) as day, sum(consumption) as consumption").Where("created BETWEEN ? AND ?", bom, now).Group("day").Find(&events).Error
 	if err != nil {
 		// returning custom DB error message
 		err = ErrNotFound
@@ -193,8 +205,8 @@ func (wc *WaterConsumption) GetMonth() (*[]MonthEvents, error) {
 
 // YearEvents ...
 type YearEvents struct {
-	Month time.Time
-	Total float32
+	Month       time.Time
+	Consumption float32
 }
 
 // GetYear  events ...
@@ -207,7 +219,7 @@ func (wc *WaterConsumption) GetYear() (*[]YearEvents, error) {
 	now := time.Now()
 	boy := begy(now)
 
-	err := Storage.Table("water_consumption_events").Select("date_trunc('month', created) as month, sum(consumption) as total").Where("created BETWEEN ? AND ?", boy, now).Group("month").Find(&events).Error
+	err := Storage.Table("water_consumption_events").Select("date_trunc('month', created) as month, sum(consumption) as consumption").Where("created BETWEEN ? AND ?", boy, now).Group("month").Find(&events).Error
 	if err != nil {
 		// returning custom DB error message
 		err = ErrNotFound

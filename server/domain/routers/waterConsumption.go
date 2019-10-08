@@ -34,7 +34,7 @@ func WaterConsumptionInit(router *httprouter.Router) {
 // PingWaterConsumption ...
 func PingWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	waterconsumtion := devices.WaterConsumption{}
-	device, err := waterconsumtion.Get()
+	device, err := waterconsumtion.Ping()
 	// testing custom error response
 	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)

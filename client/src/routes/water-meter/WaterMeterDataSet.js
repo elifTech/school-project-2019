@@ -9,8 +9,8 @@ export default function waterMeterDataSet(waterMeterEvents, label) {
         label,
       },
     ],
-    labels: waterMeterEvents.map(({ CreatedAt }) =>
-      moment(CreatedAt).format('Do, HH:mm'),
+    labels: waterMeterEvents.map(({ Hour }) =>
+      moment(Hour).format('Do, HH:mm'),
     ),
   };
 }
