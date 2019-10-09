@@ -4,14 +4,15 @@ import WaterQualitySensor from '../../containers/WaterQualitySensor';
 import setCurrentTab from '../../actions/menu';
 import { getEvents, getInfo } from '../../actions/water-quality';
 
+const INTERVAL = 3000;
+
 export default async function action({ store: { dispatch } }) {
   dispatch(setCurrentTab('Water Quality'));
   await dispatch(getInfo());
 
-  const interval = 3000;
   const startEventsInterval = setInterval(
     () => dispatch(getEvents()),
-    interval,
+    INTERVAL,
   );
   function resetEventsInterval() {
     clearInterval(startEventsInterval);
