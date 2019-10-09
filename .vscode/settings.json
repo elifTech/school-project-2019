@@ -6,5 +6,6 @@
       "changeProcessCWD": true
     }
   ],
+  "editor.formatOnSave": false,
   "eslint.autoFixOnSave": true
 }
