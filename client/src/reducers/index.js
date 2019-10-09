@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import music from './music';
+import menu from './menu';
 import runtime from './runtime';
-import user from './user';
+import carbonSensor from './carbonsensor';
 
 export default combineReducers({
-  music,
+  carbonSensor,
+  menu,
   runtime,
-  user,
 });
