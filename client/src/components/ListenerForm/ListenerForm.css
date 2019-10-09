@@ -1,0 +1,10 @@
+
+.userForm {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+}
+
+.userForm input {
+  margin-left: 5px;
+}
