@@ -11,10 +11,9 @@ type Wind struct {
 
 type WindEvent struct {
 	Event
-	Name          string  `json:"name"`
 	Power         float32 `json:"power"`
 	BeaufortValue uint8   `json:"beaufort"`
-	Direction     string  `json:"direction"`
+	Direction     float32 `json:"direction"`
 }
 
 func (Wind) TableName() string {
@@ -55,13 +54,9 @@ func (t *Wind) FindManyEvents(from string, to string) ([]WindEvent, error) {
 	var events []WindEvent
 
 	var err error
-	if from != "" && to != "" {
-		// in case user provides filter options
-		err = Storage.Where("created_at BETWEEN ? AND ?", from, to).Find(&events).Error
-	} else {
-		err = Storage.Find(&events).Error
-	}
-
+	query := Storage.Where("created BETWEEN ? AND ?", from, to)
+	query = query.Select("date_trunc('minute', created) as created, round(avg(power), 1) as power, degrees(atan(sum(sin(radians(direction))) / sum(cos(radians(direction))))) as direction, min(event_id) as event_id, round(avg(beaufort_value), 0) as beaufort_value")
+	err = query.Group("date_trunc('minute', created)").Order("min(event_id)").Find(&events).Error
 	if err != nil {
 		// returning custom DB error message
 		err = NOT_FOUND
@@ -70,13 +65,9 @@ func (t *Wind) FindManyEvents(from string, to string) ([]WindEvent, error) {
 	return events, err
 }
 
-func (t *Wind) FindOneEvent(query WindEvent) (*WindEvent, error) {
+func (t *Wind) FindOneEvent() (*WindEvent, error) {
 	event := new(WindEvent)
-
-	if len(query.SensorType) == 0 {
-		query.SensorType = WindSensor
-	}
-	err := Storage.Where(&query).First(&event).Error
+	err := Storage.Last(&event).Error
 	if err != nil {
 		// returning custom DB error message
 		err = NOT_FOUND

@@ -83,7 +83,7 @@ class WindChart extends React.PureComponent {
             </Fade>
             <Fade>
               <div className={s.currentFilter}>
-                Current period:
+                Period:
                 <br />
                 <span>{filter}</span>
               </div>

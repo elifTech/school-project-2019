@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/withStyles';
+import Hamburger from 'react-hamburger-menu';
 import MenuItem from './MenuItem';
 
 import s from './Menu.css';
@@ -11,17 +12,38 @@ class Menu extends React.Component {
     currentTab: PropTypes.string.isRequired,
   };
 
+  // eslint-disable-next-line react/state-in-constructor
+  state = {
+    isMenuOpen: false,
+  };
+
+  onMenuClick = () => {
+    const { isMenuOpen } = this.state;
+    this.setState({ isMenuOpen: !isMenuOpen });
+  };
+
   render() {
     const { currentTab } = this.props;
+    const { isMenuOpen } = this.state;
     return (
       <div className={s.menu}>
         <div className={s.menuLogo}>IoT App</div>
-        <div className={s.menuItems}>
+        <div className={s.menuHamburger}>
+          <Hamburger
+            isOpen={isMenuOpen}
+            menuClicked={this.onMenuClick}
+            width={25}
+            height={15}
+            color="#3f496f"
+          />
+        </div>
+        <div className={`${s.menuItems} ${isMenuOpen && s.menuItemsActive}`}>
           {this.menuItems.map(item => (
             <MenuItem
               key={item.text}
               item={item}
               isActive={currentTab === item.text}
+              closeMenu={this.onMenuClick}
             />
           ))}
         </div>
