@@ -7,6 +7,7 @@ import (
 	//"fmt"
 	//"github.com/jinzhu/gorm"
 	//_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/rs/cors"
 	"log"
 	"net/http"
 	"school-project-2019/server/domain"
@@ -41,6 +42,11 @@ func main() {
 		return
 	}
 
-	// init server
-	log.Fatal(http.ListenAndServe(":8080", router))
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
+	  })
+	
+	  // init server
+	  log.Fatal(http.ListenAndServe(":8080", c.Handler(router)))
 }

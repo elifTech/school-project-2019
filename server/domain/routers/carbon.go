@@ -60,6 +60,7 @@ func GetSensorStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 	}
 
 	response, err := json.Marshal(device)
+	
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -72,7 +73,6 @@ func GetSensorStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 // Function for Update sensor status on front side
 func UpdateSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	//defer r.Body.Close()
-
 	carbon := devices.Carbon{}
 	device, err := carbon.GetStatus()
 	// testing custom error response
@@ -84,7 +84,7 @@ func UpdateSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	r.ParseForm()
 	//status, convErr := strconv.Atoi(r.Form.Get("status"))
 	errStatus := json.NewDecoder(r.Body).Decode(&carbon)
-
+	
 	fmt.Println(carbon.Status)
 	if errStatus != nil || carbon.Status != 0 && carbon.Status != 1 {
 		http.Error(w, errors.New("Status is not correct").Error(), http.StatusBadRequest)

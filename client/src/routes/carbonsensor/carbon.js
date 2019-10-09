@@ -18,7 +18,6 @@ const options = {
   legend: { display: false },
 };
 
-// eslint-disable-next-line react-perf/jsx-no-new-array-as-prop
 const columns = [
   {
     dataField: 'EventID',
@@ -44,7 +43,7 @@ const columns = [
 
 class CarbonMonoxideSensor extends Component {
   static propTypes = {
-    // changeCarbonStatus: PropTypes.func.isRequired,
+    dispatchChangeStatus: PropTypes.func.isRequired,
     events: PropTypes.arrayOf(
       PropTypes.shape({
         Created: PropTypes.string.isRequired,
@@ -70,8 +69,13 @@ class CarbonMonoxideSensor extends Component {
     removeInterval();
   }
 
-  handleOnChange = value => {
-    return value;
+  handleOnClick = status => {
+    const { dispatchChangeStatus } = this.props;
+    if (status === 1) {
+      dispatchChangeStatus(false);
+    } else {
+      dispatchChangeStatus(true);
+    }
   };
 
   render() {
@@ -91,17 +95,17 @@ class CarbonMonoxideSensor extends Component {
         <div className="row mb-5">
           <div className="col-sm-6">
             <Line data={chartData(events, 'label')} options={options} />
-            <button
+            {/* <button
               type="button"
               className="btn btn-light"
               checked={this.parseStatus(info.Status)}
-              onChange={changeCarbonStatus}
-            >
-              Slider
-              <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-              </Spinner>
-            </button>
+              onClick={}
+            > */}
+            Slider
+            <Spinner animation="border" role="status">
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+            {/* </button> */}
           </div>
 
           <div className="col-sm-6">
@@ -109,7 +113,7 @@ class CarbonMonoxideSensor extends Component {
               type="button"
               className="btn btn-light"
               checked={this.parseStatus(info.Status)}
-              onChange={changeCarbonStatus}
+              onClick={this.statusOnClick(info.Status)}
             >
               <svg
                 width="350"
@@ -188,26 +192,28 @@ class CarbonMonoxideSensor extends Component {
               <TableHeaderColumn dataField="EventID">
                 EventID
               </TableHeaderColumn>
+                           <TableHeaderColumn dataField="EventID">
+                EventID
+              </TableHeaderColumn>
+                           <TableHeaderColumn dataField="EventID">
+                EventID
+              </TableHeaderColumn>
             </BootstrapTable> */}
         </div>
       </div>
     );
   }
 
+  statusOnClick(status) {
+    return () => this.handleOnClick(status);
+  }
+
   parseStatus = status => {
     switch (status) {
-      case 0:
-        this.status = 1;
-        // console.log(this.status);
-        return 'Online';
       case 1:
-        this.status = 0;
-        // console.log(this.status);
         return 'Offline';
-      case 2:
-        return 'Need repair';
       default:
-        return 'Error';
+        return 'Online';
     }
   };
 }
@@ -218,6 +224,5 @@ export default connect(
     events,
     info,
   }),
-  { changeCarbonStatus },
-  null,
+  { dispatchChangeStatus: changeCarbonStatus },
 )(withStyles()(CarbonMonoxideSensor));

@@ -31,7 +31,7 @@ type Sensor struct {
 	SensorID uint `gorm:"primary_key;AUTO_INCREMENT"`
 	Name     string
 	Type     string
-	Status   SensorState
+	Status   SensorState `json:"status"`
 }
 
 // Request represents a request to run a command.

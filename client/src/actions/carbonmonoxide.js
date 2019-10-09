@@ -29,10 +29,9 @@ const updateCarbonStatus = status => ({
 export const changeCarbonStatus = status => async dispatch => {
   try {
     const { data } = await axios.put('http://localhost:8080/sensor/carbon', {
-      Status: status ? 1 : 0,
+      status: status ? 1 : 0,
     });
-    const delay = 1000;
-    setTimeout(() => dispatch(updateCarbonStatus(data)), delay);
+    dispatch(updateCarbonStatus(data));
   } catch (error) {
     dispatch(carbonSensorFailure(error.message));
   }
