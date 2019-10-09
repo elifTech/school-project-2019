@@ -25,29 +25,38 @@ const options = {
   title: {
     display: true,
     fontSize: 25,
-    text: `Water consumption per day`,
+    text: `Water consumption per month`,
   },
 };
 
-const WaterMeterChart = ({ waterMeterEvents }) => {
-  return (
-    <div className={s.chart}>
-      <HorizontalBar
-        data={WaterMeterDataSet(waterMeterEvents, 'Water Consumtion')}
-        options={options}
-      />
-    </div>
-  );
-};
+class WaterMeterChart extends React.Component {
+  static propTypes = {
+    handleUnmount: PropTypes.func.isRequired,
+    waterMeterEvents: PropTypes.arrayOf(
+      PropTypes.shape({
+        Consumption: PropTypes.number.isRequired,
+        Created: PropTypes.string,
+      }),
+    ).isRequired,
+  };
 
-WaterMeterChart.propTypes = {
-  waterMeterEvents: PropTypes.arrayOf(
-    PropTypes.shape({
-      Consumption: PropTypes.number.isRequired,
-      Created: PropTypes.string,
-    }),
-  ).isRequired,
-};
+  componentWillUnmount() {
+    const { handleUnmount } = this.props;
+    handleUnmount();
+  }
+
+  render() {
+    const { waterMeterEvents } = this.props;
+    return (
+      <div className={s.chart}>
+        <HorizontalBar
+          data={WaterMeterDataSet(waterMeterEvents, 'Water Consumtion')}
+          options={options}
+        />
+      </div>
+    );
+  }
+}
 
 export default connect(({ waterMeter: { waterMeterEvents, error } }) => ({
   error,

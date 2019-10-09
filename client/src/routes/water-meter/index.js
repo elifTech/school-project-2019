@@ -5,7 +5,7 @@ import Layout from '../../components/Layout';
 import { getWaterMeterEvents } from '../../actions/water-meter';
 
 export default function action({ store: { dispatch } }) {
-  const delay = 5000;
+  const delay = 10000;
   // dispatch(setCurrentTab('WaterConsumption'))
   const interval = setInterval(() => dispatch(getWaterMeterEvents()), delay);
   function resetInterval() {

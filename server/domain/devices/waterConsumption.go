@@ -194,7 +194,7 @@ func (wc *WaterConsumption) GetMonth() (*[]MonthEvents, error) {
 	now := time.Now()
 	bom := begm(now)
 
-	err := Storage.Table("water_consumption_events").Select("date_trunc('day', created) as day, sum(consumption) as consumption").Where("created BETWEEN ? AND ?", bom, now).Group("day").Find(&events).Error
+	err := Storage.Table("water_consumption_events").Select("date_trunc('day', created) as day, sum(consumption) as consumption").Where("created BETWEEN ? AND ?", bom, now).Order("day").Group("day").Find(&events).Error
 	if err != nil {
 		// returning custom DB error message
 		err = ErrNotFound

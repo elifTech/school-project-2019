@@ -25,12 +25,12 @@ export function getWaterMeterEventsFailure(error) {
   };
 }
 
-export function getWaterMeterEvents() {
+export function getWaterMeterEvents(period = 'month') {
   return async dispatch => {
     dispatch(getWaterMeterEventsRequest());
     try {
       const { data: waterMeterEvents } = await axios.get(
-        `http://localhost:8080//waterconsumtion/today`,
+        `http://localhost:8080//waterconsumtion/${period}`,
       );
       console.info({ waterMeterEvents });
       // const {
@@ -39,7 +39,7 @@ export function getWaterMeterEvents() {
       // } = await response.json();
       // if (!waterMeterEvents) {
       //   throw error;
-      // }
+      // }+
       return dispatch(getWaterMeterEventsSuccess({ waterMeterEvents }));
     } catch (error) {
       return dispatch(getWaterMeterEventsFailure(error));
