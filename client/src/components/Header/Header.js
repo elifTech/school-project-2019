@@ -8,20 +8,17 @@ import Link from '../Link';
 import Navigation from '../Navigation';
 import eliftechBanner from './eliftech-banner.png';
 import { getRecentTracks } from '../../actions/music';
+import ListenerForm from '../ListenerForm';
 
 class Header extends PureComponent {
   static propTypes = {
-    apiKey: PropTypes.string,
     dispatchGetRecentTracks: PropTypes.func,
     setUserData: PropTypes.func,
-    username: PropTypes.string,
   };
 
   static defaultProps = {
-    apiKey: '',
     dispatchGetRecentTracks: undefined,
     setUserData: undefined,
-    username: '',
   };
 
   static whyDidYouRender = true;
@@ -47,15 +44,13 @@ class Header extends PureComponent {
     });
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
+  handleSubmit = () => {
     const { dispatchGetRecentTracks } = this.props;
     if (dispatchGetRecentTracks) dispatchGetRecentTracks();
     return false;
   };
 
   render() {
-    const { apiKey, username } = this.props;
     return (
       <div className={s.root}>
         <div className={s.container}>
@@ -67,27 +62,7 @@ class Header extends PureComponent {
             <h1 className={s.bannerTitle}>React</h1>
             <p className={s.bannerDesc}>Complex web apps made easy</p>
           </div>
-          <form className={s.userForm} onSubmit={this.handleSubmit}>
-            <label htmlFor="username-input">
-              Username
-              <input
-                id="username-input"
-                onChange={this.handleUsernameChange}
-                type="text"
-                value={username}
-              />
-            </label>
-            <label htmlFor="api-key-input">
-              API key
-              <input
-                id="api-key-input"
-                onChange={this.handleApiKeyChange}
-                type="text"
-                value={apiKey}
-              />
-            </label>
-            <button type="submit">Fetch data</button>
-          </form>
+          <ListenerForm onSubmit={this.handleSubmit} />
         </div>
       </div>
     );

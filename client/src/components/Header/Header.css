@@ -46,13 +46,3 @@
   font-size: 1.25em;
   margin: 0;
 }
-
-.userForm {
-  align-items: flex-end;
-  display: flex;
-  flex-direction: column;
-}
-
-.userForm input {
-  margin-left: 5px;
-}

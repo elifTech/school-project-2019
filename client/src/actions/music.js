@@ -27,7 +27,13 @@ export function getRecentTracksFailure(error) {
 export function getRecentTracks() {
   return async (dispatch, getState) => {
     dispatch(getRecentTracksRequest());
-    const { user: { apiKey, username } = {} } = getState();
+    const {
+      form: {
+        listener: {
+          values: { 'api-key-input': apiKey, 'username-input': username } = {},
+        } = {},
+      } = {},
+    } = getState();
     try {
       const response = await fetch(
         `http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${username}&api_key=${apiKey}&format=json`,
