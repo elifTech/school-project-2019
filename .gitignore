@@ -28,4 +28,5 @@ yarn-error.log*
 # Misc
 .DS_Store
 ./server/go.sum
-server/server
+server/server.exe
+generator/generator.exe
