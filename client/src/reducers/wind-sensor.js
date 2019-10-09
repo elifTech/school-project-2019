@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
   WIND_SENSOR_DATA_SUCCESS,
   WIND_SENSOR_DATA_FAILURE,
@@ -11,7 +12,13 @@ const initialState = {
   error: '',
   events: [],
   filterLoading: false,
-  filterOption: {},
+  filterOption: {
+    from: moment()
+      .local()
+      .startOf('day')
+      .toJSON(),
+    value: 'hour',
+  },
   info: { Name: '', Status: 0, Type: '' },
   loading: true,
   statusLoading: false,
@@ -43,7 +50,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         filterLoading: true,
-        filterOption: { from: action.period.from, to: action.period.to },
+        filterOption: { from: action.period.from, value: action.period.value },
       };
     default:
       return state;

@@ -14,12 +14,8 @@ Chart.defaults.global.defaultFontFamily = 'Montserrat';
 
 class Wind extends React.Component {
   static propTypes = {
+    error: PropTypes.string.isRequired,
     handleUnmount: PropTypes.func.isRequired,
-    info: PropTypes.shape({
-      Name: PropTypes.string.isRequired,
-      Status: PropTypes.number.isRequired,
-      Type: PropTypes.string.isRequired,
-    }).isRequired,
     isLoading: PropTypes.bool.isRequired,
     isStatusLoading: PropTypes.bool.isRequired,
   };
@@ -30,7 +26,11 @@ class Wind extends React.Component {
   }
 
   render() {
-    const { isStatusLoading, isLoading } = this.props;
+    const { isStatusLoading, isLoading, error } = this.props;
+
+    if (error) {
+      return <div>Sorry, something goes wrong on the server :(</div>;
+    }
 
     if (isLoading) {
       return (
@@ -39,7 +39,6 @@ class Wind extends React.Component {
         </div>
       );
     }
-
     return (
       <Container fluid className={s.container}>
         {isStatusLoading && <Loader />}
@@ -58,9 +57,8 @@ class Wind extends React.Component {
 }
 
 export default connect(
-  ({ windSensor: { info, statusLoading, loading, error } }) => ({
+  ({ windSensor: { statusLoading, loading, error } }) => ({
     error,
-    info,
     isLoading: loading,
     isStatusLoading: statusLoading,
   }),

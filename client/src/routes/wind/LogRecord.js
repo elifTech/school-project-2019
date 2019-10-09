@@ -1,22 +1,80 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
-import Fade from 'react-reveal/Fade';
 import s from './css/Record.css';
 
-const Record = ({ record: { id, day, time, description, speed }, pos }) => {
+const Record = ({ record: { day, time, description, speed } }) => {
+  const maxSpeed = 120;
+  const maxRects = 6;
+  const rectWidth = 8;
+  const rectGap = 3;
+  const rectHeight = 17;
+  const rects = Math.round((speed / maxSpeed) * maxRects) || 1;
   return (
-    <Fade bottom delay={550 + id * pos}>
-      <div className={s.container}>
-        <div className={s.indicator}>Indicator</div>
-        <div className={s.speed}>{speed}</div>
-        <div className={s.description}>{description}</div>
-        <div className={s.date}>
-          {day},<br />
-          {time}
-        </div>
+    <div className={s.container}>
+      <div className={s.indicator}>
+        <svg
+          width={(rectWidth + rectGap) * maxRects - rectGap}
+          height={rectHeight}
+          viewBox={`0 0 ${(rectWidth + rectGap) * maxRects -
+            rectGap} ${rectHeight}`}
+        >
+          <rect
+            width={(rectWidth + rectGap) * maxRects - rectGap}
+            height={rectHeight}
+            fill="url(#paint0_linear)"
+          />
+          <defs>
+            <linearGradient
+              id="paint0_linear"
+              x1="0"
+              y1={rectHeight}
+              x2={(rectWidth + rectGap) * maxRects - rectGap}
+              y2={rectHeight}
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="#909CBC" />
+              <stop offset="1" stopColor="#FF5F56" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <svg
+          width={(rectWidth + rectGap) * maxRects - rectGap}
+          height={rectHeight}
+          viewBox={`0 0 ${(rectWidth + rectGap) * maxRects -
+            rectGap} ${rectHeight}`}
+        >
+          <clipPath id="clip-rects">
+            {Array.from(new Array(rects), (_, i) => (
+              <rect
+                key={i}
+                x={i * (rectWidth + rectGap)}
+                width={rectWidth}
+                height={rectHeight}
+                fill="#909CBC"
+              />
+            ))}
+          </clipPath>
+        </svg>
       </div>
-    </Fade>
+      <span className={s.indicatorTooltip}>Indicator</span>
+      <div className={s.speed}>{`${speed} km/h`}</div>
+      <div className={s.description}>{description}</div>
+      <div className={s.date}>
+        {day},<br />
+        {time}
+      </div>
+    </div>
   );
+};
+
+Record.propTypes = {
+  record: PropTypes.shape({
+    day: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    speed: PropTypes.number.isRequired,
+    time: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default withStyles(s)(Record);

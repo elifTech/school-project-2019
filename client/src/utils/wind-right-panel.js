@@ -2,38 +2,46 @@
 export const defineRotationSpeed = bv => 12 / bv;
 
 export const parseDirection = dr => {
-  switch (dr) {
-    case 'ne':
-      return 'From North East';
-    case 'se':
-      return 'From South East';
-    case 'nw':
-      return 'From North West';
-    case 'sw':
+  switch (true) {
+    case dr <= -113 && dr >= -158:
       return 'From South West';
+    case dr <= -68 && dr > -113:
+      return 'From West';
+    case dr <= -23 && dr > -68:
+      return 'From North West';
+    case dr > -23 && dr <= 23:
+      return 'From North';
+    case dr > 23 && dr <= 68:
+      return 'From North East';
+    case dr > 68 && dr <= 113:
+      return 'From East';
+    case dr > 113 && dr <= 158:
+      return 'From South East';
+    case (dr > 158 && dr <= 180) || (dr < -158 && dr >= -180):
+      return 'From South';
     default:
       return 'Error';
   }
 };
 
 export const defineRotationDegree = dr => {
-  switch (dr) {
-    case 'n':
-      return '0deg';
-    case 'e':
-      return '90deg';
-    case 's':
-      return '180deg';
-    case 'w':
-      return '-90deg';
-    case 'ne':
-      return '45deg';
-    case 'nw':
-      return '-45deg';
-    case 'se':
-      return '135deg';
-    case 'sw':
+  switch (true) {
+    case dr <= -113 && dr >= -158:
       return '-135deg';
+    case dr <= -68 && dr > -113:
+      return '-90deg';
+    case dr <= -23 && dr > -68:
+      return '-45deg';
+    case dr > -23 && dr <= 23:
+      return '0deg';
+    case dr > 23 && dr <= 68:
+      return '45deg';
+    case dr > 68 && dr <= 113:
+      return '90deg';
+    case dr > 113 && dr <= 158:
+      return '135deg';
+    case (dr > 158 && dr <= 180) || (dr < -158 && dr >= -180):
+      return '180deg';
     default:
       return '0deg';
   }

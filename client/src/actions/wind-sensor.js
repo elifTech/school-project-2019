@@ -1,5 +1,6 @@
 /* eslint-disable unicorn/consistent-function-scoping */
 import axios from 'axios';
+import moment from 'moment';
 import {
   WIND_SENSOR_DATA_LOADING,
   WIND_SENSOR_DATA_SUCCESS,
@@ -38,13 +39,17 @@ const loadFilterData = period => ({
   type: FILTER_DATA_LOADING,
 });
 
-export const applyFilter = ({ from, to }) => async dispatch => {
-  dispatch(loadFilterData({ from, to }));
+export const applyFilter = ({ from, value }) => async dispatch => {
+  dispatch(loadFilterData({ from, value }));
   try {
     const { data: events } = await axios.get(`${apiURL}/wind/events`, {
-      params: { from, to },
+      params: {
+        from,
+        to: moment()
+          .local()
+          .toJSON(),
+      },
     });
-    console.log('HERE ', events);
     dispatch(windSensorSuccess({ events }));
   } catch (error) {
     dispatch(windSensorFailure(error.message));
@@ -67,15 +72,14 @@ export const changeWindStatus = status => async dispatch => {
 export const getWindSensorData = () => async (dispatch, getState) => {
   const { windSensor } = getState();
   if (!windSensor.info.Name) dispatch(windSensorLoading());
-  console.log(windSensor.filterOption);
   const queries = [
     axios.get(`${apiURL}/wind/events`, {
-      ...(windSensor.filterOption.from && {
-        params: {
-          from: windSensor.filterOption.from,
-          to: windSensor.filterOption.to,
-        },
-      }),
+      params: {
+        from: windSensor.filterOption.from,
+        to: moment()
+          .local()
+          .toJSON(),
+      },
     }),
     !windSensor.info.Name && axios.get(`${apiURL}/wind`),
   ];

@@ -45,13 +45,24 @@
   transition: all 0.3s ease;
 }
 
+.currentFilter {
+  margin-top: 40px;
+  font-size: 14px;
+  text-align: center;
+  color: #a9a9a9;
+}
+
+.currentFilter span {
+  text-transform: capitalize;
+}
+
 .filterButton:focus {
   outline: none;
 }
 
 .filterButtonActive,
 .filterButton:hover {
-  background-color: #FF5F56;
+  background-color: #3f496f;
   color: #fff;
-  box-shadow: -10px 7px 30px rgba(255, 95, 86, .2);
+  box-shadow: -10px 7px 30px rgba(255, 95, 86, 0.2);
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import Switch from 'react-switch';
+import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { connect } from 'react-redux';
@@ -15,12 +16,12 @@ const parseStatus = status => {
   }
 };
 
-const WindStatus = ({ name, status, changeWindStatus }) => (
+const WindStatus = ({ name, status, dispatchChangeWindStatus }) => (
   <div className={s.container}>
     <h1 className={s.header}>{name}</h1>
     <Switch
       checked={parseStatus(status)}
-      onChange={changeWindStatus}
+      onChange={dispatchChangeWindStatus}
       onColor="#BCC4D7"
       onHandleColor="#909cbc"
       handleDiameter={21}
@@ -34,6 +35,12 @@ const WindStatus = ({ name, status, changeWindStatus }) => (
   </div>
 );
 
+WindStatus.propTypes = {
+  dispatchChangeWindStatus: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  status: PropTypes.number.isRequired,
+};
+
 export default withStyles(s)(
   connect(
     ({
@@ -43,6 +50,6 @@ export default withStyles(s)(
     }) => ({
       status: Status,
     }),
-    { changeWindStatus },
+    { dispatchChangeWindStatus: changeWindStatus },
   )(WindStatus),
 );
