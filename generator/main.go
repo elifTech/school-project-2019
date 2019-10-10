@@ -12,21 +12,24 @@ import (
 )
 
 type Event struct {
+	Power     float64
+	Direction float64
+	Beaufort  uint8
+	Event     map[string]string
+}
+
+type Status struct {
 	Status int
 }
 
 func setInterval(function func(), seconds int) {
 	ticker := time.NewTicker(time.Duration(seconds) * time.Second)
-	done := make(chan bool)
 
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
 				function()
-			case <-done:
-				ticker.Stop()
-				return
 			}
 		}
 	}()
@@ -57,27 +60,28 @@ func GenerateWindEvents() {
 		beaufortValue = 1
 	}
 
-	reqBody, err := json.Marshal(map[string]interface{}{
-		"power":     windPower,
-		"direction": randDirection(),
-		"beaufort":  beaufortValue,
-		"Event": map[string]string{
+	reqBody := Event{
+		Power:     windPower,
+		Direction: randDirection(),
+		Beaufort:  beaufortValue,
+		Event: map[string]string{
 			"device_type": "wind",
 		},
-	})
-
-	if err != nil {
-		fmt.Println("Could not convert to json")
 	}
 
-	req, err := http.Post("http://localhost:8080/wind/event", "application/json", bytes.NewBuffer(reqBody))
+	reqBodyJSON, err := json.Marshal(reqBody)
+	if err != nil {
+		fmt.Println("Could not convert to json")
+		return
+	}
+	req, err := http.Post("http://localhost:8080/wind/event", "application/json", bytes.NewBuffer(reqBodyJSON))
 
 	if err != nil {
 		fmt.Println("Cannot create wind event", err)
-	} else {
-		fmt.Println("Wind event created")
-		defer req.Body.Close()
+		return
 	}
+	fmt.Println("Wind event created")
+	req.Body.Close()
 }
 
 func getLastSpeed() float64 {
@@ -101,23 +105,23 @@ func getLastSpeed() float64 {
 	return power
 }
 
-func checkForStatus() int {
+func checkForStatus() (int, error) {
 	res, err := http.Get("http://localhost:8080/wind")
 	if err != nil {
-		return -1
+		return -1, err
 	}
 
 	data, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return -1
+		return -1, err
 	}
 
-	var event Event
+	var event Status
 	err = json.Unmarshal(data, &event)
 	if err != nil || event.Status != 1 {
-		return -1
+		return -1, err
 	}
-	return event.Status
+	return event.Status, nil
 }
 
 func randDirection() float64 {
