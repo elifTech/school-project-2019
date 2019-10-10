@@ -24,7 +24,7 @@ export function getRecentTracksFailure(error) {
   return { error: String(error), isFetching: false, type: FAIL_RECENT_TRACKS };
 }
 
-export default function getRecentTracks() {
+export function getRecentTracks() {
   return async (dispatch, getState) => {
     dispatch(getRecentTracksRequest());
     const {

@@ -3,17 +3,16 @@ package devices
 import (
 	"errors"
 	"fmt"
-	"log"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"log"
 )
 
 const (
 	host     = "localhost"
 	port     = "5432"
-	user     = "max"
-	password = "1"
+	user     = "school"
+	password = "eliftech"
 	dbname   = "school"
 )
 

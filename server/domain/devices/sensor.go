@@ -1,15 +1,16 @@
 package devices
 
 import (
-	"time"
-
 	"github.com/jinzhu/gorm"
+	"time"
 )
 
 type SensorState int
 
 const (
 	StatusOffline SensorState = iota
+	StatusPending
+	StatusEnabling
 	StatusOnline
 	StatusFailure
 )
@@ -22,19 +23,18 @@ const (
 //}
 
 const (
-	CarbonSensor string = "Carbon Monoxide"
+	TemperatureSensor  string = "temperature"
+	TemperatureSensor2 string = "temperature2"
 )
 
-//Sensors type with parameters
 type Sensor struct {
 	gorm.Model
 	SensorID uint `gorm:"primary_key;AUTO_INCREMENT"`
 	Name     string
 	Type     string
-	Status   SensorState `json:"status"`
+	Status   SensorState
 }
 
-// Request represents a request to run a command.
 type Event struct {
 	gorm.Model
 	EventID    uint `gorm:"primary_key;AUTO_INCREMENT"`

@@ -7,7 +7,6 @@ import (
 	//"fmt"
 	//"github.com/jinzhu/gorm"
 	//_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/rs/cors"
 	"log"
 	"net/http"
 	"school-project-2019/server/domain"
@@ -27,26 +26,21 @@ func main() {
 
 	// init your devices here
 	d := domain.Devices{
-		Carbon: &devices.Carbon{},
+		Temperature: &devices.Temperature{},
 	}
 
 	s := &domain.IoTService{DB: db, Devices: &d}
 	//storage.Storage = db
 	router := s.NewRouter()
 
-	s.DB.AutoMigrate(devices.CarbonEvent{}, devices.Sensor{})
+	s.DB.AutoMigrate(devices.TemperatureEvent{}, devices.Sensor{})
 	// prepare device
-	err = s.Devices.Carbon.CreateSensor()
+	err = s.Devices.Temperature.CreateSensor()
 	if err != nil {
 		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
 		return
 	}
 
-	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
-	  })
-	
-	  // init server
-	  log.Fatal(http.ListenAndServe(":8080", c.Handler(router)))
+	// init server
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
