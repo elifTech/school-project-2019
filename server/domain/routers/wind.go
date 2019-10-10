@@ -11,6 +11,10 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+type Data struct {
+	Status devices.SensorState
+}
+
 func WindInit(router *httprouter.Router) {
 	router.GET("/wind", GetWindSensor)
 	router.GET("/wind/events", FindWindEvents)
@@ -24,17 +28,16 @@ func GetWindSensor(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	device, err := wind.Get()
 	// testing custom error response
 	if err == devices.NOT_FOUND {
-		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
+		http.Error(w, "the device is not found", http.StatusNotFound)
 		return
 	}
 
 	response, err := json.Marshal(device)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(response)
 }
 
@@ -44,19 +47,20 @@ func UpdateWindSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 	wind := devices.Wind{}
 	_, err := wind.Get()
 	if err == devices.NOT_FOUND {
-		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
+		http.Error(w, "the device is not found", http.StatusNotFound)
 		return
 	}
 
-	type Data struct {
-		Status devices.SensorState
-	}
 	var data Data
 
 	rBytes, err := ioutil.ReadAll(r.Body)
-	convErr := json.Unmarshal(rBytes, &data)
-	if convErr != nil || err != nil {
-		http.Error(w, devices.BAD_STATUS.Error(), http.StatusBadRequest)
+	if err != nil {
+		http.Error(w, devices.BAD_STATUS.Error(), http.StatusInternalServerError)
+		return
+	}
+	err = json.Unmarshal(rBytes, &data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -74,8 +78,6 @@ func UpdateWindSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "PUT, OPTIONS")
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Write(response)
 }
 
@@ -94,11 +96,10 @@ func FindWindEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params)
 
 	response, err := json.Marshal(windEvents)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(response)
 }
 
@@ -111,14 +112,9 @@ func GetLastDate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 
-	response, err := json.Marshal(windEvent.Power)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
-		return
-	}
+	var response string = fmt.Sprintf("%f", windEvent.Power)
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Write(response)
+	w.Write([]byte(response))
 }
 
 func CreateWindEvent(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {

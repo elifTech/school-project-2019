@@ -17,13 +17,13 @@ func GetAllSensors(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	sensors, err := sensor.FindManySensors()
 	// testing custom error response
 	if err == devices.NOT_FOUND {
-		http.Error(w, errors.New("no sensors in the database").Error(), http.StatusNotFound)
+		http.Error(w, "no sensors in the database", http.StatusNotFound)
 		return
 	}
 
 	response, err := json.Marshal(sensors)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

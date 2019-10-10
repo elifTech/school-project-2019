@@ -50,19 +50,15 @@ func (t *Wind) UpdateWindStatus(status SensorState) (SensorState, error) {
 	return status, Storage.Save(&sensor).Error
 }
 
-func (t *Wind) FindManyEvents(from string, to string) ([]WindEvent, error) {
+func (t *Wind) FindManyEvents(from string, to string) (*[]WindEvent, error) {
 	var events []WindEvent
 
 	var err error
 	query := Storage.Where("created BETWEEN ? AND ?", from, to)
 	query = query.Select("date_trunc('minute', created) as created, round(avg(power), 1) as power, degrees(atan(sum(sin(radians(direction))) / sum(cos(radians(direction))))) as direction, min(event_id) as event_id, round(avg(beaufort_value), 0) as beaufort_value")
 	err = query.Group("date_trunc('minute', created)").Order("min(event_id)").Find(&events).Error
-	if err != nil {
-		// returning custom DB error message
-		err = NOT_FOUND
-	}
 
-	return events, err
+	return &events, err
 }
 
 func (t *Wind) FindOneEvent() (*WindEvent, error) {
