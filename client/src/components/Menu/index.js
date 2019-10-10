@@ -144,8 +144,8 @@ class Menu extends React.Component {
       icon: (
         <svg
           viewBox="0 0 576 512"
-          width="35px"
-          height="32px"
+          width="40px"
+          height="38px"
           fill="rgba(255, 255, 255, .8)"
         >
           <path
