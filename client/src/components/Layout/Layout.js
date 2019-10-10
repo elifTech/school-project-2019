@@ -4,28 +4,22 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 
 // external-global styles must be imported in your JS.
 import normalizeCss from 'normalize.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col } from 'react-bootstrap';
 import s from './Layout.css';
-import Menu from '../Menu';
+import Header from '../Header';
+import Footer from '../Footer';
 
 function Layout(props) {
   const { children } = props;
   return (
-    <Container fluid className={s.container}>
-      <Row noGutters className={s.containerRow}>
-        <Col lg={1}>
-          <Menu />
-        </Col>
-        <Col lg={11} className={s.paddingLeft}>
-          {children}
-        </Col>
-      </Row>
-    </Container>
+    <div>
+      <Header />
+      {children}
+      <Footer />
+    </div>
   );
 }
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
 };
 Layout.whyDidYouRender = true;
-export default withStyles(bootstrap, normalizeCss, s)(React.memo(Layout));
+export default withStyles(normalizeCss, s)(React.memo(Layout));

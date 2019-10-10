@@ -1,10 +1,14 @@
 import { combineReducers } from 'redux';
-import menu from './menu';
+import { reducer as formReducer } from 'redux-form';
+import music from './music';
 import runtime from './runtime';
 import waterQuality from './water-quality';
+import user from './user';
 
 export default combineReducers({
-  menu,
+  form: formReducer,
+  music,
   runtime,
   waterQuality,
+  user,
 });
