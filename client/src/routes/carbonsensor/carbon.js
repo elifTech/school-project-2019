@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import format from 'date-fns';
 import Spinner from 'react-bootstrap/Spinner';
-import { Line, defaults } from 'react-chartjs-2';
+import { Chart, Line, defaults } from 'react-chartjs-2';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 // import TableHeaderColumn from 'react-bootstrap-table-2';
+import zoom from 'chartjs-plugin-zoom';
 import chartData from '../../store/chart-dataset';
 import { changeCarbonStatus } from '../../actions/carbonmonoxide';
 
@@ -16,6 +17,62 @@ defaults.global.defaultFontFamily = 'Montserrat';
 const options = {
   display: { maintainAspectRatio: true },
   legend: { display: false },
+  pan: {
+    enabled: true,
+    // Panning directions. Remove the appropriate direction to disable
+    // Eg. 'y' would only allow panning in the y direction
+    // A function that is called as the user is panning and returns the
+    // available directions can also be used:
+    //   mode: function({ chart }) {
+    //     return 'xy';
+    //   },
+    mode: 'xy',
+
+    // onPan({ chartData }) {
+    //   console.log(`I'm panning!!!`);
+    // },
+    // onPanComplete({ chartData }) {
+    //   console.log(`I was panned!!!`);
+    // },
+
+    // Function called while the user is panning
+    rangeMax: {
+      // Format of max pan range depends on scale type
+      x: null,
+      y: 999,
+    },
+    // Function called once panning is completed
+    rangeMin: {
+      // Format of min pan range depends on scale type
+      x: null,
+      y: 0,
+    },
+  },
+  zoom: {
+    // drag: true,
+    enabled: true,
+    mode: 'xy',
+    // onZoom({ Chart }) {
+    //   console.log(`I'm zooming!!!`);
+    // },
+    // onZoomComplete({ Chart }) {
+    //   console.log(`I was zoomed!!!`);
+    // },
+    // Function called while the user is zooming
+    rangeMax: {
+      // Format of max zoom range depends on scale type
+      x: null,
+      y: 999,
+    },
+    rangeMin: {
+      // Format of max zoom range depends on scale type
+      x: null,
+      y: 0,
+    },
+    // Function called once zooming is completed
+    sensitivity: 3,
+    speed: 0.5,
+  },
 };
 
 const columns = [
@@ -67,6 +124,7 @@ class CarbonMonoxideSensor extends Component {
   componentWillUnmount() {
     const { removeInterval } = this.props;
     removeInterval();
+    Chart.plugins.register(zoom);
   }
 
   handleOnClick = status => {
