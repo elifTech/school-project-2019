@@ -12,6 +12,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+//Initialisation all routers
 func CarbonInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
@@ -27,7 +28,7 @@ func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
-
+//
 func PingCarbon(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	carbon := devices.Carbon{}
@@ -50,6 +51,7 @@ func PingCarbon(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	//fmt.Fprint(w, fmt.Sprintf("Pong... %v  ---- ERR: %v \n", device, err))
 }
 
+//
 func GetSensorStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	carbon := devices.Carbon{}
 	device, err := carbon.GetStatus()
