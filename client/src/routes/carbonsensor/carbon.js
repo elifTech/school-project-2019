@@ -19,10 +19,6 @@ const options = {
   legend: { display: false },
   pan: {
     enabled: true,
-    // Panning directions. Remove the appropriate direction to disable
-    // Eg. 'y' would only allow panning in the y direction
-    // A function that is called as the user is panning and returns the
-    // available directions can also be used:
     //   mode: function({ chart }) {
     //     return 'xy';
     //   },
