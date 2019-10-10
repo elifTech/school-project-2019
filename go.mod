@@ -12,7 +12,6 @@ require (
 	github.com/VividCortex/gohistogram v1.0.0 // indirect
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5 // indirect
 	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
-	github.com/apache/thrift v0.12.0 // indirect
 	github.com/aws/aws-sdk-go v1.25.7 // indirect
 	github.com/aws/aws-sdk-go-v2 v0.13.0 // indirect
 	github.com/cactus/go-statsd-client/statsd v0.0.0-20190922113730-52b467de415c // indirect
@@ -24,7 +23,6 @@ require (
 	github.com/clbanning/x2j v0.0.0-20180326210544-5e605d46809c // indirect
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
 	github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0 // indirect
-	github.com/codegangsta/negroni v1.0.0 // indirect
 	github.com/coreos/bbolt v1.3.3 // indirect
 	github.com/coreos/etcd v3.3.15+incompatible // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
@@ -39,7 +37,6 @@ require (
 	github.com/gin-gonic/gin v1.4.0 // indirect
 	github.com/go-chi/chi v4.0.2+incompatible // indirect
 	github.com/go-martini/martini v0.0.0-20170121215854-22fa46961aab // indirect
-	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/gobuffalo/buffalo v0.14.10 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/godbus/dbus v4.1.0+incompatible // indirect
@@ -61,7 +58,6 @@ require (
 	github.com/jstemmer/go-junit-report v0.9.1 // indirect
 	github.com/julienschmidt/httprouter v1.3.0 // indirect
 	github.com/justinas/alice v0.0.0-20171023064455-03f45bd4b7da // indirect
-	github.com/kr/pty v1.1.3 // indirect
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/lightstep/lightstep-tracer-go v0.17.0 // indirect
 	github.com/martini-contrib/render v0.0.0-20150707142108-ec18f8345a11 // indirect
@@ -72,7 +68,6 @@ require (
 	github.com/nbutton23/zxcvbn-go v0.0.0-20180912185939-ae427f1e4c1d // indirect
 	github.com/oklog/oklog v0.3.2 // indirect
 	github.com/oklog/run v1.0.0 // indirect
-	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/olekukonko/tablewriter v0.0.1 // indirect
 	github.com/onsi/ginkgo v1.10.2 // indirect
 	github.com/onsi/gomega v1.7.0 // indirect
@@ -97,7 +92,6 @@ require (
 	github.com/samuel/go-zookeeper v0.0.0-20190923202752-2cc03de413da // indirect
 	github.com/schollz/progressbar v1.0.0 // indirect
 	github.com/sony/gobreaker v0.4.1 // indirect
-	github.com/spf13/afero v1.2.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stathat/go v1.0.0 // indirect
 	github.com/streadway/handy v0.0.0-20190108123426-d5acb3125c2a // indirect

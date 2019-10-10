@@ -28,7 +28,5 @@ yarn-error.log*
 # Misc
 .DS_Store
 ./server/go.sum
-server/server
-server/server.exe
-generator/water-meter
-generator/water-meter.exe
+./server/server.exe
+./generator/water-meter.exe
