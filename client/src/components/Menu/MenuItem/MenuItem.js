@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import Link from '../Link/Link';
+import Link from '../../Link';
 
 import s from './MenuItem.css';
 

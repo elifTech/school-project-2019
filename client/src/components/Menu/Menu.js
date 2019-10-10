@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import classNames from 'classnames';
 import Hamburger from 'react-hamburger-menu';
-import MenuItem from './MenuItem';
+import MenuItem from './MenuItem/MenuItem';
 
 import s from './Menu.css';
 import dashboardIcon from '../../assets/dashboard.svg';

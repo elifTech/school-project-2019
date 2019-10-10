@@ -7,7 +7,7 @@ import normalizeCss from 'normalize.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import s from './Layout.css';
-import Menu from '../Menu';
+import Menu from '../Menu/Menu';
 
 function Layout(props) {
   const { children } = props;
