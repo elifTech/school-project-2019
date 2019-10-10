@@ -1,9 +1,10 @@
 package domain
 
 import (
+	"school-project-2019/server/domain/devices"
+
 	"github.com/jinzhu/gorm"
 	"github.com/julienschmidt/httprouter"
-	"school-project-2019/server/domain/devices"
 )
 
 type IoTService struct {
@@ -15,5 +16,5 @@ type IoTService struct {
 
 // declare your device
 type Devices struct {
-	Temperature *devices.Temperature
+	Carbon *devices.Carbon
 }
