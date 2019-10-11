@@ -17,5 +17,4 @@ type IoTService struct {
 type Devices struct {
   Temperature  *devices.Temperature
   WaterQuality *devices.WaterQuality
-  Wind         *devices.Wind
 }

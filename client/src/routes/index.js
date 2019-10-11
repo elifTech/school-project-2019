@@ -11,10 +11,6 @@ const routes = {
       load: () => import(/* webpackChunkName: 'home' */ './home'),
     },
     {
-      path: '/listener',
-      load: () => import(/* webpackChunkName: 'listener' */ './listener'),
-    },
-    {
       path: '/water-quality',
       load: () =>
         import(

@@ -50,8 +50,9 @@ func (s *Sensor) FindManySensors() ([]Sensor, error) {
     // returning custom DB error message
     err = NOT_FOUND
   }
-
   return sensors, err
+}
+
 func (e *Event) BeforeSave() (err error) {
 	if e.Created.IsZero() {
 		e.Created = time.Now()
