@@ -1,6 +1,6 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
-import s from './Home.css';
+import s from './Dashboard.css';
 
 function Home() {
   return (
