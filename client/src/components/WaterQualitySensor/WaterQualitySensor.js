@@ -3,15 +3,19 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import Switch from 'react-switch';
+import Button from 'react-bootstrap/Button';
+import classNames from 'classnames';
 import style from './WaterQualitySensor.css';
 import LineChart from '../LineChart/LineChart';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
+    dispatchChangeFilter: PropTypes.func.isRequired,
     dispatchChangeStatus: PropTypes.func.isRequired,
     eventsQuality: PropTypes.arrayOf(PropTypes.string),
-    name: PropTypes.string.isRequired,
+    filter: PropTypes.string.isRequired,
     // isFetching: PropTypes.bool,
+    name: PropTypes.string.isRequired,
     resetInterval: PropTypes.func.isRequired,
     status: PropTypes.number,
     time: PropTypes.arrayOf(PropTypes.string),
@@ -34,11 +38,15 @@ class WaterQualitySensor extends PureComponent {
       eventsQuality,
       time,
       name,
+      filter,
       // isFetching,
       dispatchChangeStatus,
+      dispatchChangeFilter,
       status,
     } = this.props;
-    return (
+    return eventsQuality.length === 0 ? (
+      this.loading()
+    ) : (
       <Container>
         <p className={style.header}>{name}</p>
         <Switch
@@ -57,14 +65,16 @@ class WaterQualitySensor extends PureComponent {
             <div className={style.filters}>
               {this.filterButtons.map(button => {
                 return (
-                  <button
+                  <Button
+                    className={classNames(style.filterBtn, {
+                      [style.filterBtnActive]: filter === button.value,
+                    })}
+                    variant="outline-info"
                     key={button.id}
-                    className={button.btnClass}
-                    type="button"
-                    onClick={this.filterData(button.query)}
+                    onClick={dispatchChangeFilter(button.value)}
                   >
                     {button.label}
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -96,22 +106,22 @@ class WaterQualitySensor extends PureComponent {
 
   filterButtons = [
     {
-      btnClass: '',
       id: 0,
       label: 'Per day',
       query: '',
+      value: 'day',
     },
     {
-      btnClass: '',
       id: 1,
       label: 'Per week',
       query: '',
+      value: 'week',
     },
     {
-      btnClass: '',
       id: 2,
       label: 'Per moth',
       query: '',
+      value: 'month',
     },
   ];
 }

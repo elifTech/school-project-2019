@@ -5,6 +5,7 @@ import {
   WATER_QUALITY_FAIL_EVENTS,
   WATER_QUALITY_SUCCESS_STATUS,
   WATER_QUALITY_SUCCESS_INFO,
+  WATER_QUALITY_FILTER,
 } from '../constants';
 
 const getEventsRequest = () => {
@@ -71,6 +72,15 @@ const changeStatusSuccess = status => {
     type: WATER_QUALITY_SUCCESS_STATUS,
   };
 };
+
+export function changeFilter(filter) {
+  return dispatch => () => {
+    dispatch({
+      filter,
+      type: WATER_QUALITY_FILTER,
+    });
+  };
+}
 
 export function changeStatus(newStatus) {
   return async dispatch => {

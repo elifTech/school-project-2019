@@ -4,11 +4,13 @@ import {
   WATER_QUALITY_FAIL_EVENTS,
   WATER_QUALITY_SUCCESS_STATUS,
   WATER_QUALITY_SUCCESS_INFO,
+  WATER_QUALITY_FILTER,
 } from '../constants';
 
 const initialState = {
   error: '',
   events: [],
+  filter: 'day',
   info: { Name: '', Status: 0 },
   isFetching: false,
 };
@@ -44,6 +46,11 @@ export default (state = initialState, action = {}) => {
         ...state,
         error: action.error,
         isFetching: action.isFetching,
+      };
+    case WATER_QUALITY_FILTER:
+      return {
+        ...state,
+        filter: action.filter,
       };
     default:
       return state;

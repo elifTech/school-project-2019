@@ -16,3 +16,17 @@
 .filters {
   display: flex;
 }
+
+.filterBtn {
+  margin-right: 10px;
+}
+
+.filterBtn:focus {
+  outline: 0 !important;
+  border: none;
+}
+
+.filterBtnActive {
+  background-color: #17a2b8;
+  color: white;
+}
