@@ -1,10 +1,7 @@
 import React, { PureComponent } from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
-import Spinner from 'react-bootstrap/Spinner';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import Switch from 'react-switch';
 import style from './WaterQualitySensor.css';
 import LineChart from '../LineChart/LineChart';
