@@ -1,5 +1,6 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Link from '../../Link';
 
@@ -9,9 +10,11 @@ const MenuItem = ({ item: { path, text, icon }, isActive, closeMenu }) => (
   <Link
     to={path}
     onClick={closeMenu}
-    className={`${s.menuItem} ${isActive && s.menuItemActive}`}
+    className={classNames(s.menuItem, { [s.menuItemActive]: isActive })}
   >
-    <div>{icon}</div>
+    <div>
+      <img src={icon} alt="menu-item" />
+    </div>
     {isActive && <div className={s.menuItemText}>{text}</div>}
   </Link>
 );

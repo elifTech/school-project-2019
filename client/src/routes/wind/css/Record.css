@@ -19,23 +19,23 @@
 
 .indicatorTooltip {
   position: absolute;
-  visibility: hidden;
+  opacity: 0;
   width: 100px;
-  background-color: #909cbc;
-  font-size: 14px;
-  color: #fff;
+  font-size: 13px;
+  color: #bdbdbd;
   text-align: center;
   border-radius: 4px;
   padding: 5px 0;
+  transition: all 0.2s ease;
 
   /* Position the tooltip */
-  top: 20px;
-  left: 0;
+  top: 0;
+  left: 10px;
   z-index: 10;
 }
 
 .container:hover .indicatorTooltip {
-  visibility: visible;
+  opacity: 1;
 }
 
 .speed {
