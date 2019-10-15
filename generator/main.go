@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"strconv"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -41,7 +42,9 @@ func main() {
 }
 
 func GenerateWindEvents() {
-	if checkForStatus() != 1 {
+	err := checkForStatus()
+	if err != nil {
+		fmt.Printf("Status is unacceptable %v", err)
 		return
 	}
 
@@ -96,8 +99,7 @@ func getLastSpeed() float64 {
 		return -1
 	}
 
-	var power float64
-	err = json.Unmarshal(data, &power)
+	power, err := strconv.ParseFloat(string(data), 64)
 	if err != nil {
 		return 0
 	}
@@ -105,23 +107,23 @@ func getLastSpeed() float64 {
 	return power
 }
 
-func checkForStatus() (int, error) {
+func checkForStatus() error {
 	res, err := http.Get("http://localhost:8080/wind")
 	if err != nil {
-		return -1, err
+		return err
 	}
 
 	data, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return -1, err
+		return err
 	}
 
 	var event Status
 	err = json.Unmarshal(data, &event)
 	if err != nil || event.Status != 1 {
-		return -1, err
+		return err
 	}
-	return event.Status, nil
+	return nil
 }
 
 func randDirection() float64 {
