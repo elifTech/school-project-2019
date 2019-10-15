@@ -11,6 +11,11 @@ import (
 	"time"
 )
 
+// Event ...
+type Event struct {
+	Status int
+}
+
 func main() {
 	// ticker
 	ticker := time.NewTicker(30 * time.Second)
@@ -25,23 +30,10 @@ func main() {
 				fmt.Printf("Closing now.... \n")
 				ticker.Stop()
 				return
-			case t := <-ticker.C:
+			case <-ticker.C:
 
-				payloadJSON := generatePayload()
-				req, err := http.Post("http://localhost:8080/waterconsumtion/poll", "application/json", bytes.NewBuffer(payloadJSON))
-				if err != nil {
-					done <- true
-					fmt.Println("Error creating water meter event ", t)
-				}
-				defer req.Body.Close()
+				generatePayload()
 
-				response, err := ioutil.ReadAll(req.Body)
-				if err != nil {
-					fmt.Printf("Error parsing response: %v \n", err)
-					return
-				}
-
-				fmt.Println("Tick at \n", t, string(response))
 			}
 		}
 	}()
@@ -55,7 +47,13 @@ func main() {
 
 }
 
-func generatePayload() []byte {
+func generatePayload() {
+
+	if statusCheck() != 1 {
+		fmt.Printf("Device if offline. \n")
+		return
+	}
+
 	rand.Seed(time.Now().UnixNano())
 	// Theoretical min max consumtion per minute/10, liters
 	const (
@@ -82,5 +80,38 @@ func generatePayload() []byte {
 
 	fmt.Println("Random valie is ", randomConsumtion)
 
-	return payloadJSON
+	req, err := http.Post("http://localhost:8080/waterconsumtion/poll", "application/json", bytes.NewBuffer(payloadJSON))
+	if err != nil {
+		fmt.Println("Error creating water meter event ")
+	}
+	defer req.Body.Close()
+
+	response, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		fmt.Printf("Error parsing response: %v \n", err)
+		return
+	}
+
+	fmt.Println("Tick at \n", string(response))
+}
+
+func statusCheck() int {
+	res, err := http.Get("http://localhost:8080/waterconsumtion")
+	if err != nil {
+		return -1
+	}
+	data, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return -1
+	}
+
+	var event Event
+	err = json.Unmarshal(data, &event)
+	if err != nil || event.Status != 1 {
+		fmt.Printf("Event \n", event.Status)
+		return -1
+	}
+	fmt.Printf("Event \n", event.Status)
+	return event.Status
+
 }

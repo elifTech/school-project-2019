@@ -18,6 +18,8 @@ func WaterConsumptionInit(router *httprouter.Router) {
 
 	router.GET("/waterconsumtion/ping", PingWaterConsumption)
 
+	router.GET("/waterconsumtion/", GetWaterMeterSensor)
+
 	router.POST("/waterconsumtion/poll", PollWaterConsumption)
 
 	router.GET("/waterconsumtion/all", AllWaterConsumption)
@@ -50,6 +52,25 @@ func PingWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.
 	w.Write(response)
 
 	//fmt.Fprint(w, fmt.Sprintf("Pong... %v  ---- ERR: %v \n", device, err))
+}
+
+// GetWaterMeterSensor ...
+func GetWaterMeterSensor(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	watermeter := devices.WaterConsumption{}
+	device, err := watermeter.Get()
+	// testing custom error response
+	if err == devices.ErrNotFound {
+		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
+		return
+	}
+
+	response, err := json.Marshal(device)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
 }
 
 // PollWaterConsumption test payload {"name": "dat", "degree": 20.123}
