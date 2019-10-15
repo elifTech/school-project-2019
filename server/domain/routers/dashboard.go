@@ -2,7 +2,6 @@ package routers
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 	"school-project-2019/server/domain/devices"
 	"github.com/julienschmidt/httprouter"

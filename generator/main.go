@@ -2,13 +2,14 @@ package main
 
 import (
 	"bytes"
-	"strconv"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"math"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -44,7 +45,7 @@ func main() {
 func GenerateWindEvents() {
 	err := checkForStatus()
 	if err != nil {
-		fmt.Printf("Status is unacceptable %v", err)
+		fmt.Printf("Error: %v\n", err)
 		return
 	}
 
@@ -120,8 +121,11 @@ func checkForStatus() error {
 
 	var event Status
 	err = json.Unmarshal(data, &event)
-	if err != nil || event.Status != 1 {
+	if err != nil {
 		return err
+	}
+	if event.Status != 1 {
+		return errors.New("status is inactive")
 	}
 	return nil
 }
