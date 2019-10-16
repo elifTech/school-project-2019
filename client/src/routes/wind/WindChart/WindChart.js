@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-handler-names */
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
@@ -23,6 +22,10 @@ class WindChart extends React.PureComponent {
       }),
     ).isRequired,
     filter: PropTypes.string.isRequired,
+  };
+
+  handleFilterClick = ({ target: { name: period } }) => {
+    this.getFilterData(period);
   };
 
   render() {
@@ -51,7 +54,7 @@ class WindChart extends React.PureComponent {
                 className={classNames(s.filterButton, {
                   [s.filterButtonActive]: filter === 'day',
                 })}
-                onClick={this.getFilterData}
+                onClick={this.handleFilterClick}
               >
                 Day
               </button>
@@ -63,7 +66,7 @@ class WindChart extends React.PureComponent {
                 className={classNames(s.filterButton, {
                   [s.filterButtonActive]: filter === 'week',
                 })}
-                onClick={this.getFilterData}
+                onClick={this.handleFilterClick}
               >
                 Week
               </button>
@@ -75,7 +78,7 @@ class WindChart extends React.PureComponent {
                 className={classNames(s.filterButton, {
                   [s.filterButtonActive]: filter === 'month',
                 })}
-                onClick={this.getFilterData}
+                onClick={this.handleFilterClick}
               >
                 Month
               </button>
@@ -93,7 +96,7 @@ class WindChart extends React.PureComponent {
     );
   }
 
-  getFilterData = ({ target: { name: period } }) => {
+  getFilterData = period => {
     const { dispatchApplyFilter, filter } = this.props;
     dispatchApplyFilter({
       from:
