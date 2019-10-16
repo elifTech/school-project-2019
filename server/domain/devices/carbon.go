@@ -47,6 +47,21 @@ func (t *Carbon) GetStatus() (*Carbon, error) {
 	return device, err
 }
 
+func (t *Carbon) EventFilter(from string) ([]CarbonEvent, error) {
+	var events []CarbonEvent
+
+	var err error
+
+	err = Storage.Where("created_at > ?", from).Order("created_at").Find(&events).Error
+	fmt.Println(events)
+	if err != nil {
+		// returning custom DB error message
+		err = NOT_FOUND
+	}
+
+	return events, err
+}
+
 func (t *Carbon) FindOneEvent(query CarbonEvent) (*CarbonEvent, error) {
 	event := new(CarbonEvent)
 

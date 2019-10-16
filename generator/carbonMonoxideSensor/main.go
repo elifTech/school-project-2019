@@ -1,4 +1,4 @@
-package routers_test
+package main
 
 import (
 	"encoding/json"
@@ -15,6 +15,11 @@ import (
 	"time"
 )
 
+func main() {
+	TestPollCarbon()
+	http.ListenAndServe(":1234", nil)
+}
+
 func createNewService() *domain.IoTService {
 	db, err := devices.Connect()
 	if err != nil {
@@ -29,7 +34,7 @@ func createNewService() *domain.IoTService {
 	return &domain.IoTService{DB: db, Devices: &d}
 }
 
-func TestPollCarbon(t *testing.T) {
+func TestPollCarbon() {
 	// creating the http test recorder to record the http request
 	rr := httptest.NewRecorder()
 
@@ -84,7 +89,7 @@ func TestPollCarbon(t *testing.T) {
 			 * since strings.NewReader requires the string param, we need to convert byte slice into string
 			 * string(payloadJson) - converts byte slice into string
 			 */
-			req, err := http.NewRequest("POST", "/sensor/carbon/poll", strings.NewReader(string(payloadJson)))
+			req, err := http.NewRequest("POST", "http://localhost:8080/sensor/carbon/poll", strings.NewReader(string(payloadJson)))
 			if err != nil {
 				t.Fatal(err)
 			}

@@ -19,6 +19,7 @@ func CarbonInit(router *httprouter.Router) {
 
 	router.GET("/sensor/carbon/ping", PingCarbon)
 	router.GET("/carbon", GetSensorStatus)
+	router.GET("/carbon/filter/events", FilterEvents)
 	router.PUT("/sensor/carbon", UpdateSensor)
 	router.POST("/sensor/carbon/poll", PollCarbon)
 	
@@ -26,6 +27,27 @@ func CarbonInit(router *httprouter.Router) {
 
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
+//
+func FilterEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	keys := r.URL.Query()
+	from := keys.Get("from")
+	carbon := devices.Carbon{}
+	carbonEvent, err := carbon.EventFilter(from)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	response, err := json.Marshal(carbonEvent)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Write(response)
 }
 
 //
