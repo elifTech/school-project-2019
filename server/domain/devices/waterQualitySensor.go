@@ -12,7 +12,7 @@ import (
 
 const (
   mean   = 7
-  stdDev = 3
+  stdDev = 2
   //minQualityWater = 0
   //maxQualityWater = 16
 )
@@ -55,6 +55,17 @@ func (w *WaterQuality) GetAllEvents() ([] WaterQualityEvent, error) {
   }
   return events, err
 }
+
+func (w *WaterQuality) GetPeriodEvents(period string) ([] WaterQualityEvent, error) {
+  var events [] WaterQualityEvent
+  //select date_trunc('minute', created) "hour", avg(quality) from water_quality_events group by minute;
+  err := Storage.Select("date_trunc(?, created) as period, avg(quality) as quality", period).Group("period").Order("period").Find(&events).Error
+  if err != nil {
+    err = NOT_FOUND
+  }
+  return events, err
+}
+
 
 func (w *WaterQuality) FindOneEvent(query WaterQualityEvent) (*WaterQualityEvent, error) {
   event := new(WaterQualityEvent)
@@ -131,7 +142,7 @@ func PostCreateEvent() {
 }
 
 func NormGeneration() float64 {
-  return rand.NormFloat64()*stdDev + mean
+  return rand.NormFloat64() * stdDev + mean
 }
 
 //func (w *WaterQuality) CreateWaterQualityEventRand() {
