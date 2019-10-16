@@ -3,12 +3,13 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Fade from 'react-reveal/Fade';
-import LogRecord from './LogRecord';
-import groupifyEvents, { selectOnlyTodayEvents } from '../../utils/logger';
-import s from './css/Logger.css';
+import LogRecord from '../LogRecord';
+import groupifyEvents, { selectOnlyTodayEvents } from '../../../utils/logger';
+import s from './Logger.css';
 
-// eslint-disable-next-line no-magic-numbers
-const getContainerStyle = (chartHeight = 450) => ({
+const defaultChartHeight = 450;
+
+const getContainerStyle = (chartHeight = defaultChartHeight) => ({
   maxHeight: `${window.innerHeight - chartHeight}px`,
 });
 

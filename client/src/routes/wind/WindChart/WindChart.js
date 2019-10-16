@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import { Line } from 'react-chartjs-2';
 import classNames from 'classnames';
 import Fade from 'react-reveal/Fade';
-import { applyFilter } from '../../actions/wind-sensor';
-import prepareDataset from '../../utils/prepare-dataset';
-import s from './css/WindChart.css';
+import { applyFilter } from '../../../actions/wind-sensor';
+import prepareDataset from '../../../utils/prepare-dataset';
+import s from './WindChart.css';
 
 class WindChart extends React.PureComponent {
   static propTypes = {
@@ -31,7 +31,6 @@ class WindChart extends React.PureComponent {
     const dataset = prepareDataset(events, filter);
     let lastSync = 'Disabled';
     if (events.length > 0) {
-      // eslint-disable-next-line no-magic-numbers
       lastSync = this.parseLastSync(events.slice(-1)[0].created);
     }
     return (

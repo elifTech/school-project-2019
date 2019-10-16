@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import moment from 'moment';
 
 const processPowerGroups = groups =>
@@ -22,19 +21,23 @@ const processTimeGroups = groups =>
 
 const getInterval = (begin, end, max) => {
   const interval = Math.round((end - begin) / max);
-  // eslint-disable-next-line no-magic-numbers
-  const day = 24 * 60 * 60 * 1000;
+  const HOURS_IN_DAY = 24;
+  const MINUTES_IN_HOUR = 60;
+  const SECONDS_IN_MINUTE = 60;
+  const MILLISECONDS = 1000;
+  const day = HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLISECONDS;
   return interval > day ? day : interval;
 };
 
 const breakIntoGroups = (events, period) => {
+  let filteredEvents = events;
   const maxPossibleDots = 8;
   const maxEventsPerMinute = 60;
   if (period === 'hour') {
     // the minimum period of arriving data is a day,
     // in case of hour we need to slice data events.
     // maximum possible amout is 60 events
-    events = events
+    filteredEvents = filteredEvents
       .slice(-maxEventsPerMinute)
       .filter(
         ({ created }) =>
@@ -42,41 +45,37 @@ const breakIntoGroups = (events, period) => {
           moment(created).isBefore(moment().endOf('hour')),
       );
   }
-  if (events.length === 0) return [];
+  if (filteredEvents.length === 0) return [];
   // dont groupify events if the amount is less than acceptable
-  if (events.length <= maxPossibleDots) return events.map(event => [event]);
+  if (filteredEvents.length <= maxPossibleDots)
+    return filteredEvents.map(event => [event]);
 
   const interval = getInterval(
-    new Date(events[0].created),
-    new Date(events[events.length - 1].created),
+    new Date(filteredEvents[0].created),
+    new Date(filteredEvents[filteredEvents.length - 1].created),
     maxPossibleDots,
   );
 
   const groups = [];
-
-  events.reduce((accumulator, current, i) => {
-    if (accumulator.length === 0) {
+  let timespanGroup = [];
+  filteredEvents.forEach(event => {
+    if (timespanGroup.length === 0) {
       // initialize first event in 30-minutes group
-      accumulator[0] = current;
-      return accumulator;
+      timespanGroup[0] = event;
     }
     if (
-      new Date(accumulator[0].created).getTime() + interval >=
-      new Date(current.created).getTime()
+      new Date(timespanGroup[0].created).getTime() + interval >=
+      new Date(event.created).getTime()
     ) {
       // event in interval boundary
-      accumulator.push(current);
+      timespanGroup.push(event);
     } else {
       // event is out of interval boundary, so start new interval group
-      groups.push(accumulator);
-      accumulator = [current];
+      groups.push(timespanGroup);
+      timespanGroup = [event];
     }
-    // last group of events
-    if (i === events.length - 1) {
-      groups.push(accumulator);
-    }
-    return accumulator;
-  }, []);
+  });
+  groups.push(timespanGroup);
 
   return groups;
 };

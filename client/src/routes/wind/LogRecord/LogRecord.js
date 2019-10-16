@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
-import s from './css/Record.css';
+import s from './Record.css';
 
-const Record = ({ record: { day, time, description, speed } }) => {
+const LogRecord = ({ record: { day, time, description, speed } }) => {
   const maxSpeed = 120;
   const maxRects = 6;
   const rectWidth = 8;
@@ -68,7 +68,7 @@ const Record = ({ record: { day, time, description, speed } }) => {
   );
 };
 
-Record.propTypes = {
+LogRecord.propTypes = {
   record: PropTypes.shape({
     day: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
@@ -77,4 +77,4 @@ Record.propTypes = {
   }).isRequired,
 };
 
-export default withStyles(s)(Record);
+export default withStyles(s)(LogRecord);

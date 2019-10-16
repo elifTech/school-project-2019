@@ -78,7 +78,7 @@ module.exports = {
     ],
 
     'no-loop-func': 'error',
-    'no-magic-numbers': ['error', { ignore: [0, 1, 2] }],
+    'no-magic-numbers': ['error', { ignore: [-1, 0, 1, 2] }],
     'no-return-await': 'error',
     'no-unmodified-loop-condition': 'error',
     'prefer-destructuring': [

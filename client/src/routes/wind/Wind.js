@@ -8,7 +8,7 @@ import WindChart from './WindChart';
 import Logger from './Logger';
 import RightPanel from './RightPanel';
 import Loader from '../../components/Loader';
-import s from './css/Wind.css';
+import s from './Wind.css';
 
 Chart.defaults.global.defaultFontFamily = 'Montserrat';
 
@@ -33,11 +33,7 @@ class Wind extends React.Component {
     }
 
     if (isLoading) {
-      return (
-        <div>
-          <Loader />
-        </div>
-      );
+      return <Loader />;
     }
     return (
       <Container fluid className={s.container}>

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { connect } from 'react-redux';
-import { changeWindStatus } from '../../actions/wind-sensor';
-import s from './css/WindStatus.css';
+import { changeWindStatus } from '../../../actions/wind-sensor';
+import s from './WindStatus.css';
 
 const parseStatus = status => {
   switch (status) {

@@ -70,18 +70,23 @@ export const changeWindStatus = status => async dispatch => {
 };
 
 export const getWindSensorData = () => async (dispatch, getState) => {
-  const { windSensor } = getState();
-  if (!windSensor.info.Name) dispatch(windSensorLoading());
+  const {
+    windSensor: {
+      info: { Name: name },
+      filterOption: { from },
+    },
+  } = getState();
+  if (!name) dispatch(windSensorLoading());
   const queries = [
     axios.get(`${apiURL}/wind/events`, {
       params: {
-        from: windSensor.filterOption.from,
+        from,
         to: moment()
           .local()
           .toJSON(),
       },
     }),
-    !windSensor.info.Name && axios.get(`${apiURL}/wind`),
+    !name && axios.get(`${apiURL}/wind`),
   ];
 
   try {

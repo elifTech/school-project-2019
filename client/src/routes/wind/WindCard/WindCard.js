@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import Fade from 'react-reveal/Fade';
-import s from './css/WindCard.css';
+import s from './WindCard.css';
 
 const WindCard = ({ header, children }) => (
   <Fade bottom delay={300}>

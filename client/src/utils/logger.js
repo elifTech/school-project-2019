@@ -1,5 +1,3 @@
-/* eslint-disable no-magic-numbers */
-/* eslint-disable no-param-reassign */
 import moment from 'moment';
 import { parseBeaufortValue } from './wind-right-panel';
 
@@ -43,16 +41,19 @@ const processEventGroup = group => {
 
 export default events => {
   if (events.length === 0) return [];
-  const group = [];
-  const timespan = 30 * 60 * 1000; // 30 minutes in milliseconds
+  const MINUTES_IN_HOUR = 60;
+  const SECONDS_IN_MINUTE = 60;
+  const HALF = 0.5;
+  const MILLISECONDS = 1000;
+  const timespan = MINUTES_IN_HOUR * HALF * SECONDS_IN_MINUTE * MILLISECONDS; // 30 minutes in milliseconds
 
-  events.reduce((timespanGroup, event, i) => {
+  const group = [];
+  let timespanGroup = [];
+  events.forEach(event => {
     if (timespanGroup.length === 0) {
       // initialize first event in 30-minutes group
       timespanGroup[0] = event;
-      return timespanGroup;
-    }
-    if (
+    } else if (
       new Date(timespanGroup[0].created) - new Date(event.created) <
       timespan
     ) {
@@ -63,12 +64,8 @@ export default events => {
       group.push(processEventGroup(timespanGroup));
       timespanGroup = [event];
     }
-    // last group of events
-    if (i === events.length - 1) {
-      group.push(processEventGroup(timespanGroup));
-    }
-    return timespanGroup;
-  }, []);
+  });
+  group.push(processEventGroup(timespanGroup));
 
   return group;
 };

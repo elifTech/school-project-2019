@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
-import WindStatus from './WindStatus';
-import WindCard from './WindCard';
+import WindStatus from '../WindStatus';
+import WindCard from '../WindCard';
 import {
   parseDirection,
   defineRotationDegree,
   parseBeaufortValue,
   defineRotationSpeed,
-} from '../../utils/wind-right-panel';
-import s from './css/RightPanel.css';
+} from '../../../utils/wind-right-panel';
+import s from './RightPanel.css';
 
 class RightPanel extends React.PureComponent {
   static propTypes = {
@@ -30,7 +30,6 @@ class RightPanel extends React.PureComponent {
     if (events.length === 0) {
       return <WindStatus name={name} />;
     }
-    // eslint-disable-next-line no-magic-numbers
     const { direction, beaufort } = events.slice(-1)[0];
 
     return (
