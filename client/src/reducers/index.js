@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import music from './music';
+import { reducer as formReducer } from 'redux-form';
+import menu from './menu';
 import runtime from './runtime';
-import user from './user';
+import windSensor from './wind-sensor';
 
 export default combineReducers({
-  music,
+  form: formReducer,
+  menu,
   runtime,
-  user,
+  windSensor,
 });

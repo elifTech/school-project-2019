@@ -13,12 +13,17 @@
 html {
   color: #292b2c;
   font-weight: 100;
-  font-size: 1em; /* ~16px; */
+  font-size: 1em;
+
+  /* ~16px; */
   font-family: var(--font-family-base);
-  line-height: 1.375; /* ~22px */
+  line-height: 1.375;
+
+  /* ~22px */
 }
 
 body {
+  font-family: var(--font-family-base);
   margin: 0;
 }
 
@@ -94,11 +99,28 @@ textarea {
  * Browser upgrade prompt
  * ========================================================================== */
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7a7b7e;
+  border-radius: 5px;
+}
+
 :global(.browserupgrade) {
   margin: 0.2em 0;
   background: #ccc;
   color: #000;
   padding: 0.2em 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #696a6b;
 }
 
 /*
@@ -112,7 +134,9 @@ textarea {
   *::before,
   *::after {
     background: transparent !important;
-    color: #000 !important; /* Black prints faster: http://www.sanbeiji.com/archives/953 */
+    color: #000 !important;
+
+    /* Black prints faster: http://www.sanbeiji.com/archives/953 */
     box-shadow: none !important;
     text-shadow: none !important;
   }
@@ -123,11 +147,11 @@ textarea {
   }
 
   a[href]::after {
-    content: ' (' attr(href) ')';
+    content: ' ('attr(href) ')';
   }
 
   abbr[title]::after {
-    content: ' (' attr(title) ')';
+    content: ' ('attr(title) ')';
   }
 
   /*
@@ -175,4 +199,21 @@ textarea {
   h3 {
     page-break-after: avoid;
   }
+}
+
+.container {
+  width: 100vw;
+  padding: 0;
+}
+
+.containerRow {
+  width: 100vw;
+  height: 100vh;
+}
+
+.rightContainer {
+  height: 100vh;
+  position: relative;
+  padding-left: 50px;
+  padding-top: 20px;
 }

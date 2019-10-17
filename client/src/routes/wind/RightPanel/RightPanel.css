@@ -1,0 +1,19 @@
+.arrow {
+  transform-origin: center;
+  transition: all 1s ease;
+}
+
+.windmill {
+  transform-origin: 41px 62px;
+  transition: all 1s ease;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

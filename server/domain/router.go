@@ -1,8 +1,9 @@
 package domain
 
 import (
-	"github.com/julienschmidt/httprouter"
 	"school-project-2019/server/domain/routers"
+
+	"github.com/julienschmidt/httprouter"
 )
 
 func (s *IoTService) NewRouter() *httprouter.Router {
@@ -10,6 +11,8 @@ func (s *IoTService) NewRouter() *httprouter.Router {
 	// init our router
 	routers.TemperatureInit(router)
 	routers.AuthInit(router)
+	routers.WindInit(router)
+	routers.DashboardInit(router)
 
 	return router
 }

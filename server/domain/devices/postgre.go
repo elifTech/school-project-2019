@@ -3,9 +3,10 @@ package devices
 import (
 	"errors"
 	"fmt"
+	"log"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"log"
 )
 
 const (
@@ -18,12 +19,13 @@ const (
 
 var NOT_FOUND = errors.New("record not found")
 var SENSOR_OFFLINE = errors.New("sensor is currently offline")
+var BAD_STATUS = errors.New("status is not correct")
 
 //type Storage *gorm.DB
 var Storage *gorm.DB
 
 func Connect() (*gorm.DB, error) {
-	db, err := gorm.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
+	db, err := gorm.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
 		host, port, user, dbname, password))
 	if err != nil {
 		log.Fatal(fmt.Printf("Error connecting to DB: %v", err))

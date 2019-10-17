@@ -1,0 +1,6 @@
+{
+  "name": "WindCard",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./WindCard.js"
+}
