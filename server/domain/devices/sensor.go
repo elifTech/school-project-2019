@@ -37,7 +37,7 @@ type Sensor struct {
 type Event struct {
   gorm.Model
   EventID    uint `gorm:"primary_key;AUTO_INCREMENT"`
-  Created    time.Time
+  Created    time.Time `json:"created"`
   SensorType string `json:"device_type"`
 }
 

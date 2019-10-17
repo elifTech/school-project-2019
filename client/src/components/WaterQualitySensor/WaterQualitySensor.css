@@ -15,10 +15,13 @@
 
 .filters {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: 11px;
 }
 
 .filterBtn {
-  margin-right: 10px;
+  margin-right: 0;
 }
 
 .filterBtn:focus {

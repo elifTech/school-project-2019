@@ -107,18 +107,24 @@ class WaterQualitySensor extends PureComponent {
   filterButtons = [
     {
       id: 0,
+      label: 'Per hour',
+      query: '',
+      value: 'hour',
+    },
+    {
+      id: 1,
       label: 'Per day',
       query: '',
       value: 'day',
     },
     {
-      id: 1,
+      id: 2,
       label: 'Per week',
       query: '',
       value: 'week',
     },
     {
-      id: 2,
+      id: 3,
       label: 'Per moth',
       query: '',
       value: 'month',

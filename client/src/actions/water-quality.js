@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import queryString from 'query-string';
 import {
   WATER_QUALITY_REQUEST_EVENTS,
   WATER_QUALITY_SUCCESS_EVENTS,
@@ -32,10 +33,17 @@ const getEventsFailure = error => {
 };
 
 export function getEvents() {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(getEventsRequest());
+    const { waterQuality } = getState();
+    const query = queryString.stringify({ period: waterQuality.filter });
     try {
-      const response = await fetch(`http://localhost:8080/water_quality/event`);
+      // const response = await fetch(
+      //   `http://localhost:8080/water_quality/events`,
+      // );
+      const response = await fetch(
+        `http://localhost:8080/water_quality/event?${query}`,
+      );
       const events = await response.json();
       return dispatch(getEventsSuccess(events));
     } catch (error) {

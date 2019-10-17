@@ -7,6 +7,8 @@ import (
   "fmt"
   "math/rand"
   "net/http"
+  "time"
+
   //"github.com/jinzhu/gorm"
 )
 
@@ -25,6 +27,11 @@ type WaterQuality struct {
 type WaterQualityEvent struct {
   Event
   Name    string  `json:"name"`
+  Quality float64 `json:"quality"`
+}
+
+type PeriodEvent struct {
+  Period  time.Time `json:"period"`
   Quality float64 `json:"quality"`
 }
 
@@ -56,16 +63,17 @@ func (w *WaterQuality) GetAllEvents() ([] WaterQualityEvent, error) {
   return events, err
 }
 
-func (w *WaterQuality) GetPeriodEvents(period string) ([] WaterQualityEvent, error) {
-  var events [] WaterQualityEvent
+func (w *WaterQuality) GetPeriodEvents(period string) ([] PeriodEvent, error) {
+  //var events [] PeriodEvent
+  var result [] PeriodEvent
   //select date_trunc('minute', created) "hour", avg(quality) from water_quality_events group by minute;
-  err := Storage.Select("date_trunc(?, created) as period, avg(quality) as quality", period).Group("period").Order("period").Find(&events).Error
+  err := Storage.Table("water_quality_events").Select("date_trunc(?, created) as period, avg(quality) as quality", period).Group("period").Order("period").Scan(&result).Error
   if err != nil {
     err = NOT_FOUND
   }
-  return events, err
+  //events,_ := json.Marshal(test)
+  return result, err
 }
-
 
 func (w *WaterQuality) FindOneEvent(query WaterQualityEvent) (*WaterQualityEvent, error) {
   event := new(WaterQualityEvent)
@@ -142,7 +150,7 @@ func PostCreateEvent() {
 }
 
 func NormGeneration() float64 {
-  return rand.NormFloat64() * stdDev + mean
+  return rand.NormFloat64()*stdDev + mean
 }
 
 //func (w *WaterQuality) CreateWaterQualityEventRand() {

@@ -48,6 +48,11 @@ class LineChart extends PureComponent {
       // options: { legend: { display: false } },
       options: {
         scales: {
+          xAxes: [
+            {
+              display: false,
+            },
+          ],
           yAxes: [
             {
               ticks: {

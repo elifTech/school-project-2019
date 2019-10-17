@@ -10,7 +10,7 @@ import {
 const initialState = {
   error: '',
   events: [],
-  filter: 'day',
+  filter: 'hour',
   info: { Name: '', Status: 0 },
   isFetching: false,
 };
