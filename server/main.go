@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"school-project-2019/server/domain"
 	"school-project-2019/server/domain/devices"
+
+	"github.com/rs/cors"
 	//"school-project-2019/server/storage"
 )
 
@@ -53,6 +55,11 @@ func main() {
 		return
 	}
 
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "OPTIONS"},
+	})
+
 	// init server
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":8080", c.Handler(router)))
 }

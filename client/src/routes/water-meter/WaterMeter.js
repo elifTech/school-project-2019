@@ -1,43 +1,22 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Container, Row, Col } from 'react-bootstrap';
 import withStyles from 'isomorphic-style-loader/withStyles';
-import { HorizontalBar, defaults } from 'react-chartjs-2';
+import { defaults } from 'react-chartjs-2';
+import Loader from '../../components/Loader';
+import WaterMeterChart from './WaterMeterChart';
+import RightPanel from './RightPanel';
 import s from './WaterMeter.css';
-import WaterMeterDataSet from './WaterMeterDataSet';
 
 defaults.global.defaultFontFamily = 'Montserrat';
 
-const options = {
-  legend: {
-    display: true,
-    position: 'bottom',
-  },
-  scales: {
-    xAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-        },
-      },
-    ],
-  },
-  title: {
-    display: true,
-    fontSize: 25,
-    text: `Water consumption per month`,
-  },
-};
-
-class WaterMeterChart extends React.Component {
+class WaterMeter extends React.Component {
   static propTypes = {
+    error: PropTypes.string.isRequired,
     handleUnmount: PropTypes.func.isRequired,
-    waterMeterEvents: PropTypes.arrayOf(
-      PropTypes.shape({
-        Consumption: PropTypes.number.isRequired,
-        Created: PropTypes.string,
-      }),
-    ).isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isStatusLoading: PropTypes.bool.isRequired,
   };
 
   componentWillUnmount() {
@@ -46,19 +25,36 @@ class WaterMeterChart extends React.Component {
   }
 
   render() {
-    const { waterMeterEvents } = this.props;
+    const { isStatusLoading, isLoading, error } = this.props;
+    if (error) {
+      return (
+        <div>
+          We&#39;are sorry, something went wrong, try to reboot your system, or
+          contact your adminisrator
+        </div>
+      );
+    }
+    if (isLoading) {
+      return <Loader />;
+    }
     return (
-      <div className={s.chart}>
-        <HorizontalBar
-          data={WaterMeterDataSet(waterMeterEvents, 'Water Consumtion')}
-          options={options}
-        />
-      </div>
+      <Container fluid className={s.chart}>
+        {isStatusLoading && <Loader />}
+        <Row className={s.container}>
+          <Col md={8}>
+            <WaterMeterChart />
+          </Col>
+          <Col md={4}>
+            <RightPanel />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
 
-export default connect(({ waterMeter: { waterMeterEvents, error } }) => ({
+export default connect(({ waterMeter: { statusLoading, loading, error } }) => ({
   error,
-  waterMeterEvents,
-}))(withStyles(s)(React.memo(WaterMeterChart)));
+  isLoading: loading,
+  isStatusLoading: statusLoading,
+}))(withStyles(s)(React.memo(WaterMeter)));

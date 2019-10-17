@@ -11,6 +11,28 @@ import (
 	"time"
 )
 
+// type SensorState int
+
+// const (
+// 	StateNotFound SensorState = iota - 1
+// 	StateDisabled
+// 	StateActive
+// )
+
+// func (st SensorState) String() {
+// 	select st {
+
+// 	case StateNotFound:
+// 		return "not_found"
+
+// 	case StateDisabled:
+// 		return "disabled"
+
+// 	case StateActive:
+// 		return "online"
+// 	}
+// }
+
 // Event ...
 type Event struct {
 	Status int
@@ -50,7 +72,7 @@ func main() {
 func generatePayload() {
 
 	if statusCheck() != 1 {
-		fmt.Printf("Device if offline. \n")
+		fmt.Printf("Device is not available. \n")
 		return
 	}
 
@@ -108,10 +130,10 @@ func statusCheck() int {
 	var event Event
 	err = json.Unmarshal(data, &event)
 	if err != nil || event.Status != 1 {
-		fmt.Printf("Event \n", event.Status)
+		fmt.Printf("Event %v \n", event.Status)
 		return -1
 	}
-	fmt.Printf("Event \n", event.Status)
+	fmt.Printf("Event %v \n", event.Status)
 	return event.Status
 
 }

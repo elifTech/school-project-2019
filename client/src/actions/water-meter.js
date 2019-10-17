@@ -1,8 +1,12 @@
 import axios from 'axios';
+import moment from 'moment';
 import {
   REQUEST_WATERMETER_EVENTS,
-  FAIL_WATERMETER_EVENTS,
   GOT_WATERMETER_EVENTS,
+  FAIL_WATERMETER_EVENTS,
+  UPDATE_WATERMETER_STATUS,
+  LOADING_WATERMETER_STATUS,
+  LOADING_FILTER_DATA,
 } from '../constants';
 
 export function getWaterMeterEventsRequest() {
@@ -18,31 +22,99 @@ export function getWaterMeterEventsSuccess(payload) {
   };
 }
 
-export function getWaterMeterEventsFailure(error) {
+export function waterMeterEventsFailure(error) {
   return {
     error,
     type: FAIL_WATERMETER_EVENTS,
   };
 }
 
-export function getWaterMeterEvents(period = 'month') {
+export function updateWaterMeterStatus(status) {
+  return {
+    status,
+    type: UPDATE_WATERMETER_STATUS,
+  };
+}
+
+export function loadWaterMeterStatus() {
+  return {
+    type: LOADING_WATERMETER_STATUS,
+  };
+}
+
+export function loadFilterData(period) {
+  return {
+    period,
+    type: LOADING_FILTER_DATA,
+  };
+}
+
+export function applyFilter({ from, value }) {
   return async dispatch => {
-    dispatch(getWaterMeterEventsRequest());
+    dispatch(loadFilterData({ from, value }));
     try {
-      const { data: waterMeterEvents } = await axios.get(
-        `http://localhost:8080//waterconsumtion/${period}`,
+      const { data: events } = await axios.get(
+        `http://localhost:8080/waterconsumption/events`,
+        {
+          params: {
+            from,
+            to: moment()
+              .local()
+              .toJSON(),
+          },
+        },
       );
-      console.info({ waterMeterEvents });
-      // const {
-      //   message: error = null,
-      //   watermeterevents: waterMeterEvents,
-      // } = await response.json();
-      // if (!waterMeterEvents) {
-      //   throw error;
-      // }+
-      return dispatch(getWaterMeterEventsSuccess({ waterMeterEvents }));
+      dispatch(getWaterMeterEventsSuccess({ events }));
     } catch (error) {
-      return dispatch(getWaterMeterEventsFailure(error));
+      dispatch(waterMeterEventsFailure(error.message));
+    }
+  };
+}
+
+export function changeWindStatus(status) {
+  return async dispatch => {
+    dispatch(loadWaterMeterStatus());
+    try {
+      const { data } = await axios.put(
+        `http://localhost:8080/waterconsumption`,
+        {
+          status: status ? 1 : 0,
+        },
+      );
+      const delay = 1000;
+      setTimeout(() => dispatch(updateWaterMeterStatus(data)), delay);
+    } catch (error) {
+      dispatch(waterMeterEventsFailure(error.message));
+    }
+  };
+}
+
+export function getWaterMeterEvents() {
+  return async (dispatch, getState) => {
+    const {
+      waterMeter: {
+        info: { Name: name },
+        filterOption: { from },
+      },
+    } = getState();
+    if (!name) dispatch(getWaterMeterEventsRequest());
+    const queries = [
+      axios.get(`http://localhost:8080/waterconsumption/events`, {
+        params: {
+          from,
+          to: moment()
+            .local()
+            .toJSON(),
+        },
+      }),
+      !name && axios.get(`http://localhost:8080/waterconsumption`),
+    ];
+
+    try {
+      const [{ data: events }, { data: info }] = await Promise.all(queries);
+      dispatch(getWaterMeterEventsSuccess({ events, ...(info && { info }) }));
+    } catch (error) {
+      dispatch(waterMeterEventsFailure(error.message));
     }
   };
 }

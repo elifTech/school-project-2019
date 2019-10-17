@@ -66,7 +66,7 @@ func TestWaterConsumption(t *testing.T) {
 	 * since strings.NewReader requires the string param, we need to convert byte slice into string
 	 * string(payloadJson) - converts byte slice into string
 	 */
-	req, err := http.NewRequest("POST", "/waterconsumtion/poll", strings.NewReader(string(payloadJson)))
+	req, err := http.NewRequest("POST", "/waterconsumption/poll", strings.NewReader(string(payloadJson)))
 	if err != nil {
 		t.Fatal(err)
 	}
