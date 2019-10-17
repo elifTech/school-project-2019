@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
+	"time"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -16,8 +17,6 @@ func WaterConsumptionInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
 
-	router.GET("/waterconsumption/ping", PingWaterConsumption)
-
 	router.GET("/waterconsumption/", GetWaterMeterSensor)
 
 	router.POST("/waterconsumption/poll", PollWaterConsumption)
@@ -25,33 +24,6 @@ func WaterConsumptionInit(router *httprouter.Router) {
 	router.GET("/waterconsumption/all", AllWaterConsumption)
 
 	router.GET("/waterconsumption/events", QueryWaterConsumption)
-
-	// router.GET("/waterconsumption/week", WeekWaterConsumption)
-
-	// router.GET("/waterconsumption/month", MonthWaterConsumption)
-
-	// router.GET("/waterconsumption/year", YearWaterConsumption)
-}
-
-// PingWaterConsumption ...
-func PingWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	waterconsumption := devices.WaterConsumption{}
-	device, err := waterconsumption.Ping()
-	// testing custom error response
-	if err == devices.ErrNotFound {
-		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
-		return
-	}
-
-	response, err := json.Marshal(device)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(response)
-
-	//fmt.Fprint(w, fmt.Sprintf("Pong... %v  ---- ERR: %v \n", device, err))
 }
 
 // GetWaterMeterSensor ...
@@ -126,9 +98,22 @@ func AllWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.P
 func QueryWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	q := r.URL.Query()
 	from := q.Get("from")
+	tFrom, err := time.Parse(
+		time.RFC3339,
+		from)
+	if err != nil {
+		fmt.Printf("Error parsing time: %v \n", tFrom)
+		return
+	}
+
 	to := q.Get("to")
+
+	tTo, err := time.Parse(
+		time.RFC3339,
+		to)
+
 	waterconsumptionEvent := devices.WaterConsumption{}
-	device, err := waterconsumptionEvent.QueryEvents(from, to)
+	device, err := waterconsumptionEvent.QueryEvents(tFrom.Format("2006-01-02T15:04:05.999999-07:00"), tTo.Format("2006-01-02T15:04:05.999999-07:00"))
 	// testing custom error response
 	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("Events per selected period are not found").Error(), http.StatusNotFound)
@@ -144,65 +129,3 @@ func QueryWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.
 	w.Write(response)
 
 }
-
-// // WeekWaterConsumption ...
-// func WeekWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	waterconsumptionEvent := devices.WaterConsumption{}
-// 	device, err := waterconsumptionEvent.GetWeek()
-// 	// testing custom error response
-// 	if err == devices.ErrNotFound {
-// 		http.Error(w, errors.New("Week events are not found").Error(), http.StatusNotFound)
-// 		return
-// 	}
-
-// 	response, err := json.Marshal(device)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusNotFound)
-// 		return
-// 	}
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.Write(response)
-
-// }
-
-// // MonthWaterConsumption ...
-// func MonthWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	q := r.URL.Query()
-// 	from := q.Get("from")
-// 	waterconsumptionEvent := devices.WaterConsumption{}
-// 	device, err := waterconsumptionEvent.GetMonth()
-// 	// testing custom error response
-// 	if err == devices.ErrNotFound {
-// 		http.Error(w, errors.New("Week events are not found").Error(), http.StatusNotFound)
-// 		return
-// 	}
-
-// 	response, err := json.Marshal(device)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusNotFound)
-// 		return
-// 	}
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.Write(response)
-
-// }
-
-// // YearWaterConsumption ...
-// func YearWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	waterconsumptionEvent := devices.WaterConsumption{}
-// 	device, err := waterconsumptionEvent.GetYear()
-// 	// testing custom error response
-// 	if err == devices.ErrNotFound {
-// 		http.Error(w, errors.New("Week events are not found").Error(), http.StatusNotFound)
-// 		return
-// 	}
-
-// 	response, err := json.Marshal(device)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusNotFound)
-// 		return
-// 	}
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.Write(response)
-
-// }

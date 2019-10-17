@@ -25,7 +25,7 @@ const (
 // Sensors ...
 const (
 	TemperatureSensor string = "temperature"
-	WaterMeter        string = "WaterConsumption"
+	WaterMeter        string = "waterConsumption"
 	WindSensor        string = "wind"
 )
 

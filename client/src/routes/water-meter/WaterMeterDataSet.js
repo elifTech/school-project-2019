@@ -11,11 +11,11 @@ const processTimeGroups = groups =>
   groups
     .map(group =>
       group.length === 1
-        ? group[0].created
+        ? group[0].Created
         : new Date(
-            new Date(group[0].created).getTime() +
-              (new Date(group[group.length - 1].created) -
-                new Date(group[0].created)) /
+            new Date(group[0].Created).getTime() +
+              (new Date(group[group.length - 1].Created) -
+                new Date(group[0].Created)) /
                 2,
           ),
     )
@@ -38,17 +38,17 @@ const breakIntoGroups = (events, period) => {
     filteredEvents = filteredEvents
       .slice(-maxEventsPerMinute)
       .filter(
-        ({ created }) =>
-          moment(created).isAfter(moment().startOf('hour')) &&
-          moment(created).isBefore(moment().endOf('hour')),
+        ({ Created }) =>
+          moment(Created).isAfter(moment().startOf('hour')) &&
+          moment(Created).isBefore(moment().endOf('hour')),
       );
   }
 
   if (filteredEvents.length === 0) return [];
 
   const interval = getInterval(
-    new Date(filteredEvents[0].created),
-    new Date(filteredEvents[filteredEvents.length - 1].created),
+    new Date(filteredEvents[0].Created),
+    new Date(filteredEvents[filteredEvents.length - 1].Created),
   );
 
   const groups = [];
@@ -59,8 +59,8 @@ const breakIntoGroups = (events, period) => {
       timespanGroup[0] = event;
     }
     if (
-      new Date(timespanGroup[0].created).getTime() + interval >=
-      new Date(event.created).getTime()
+      new Date(timespanGroup[0].Created).getTime() + interval >=
+      new Date(event.Created).getTime()
     ) {
       // event in interval boundary
       timespanGroup.push(event);
