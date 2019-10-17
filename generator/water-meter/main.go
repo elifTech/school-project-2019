@@ -92,7 +92,7 @@ func generatePayload() {
 		"name":        "Water Mater Main",
 		"consumption": randomConsumtion,
 		"Event": map[string]string{
-			"sensor_type": "WaterMeter",
+			"sensor_type": "WaterConsumption",
 		},
 	})
 

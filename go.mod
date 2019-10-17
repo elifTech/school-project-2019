@@ -58,7 +58,6 @@ require (
 	github.com/jstemmer/go-junit-report v0.9.1 // indirect
 	github.com/julienschmidt/httprouter v1.3.0 // indirect
 	github.com/justinas/alice v0.0.0-20171023064455-03f45bd4b7da // indirect
-	github.com/kr/pty v1.1.3 // indirect
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/lightstep/lightstep-tracer-go v0.17.0 // indirect
 	github.com/martini-contrib/render v0.0.0-20150707142108-ec18f8345a11 // indirect
@@ -93,7 +92,6 @@ require (
 	github.com/samuel/go-zookeeper v0.0.0-20190923202752-2cc03de413da // indirect
 	github.com/schollz/progressbar v1.0.0 // indirect
 	github.com/sony/gobreaker v0.4.1 // indirect
-	github.com/spf13/afero v1.2.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stathat/go v1.0.0 // indirect
 	github.com/streadway/handy v0.0.0-20190108123426-d5acb3125c2a // indirect
