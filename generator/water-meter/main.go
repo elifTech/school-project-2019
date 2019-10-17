@@ -102,7 +102,7 @@ func generatePayload() {
 
 	fmt.Println("Random valie is ", randomConsumtion)
 
-	req, err := http.Post("http://localhost:8080/waterconsumtion/poll", "application/json", bytes.NewBuffer(payloadJSON))
+	req, err := http.Post("http://localhost:8080/waterconsumption/poll", "application/json", bytes.NewBuffer(payloadJSON))
 	if err != nil {
 		fmt.Println("Error creating water meter event ")
 	}
@@ -118,7 +118,7 @@ func generatePayload() {
 }
 
 func statusCheck() int {
-	res, err := http.Get("http://localhost:8080/waterconsumtion")
+	res, err := http.Get("http://localhost:8080/waterconsumption")
 	if err != nil {
 		return -1
 	}

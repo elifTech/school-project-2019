@@ -25,7 +25,7 @@ const (
 // Sensors ...
 const (
 	TemperatureSensor string = "temperature"
-	WaterMeter        string = "WaterConsumption" // my water meter
+	WaterMeter        string = "WaterConsumption"
 	WindSensor        string = "wind"
 )
 
@@ -46,14 +46,6 @@ type Event struct {
 	SensorType string `json:"device_type"`
 }
 
-// BeforeSave ...
-func (e *Event) BeforeSave() (err error) {
-	if e.Created.IsZero() {
-		e.Created = time.Now()
-	}
-
-	return err
-}
 func (s *Sensor) FindManySensors() ([]Sensor, error) {
 	var sensors []Sensor
 

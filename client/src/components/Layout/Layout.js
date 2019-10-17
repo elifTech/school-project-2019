@@ -17,8 +17,8 @@ function Layout(props) {
         <Col lg={1}>
           <Menu />
         </Col>
-        <Col lg={11} className={s.paddingLeft}>
-          {children}
+        <Col lg={11}>
+          <div className={s.paddingLeft}>{children}</div>
         </Col>
       </Row>
     </Container>
