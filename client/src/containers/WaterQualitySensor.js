@@ -7,6 +7,7 @@ import {
 } from '../selectors/water-quality-selectors';
 
 const mapStateToProps = state => ({
+  error: state.waterQuality.error,
   eventsQuality: getFixedQuality(state),
   filter: state.waterQuality.filter,
   isFetching: state.waterQuality.isFetching,

@@ -1,10 +1,11 @@
 .container {
-  margin: 0 auto;
+  margin: 0;
 }
 
 .header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  font-size: large;
 }
 
 .lineChart {

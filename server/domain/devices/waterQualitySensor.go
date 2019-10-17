@@ -64,15 +64,14 @@ func (w *WaterQuality) GetAllEvents() ([] WaterQualityEvent, error) {
 }
 
 func (w *WaterQuality) GetPeriodEvents(period string) ([] PeriodEvent, error) {
-  //var events [] PeriodEvent
-  var result [] PeriodEvent
+  var events [] PeriodEvent
   //select date_trunc('minute', created) "hour", avg(quality) from water_quality_events group by minute;
-  err := Storage.Table("water_quality_events").Select("date_trunc(?, created) as period, avg(quality) as quality", period).Group("period").Order("period").Scan(&result).Error
+  err := Storage.Table("water_quality_events").Select("date_trunc(?, created) as period, avg(quality) as quality", period).Group("period").Order("period").Scan(&events).Error
   if err != nil {
     err = NOT_FOUND
   }
   //events,_ := json.Marshal(test)
-  return result, err
+  return events, err
 }
 
 func (w *WaterQuality) FindOneEvent(query WaterQualityEvent) (*WaterQualityEvent, error) {

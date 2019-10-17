@@ -4,7 +4,7 @@ import WaterQualitySensor from '../../containers/WaterQualitySensor';
 import setCurrentTab from '../../actions/menu';
 import { getEvents, getInfo } from '../../actions/water-quality';
 
-const INTERVAL = 3000;
+const INTERVAL = 2000;
 
 export default async function action({ store: { dispatch } }) {
   dispatch(setCurrentTab('Water Quality'));

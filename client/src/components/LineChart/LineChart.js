@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import Chart from 'chart.js';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
-import style from '../WaterQualitySensor/WaterQualitySensor.css';
 import setData from '../WaterQualitySensor/HelperChartData';
 
 class LineChart extends PureComponent {
@@ -34,7 +33,7 @@ class LineChart extends PureComponent {
 
   render() {
     return (
-      <div className={style.container}>
+      <div>
         <canvas id="myChart" ref={this.chartRef} />
       </div>
     );
@@ -67,4 +66,4 @@ class LineChart extends PureComponent {
   };
 }
 
-export default withStyles(style)(React.memo(LineChart));
+export default React.memo(LineChart);

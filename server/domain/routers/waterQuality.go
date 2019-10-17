@@ -73,9 +73,9 @@ func ChangeWaterQualityStatus(w http.ResponseWriter, r *http.Request, ps httprou
     return
   }
   type Status struct {
-    status devices.SensorState
+    Status devices.SensorState
   }
-  response, err := json.Marshal(Status{ status: status })
+  response, err := json.Marshal(Status{ Status: status })
   if err != nil {
     http.Error(w, err.Error(), http.StatusNotFound)
     return

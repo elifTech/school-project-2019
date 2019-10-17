@@ -1,10 +1,14 @@
 import React, { PureComponent } from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
-import { Container, Row, Col, Spinner } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Spinner from 'react-bootstrap/Spinner';
 import Switch from 'react-switch';
 import Button from 'react-bootstrap/Button';
 import classNames from 'classnames';
+import Alert from 'react-bootstrap/Alert';
 import style from './WaterQualitySensor.css';
 import LineChart from '../LineChart/LineChart';
 
@@ -12,9 +16,10 @@ class WaterQualitySensor extends PureComponent {
   static propTypes = {
     dispatchChangeFilter: PropTypes.func.isRequired,
     dispatchChangeStatus: PropTypes.func.isRequired,
+    error: PropTypes.string,
     eventsQuality: PropTypes.arrayOf(PropTypes.string),
-    filter: PropTypes.string.isRequired,
     // isFetching: PropTypes.bool,
+    filter: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     resetInterval: PropTypes.func.isRequired,
     status: PropTypes.number,
@@ -22,6 +27,7 @@ class WaterQualitySensor extends PureComponent {
   };
 
   static defaultProps = {
+    error: null,
     eventsQuality: [],
     // isFetching: false,
     status: 0,
@@ -37,8 +43,8 @@ class WaterQualitySensor extends PureComponent {
     const {
       eventsQuality,
       time,
-      name,
       filter,
+      error,
       // isFetching,
       dispatchChangeStatus,
       dispatchChangeFilter,
@@ -48,7 +54,14 @@ class WaterQualitySensor extends PureComponent {
       this.loading()
     ) : (
       <Container>
-        <p className={style.header}>{name}</p>
+        <Col md={10} className={style.header}>
+          Water Quality sensor
+        </Col>
+        <Col md={10} className="px-0">
+          <Alert variant="danger" show={this.checkError(error)}>
+            {error}
+          </Alert>
+        </Col>
         <Switch
           onChange={dispatchChangeStatus}
           checked={this.checkStatus(status)}
@@ -59,42 +72,44 @@ class WaterQualitySensor extends PureComponent {
           height={15}
           width={40}
         />
-        <Row className={style.container}>
-          <Col md={9} className={style.lineChart}>
-            <LineChart quality={eventsQuality} time={time} />
-            <div className={style.filters}>
-              {this.filterButtons.map(button => {
-                return (
-                  <Button
-                    className={classNames(style.filterBtn, {
-                      [style.filterBtnActive]: filter === button.value,
-                    })}
-                    variant="outline-info"
-                    key={button.id}
-                    onClick={dispatchChangeFilter(button.value)}
-                  >
-                    {button.label}
-                  </Button>
-                );
-              })}
-            </div>
-          </Col>
-        </Row>
+        <Col md={10} className={style.lineChart}>
+          <LineChart quality={eventsQuality} time={time} />
+          <div className={style.filters}>
+            {this.filterButtons.map(button => {
+              return (
+                <Button
+                  className={classNames(style.filterBtn, {
+                    [style.filterBtnActive]: filter === button.value,
+                  })}
+                  variant="outline-info"
+                  key={button.id}
+                  onClick={dispatchChangeFilter(button.value)}
+                >
+                  {button.label}
+                </Button>
+              );
+            })}
+          </div>
+        </Col>
       </Container>
     );
   }
 
-  filterData = query => {
-    console.info(1, query);
-  };
-
   loading = () => {
+    const { error } = this.props;
     return (
       <Container>
-        <Row className="justify-content-md-center">
+        <Row className="justify-content-center">
           <Spinner animation="grow" role="status" />
           <Spinner animation="grow" role="status" />
           <Spinner animation="grow" role="status" />
+        </Row>
+        <Row>
+          <Col>
+            <Alert variant="danger" show={this.checkError(error)}>
+              {error}
+            </Alert>
+          </Col>
         </Row>
       </Container>
     );
@@ -102,6 +117,10 @@ class WaterQualitySensor extends PureComponent {
 
   checkStatus = status => {
     return status === 0 ? false : status === 1;
+  };
+
+  checkError = error => {
+    return !!error;
   };
 
   filterButtons = [
