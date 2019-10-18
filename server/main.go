@@ -28,6 +28,7 @@ func main() {
 	// init your devices here
 	d := domain.Devices{
 		Carbon: &devices.Carbon{},
+		Wind:        &devices.Wind{},
 	}
 
 	s := &domain.IoTService{DB: db, Devices: &d}

@@ -18,9 +18,9 @@ func CarbonInit(router *httprouter.Router) {
 	//db = database
 
 	router.GET("/sensor/carbon/ping", PingCarbon)
-	router.GET("/carbon", GetSensorStatus)
-	router.GET("/carbon/filter/events", FilterEvents)
-	router.PUT("/sensor/carbon", UpdateSensor)
+	router.GET("/carbon", GetCarbonStatus)
+	router.GET("/carbon/filter/events", FilterCarbonEvents)
+	router.PUT("/sensor/carbon", UpdateCarbonSensor)
 	router.POST("/sensor/carbon/poll", PollCarbon)
 	
 }
@@ -30,7 +30,7 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 //
-func FilterEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func FilterCarbonEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	keys := r.URL.Query()
 	from := keys.Get("from")
 	carbon := devices.Carbon{}
@@ -56,7 +56,7 @@ func PingCarbon(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	carbon := devices.Carbon{}
 	device, err := carbon.Get()
 	// testing custom error response
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
 		return
 	}
@@ -74,11 +74,11 @@ func PingCarbon(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 //
-func GetSensorStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func GetCarbonStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	carbon := devices.Carbon{}
 	device, err := carbon.GetStatus()
 	// testing custom error response
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
 		return
 	}
@@ -95,12 +95,12 @@ func GetSensorStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 }
 
 // Function for Update sensor status on front side
-func UpdateSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func UpdateCarbonSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	//defer r.Body.Close()
 	carbon := devices.Carbon{}
 	device, err := carbon.GetStatus()
 	// testing custom error response
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
 		return
 	}

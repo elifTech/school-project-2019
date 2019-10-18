@@ -23,6 +23,8 @@ const (
 
 const (
 	CarbonSensor string = "Carbon Monoxide"
+	TemperatureSensor string = "temperature"
+	WindSensor        string = "wind"
 )
 
 //Sensors type with parameters
@@ -42,10 +44,15 @@ type Event struct {
 	SensorType string `json:"device_type"`
 }
 
-func (e *Event) BeforeSave() (err error) {
-	if e.Created.IsZero() {
-		e.Created = time.Now()
+func (s *Sensor) FindManySensors() ([]Sensor, error) {
+	var sensors []Sensor
+
+	err := Storage.Find(&sensors).Error
+
+	if err != nil {
+		// returning custom DB error message
+		err = ErrNotFound
 	}
 
-	return err
+	return sensors, err
 }

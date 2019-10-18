@@ -1,7 +1,7 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import CarbonWidget from '../carbonsensor/CarbonWidget/carbon-widget';
-import s from './Home.css';
+import s from './Dashboard.css';
 
 function Dashboard() {
   return (

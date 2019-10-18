@@ -31,7 +31,7 @@ func (t *Carbon) Get() ([]CarbonEvent, error) {
 	err := Storage.Order("created_at").Find(&device).Error
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
 	}
 
 	return device, err
@@ -42,7 +42,7 @@ func (t *Carbon) GetStatus() (*Carbon, error) {
 	err := Storage.Where(&Sensor{Type: CarbonSensor}).First(&device).Error
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
 	}
 	return device, err
 }
@@ -56,7 +56,7 @@ func (t *Carbon) EventFilter(from string) ([]CarbonEvent, error) {
 	fmt.Println(events)
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
 	}
 
 	return events, err
@@ -71,7 +71,7 @@ func (t *Carbon) FindOneEvent(query CarbonEvent) (*CarbonEvent, error) {
 	err := Storage.Where(&query).First(&event).Error
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
 	}
 
 	return event, err
@@ -101,7 +101,7 @@ func (t *Carbon) UpdateSensorStatus(status SensorState) error {
 	sensor, err := t.GetStatus()
 	if err != nil {
 		fmt.Printf("Sensor is not created")
-		return NOT_FOUND
+		return ErrNotFound
 	}
 	sensor.Status = status
 	return Storage.Save(&sensor).Error
