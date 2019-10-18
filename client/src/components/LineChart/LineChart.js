@@ -1,13 +1,12 @@
 import React, { PureComponent } from 'react';
 import Chart from 'chart.js';
-import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import setData from '../WaterQualitySensor/HelperChartData';
 
 class LineChart extends PureComponent {
   static propTypes = {
-    quality: PropTypes.PropTypes.arrayOf(PropTypes.string),
-    time: PropTypes.PropTypes.arrayOf(PropTypes.string),
+    quality: PropTypes.arrayOf(PropTypes.string),
+    time: PropTypes.arrayOf(PropTypes.string),
   };
 
   static defaultProps = {

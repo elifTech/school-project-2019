@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Switch from 'react-switch';
+import Alert from 'react-bootstrap/Alert';
+import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import classNames from 'classnames';
-import Alert from 'react-bootstrap/Alert';
 import style from './WaterQualitySensor.css';
 import LineChart from '../LineChart/LineChart';
 import GrowSpinner from '../GrowSpinner/GrowSpinner';
+import FilterButtons from './FilterButtons';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
@@ -51,7 +53,7 @@ class WaterQualitySensor extends PureComponent {
     return eventsQuality.length === 0 ? (
       <GrowSpinner error={error} />
     ) : (
-      <Container>
+      <Container className={style.container}>
         <Col md={10} className={style.header}>
           Water Quality sensor
         </Col>
@@ -60,22 +62,26 @@ class WaterQualitySensor extends PureComponent {
             {error}
           </Alert>
         </Col>
-        <span> Status </span>
-        <Switch
-          onChange={dispatchChangeStatus}
-          checked={this.checkStatus(status)}
-          handleDiameter={20}
-          uncheckedIcon={false}
-          checkedIcon={false}
-          boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-          height={15}
-          width={40}
-          id="statusSwitch"
-        />
+        <Row>
+          <Col md={1}>Status</Col>
+          <Col>
+            <Switch
+              onChange={dispatchChangeStatus}
+              checked={this.checkStatus(status)}
+              handleDiameter={20}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+              height={15}
+              width={40}
+              id="statusSwitch"
+            />
+          </Col>
+        </Row>
         <Col md={10} className={style.lineChart}>
           <LineChart quality={eventsQuality} time={time} />
           <div className={style.filters}>
-            {this.filterButtons.map(button => {
+            {FilterButtons.map(button => {
               return (
                 <Button
                   className={classNames(style.filterBtn, {
@@ -98,33 +104,6 @@ class WaterQualitySensor extends PureComponent {
   checkStatus = status => {
     return status === 0 ? false : status === 1;
   };
-
-  filterButtons = [
-    {
-      id: 0,
-      label: 'Per hour',
-      query: '',
-      value: 'hour',
-    },
-    {
-      id: 1,
-      label: 'Per day',
-      query: '',
-      value: 'day',
-    },
-    {
-      id: 2,
-      label: 'Per week',
-      query: '',
-      value: 'week',
-    },
-    {
-      id: 3,
-      label: 'Per moth',
-      query: '',
-      value: 'month',
-    },
-  ];
 }
 
 export default withStyles(style)(WaterQualitySensor);
