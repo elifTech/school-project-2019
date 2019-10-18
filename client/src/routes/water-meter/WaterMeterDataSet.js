@@ -92,6 +92,8 @@ export default function getWaterMeterDataSet(events, period) {
     },
     options: {
       legend: { display: false },
+      maintainAspectRatio: false,
+      responsive: true,
       scales: {
         xAxes: [
           {
@@ -102,6 +104,9 @@ export default function getWaterMeterDataSet(events, period) {
         ],
         yAxes: [
           {
+            barPercentage: 0.8,
+            barThickness: 25,
+            maxBarThickness: 30,
             ticks: {
               callback(value) {
                 return moment(value).format('HH:mm');

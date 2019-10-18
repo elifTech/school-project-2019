@@ -5,7 +5,7 @@
   padding: 26px 32px;
   background-color: #f8f8f8;
   box-sizing: border-box;
-  border-radius: 20px;
+  border-radius: 10px;
   color: #3f496f;
 }
 
@@ -28,7 +28,8 @@
 }
 
 .chartContainer {
-  flex-basis: 70%;
+  max-height: 1800px;
+  width: 100%;
 }
 
 .filterButton {
