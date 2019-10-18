@@ -1,0 +1,101 @@
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io/ioutil"
+	"math/rand"
+	"net/http"
+	"time"
+)
+
+type Event struct {
+	Signal  int
+	Name    string
+	Created time.Time
+	Event   map[string]string
+}
+
+type Status struct {
+	Status int
+}
+
+func setInterval(function func(), seconds int) {
+	ticker := time.NewTicker(time.Duration(seconds) * time.Second)
+
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				function()
+			}
+		}
+	}()
+}
+
+func main() {
+	setInterval(GenerateWindEvents, 5)
+	http.ListenAndServe(":3003", nil)
+}
+
+func GenerateWindEvents() {
+	err := checkForStatus()
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+		return
+	}
+	s1 := rand.NewSource(time.Now().UnixNano())
+	r1 := rand.New(s1)
+	min := 35
+	max := 50
+	creationTime := time.Now()
+	var signal int = r1.Intn(max-min+1) + min
+
+	reqBody := Event{
+		Signal:  signal,
+		Name:    "ASPR 650: Kitchen Room",
+		Created: creationTime,
+		Event: map[string]string{
+			"sensor_type": "Carbon Monoxide",
+		},
+	}
+
+	reqBodyJSON, err := json.Marshal(reqBody)
+	if err != nil {
+		fmt.Println("Couldn`t convert a request body to json")
+		return
+	}
+	req, err := http.Post("http://localhost:8080/sensor/carbon/poll", "application/json", bytes.NewBuffer(reqBodyJSON))
+
+	if err != nil {
+		fmt.Println("Can't create a carbon event", err)
+		return
+	}
+	fmt.Println(bytes.NewBuffer(reqBodyJSON))
+	fmt.Println("Carbon event was created!")
+	req.Body.Close()
+}
+
+func checkForStatus() error {
+	res, err := http.Get("http://localhost:8080/carbon")
+	if err != nil {
+		return err
+	}
+
+	data, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	var event Status
+	err = json.Unmarshal(data, &event)
+	if err != nil {
+		return err
+	}
+	if event.Status != 0 {
+		return errors.New("Port was closed!")
+	}
+	return nil
+}

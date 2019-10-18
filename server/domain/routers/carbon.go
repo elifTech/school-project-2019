@@ -114,7 +114,7 @@ func UpdateCarbonSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Par
 		http.Error(w, errors.New("Status is not correct").Error(), http.StatusBadRequest)
 		return
 	}
-	err = device.UpdateSensorStatus(devices.SensorState(carbon.Status))
+	err = device.UpdateCarbonSensorStatus(devices.SensorState(carbon.Status))
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

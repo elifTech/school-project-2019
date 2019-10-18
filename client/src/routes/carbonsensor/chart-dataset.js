@@ -27,8 +27,8 @@ export default events => {
         pointRadius: 1,
       },
     ],
-    labels: events.map(({ Created }) =>
-      format(Created).format('DD-MM-YY HH:mm'),
+    labels: events.map(({ CreatedAt }) =>
+      format(CreatedAt).format('DD-MM-YY HH:mm'),
     ),
   };
 };

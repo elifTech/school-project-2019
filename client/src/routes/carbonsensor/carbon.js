@@ -211,10 +211,10 @@ class CarbonMonoxideSensor extends Component {
   parseStatus = status => {
     switch (status) {
       case 0:
-        this.text = 'ON';
+        this.text = 'OFF';
         return 'Open';
       default:
-        this.text = 'OFF';
+        this.text = 'ON';
         return 'Close';
     }
   };

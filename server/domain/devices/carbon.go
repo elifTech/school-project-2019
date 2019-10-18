@@ -97,7 +97,7 @@ func (t *Carbon) CreateSensor() error {
 	return Storage.Create(&carbonSensor).Error
 }
 
-func (t *Carbon) UpdateSensorStatus(status SensorState) error {
+func (t *Carbon) UpdateCarbonSensorStatus(status SensorState) error {
 	sensor, err := t.GetStatus()
 	if err != nil {
 		fmt.Printf("Sensor is not created")
