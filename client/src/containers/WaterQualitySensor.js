@@ -10,8 +10,7 @@ const mapStateToProps = state => ({
   error: state.waterQuality.error,
   eventsQuality: getFixedQuality(state),
   filter: state.waterQuality.filter,
-  isFetching: state.waterQuality.isFetching,
-  name: state.waterQuality.info.Name,
+  // isFetching: state.waterQuality.isFetching,
   status: state.waterQuality.info.Status,
   time: getEventsTime(state),
 });
