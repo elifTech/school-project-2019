@@ -28,7 +28,7 @@ export default events => {
       },
     ],
     labels: events.map(({ CreatedAt }) =>
-      format(CreatedAt).format('DD-MM-YY HH:mm'),
+      format(CreatedAt).format('DD-MM HH:mm:ss'),
     ),
   };
 };

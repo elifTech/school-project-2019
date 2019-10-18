@@ -12,7 +12,7 @@ const initialState = {
   events: [],
   filterLoading: false,
   filterOption: {
-    from: moment().subtract('days', 1),
+    from: moment().subtract('hours', 1),
   },
   info: { Name: '', Type: '', status: 1 },
   isLoading: true,

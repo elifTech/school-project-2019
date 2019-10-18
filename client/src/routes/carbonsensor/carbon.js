@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-// import withStyles from 'isomorphic-style-loader/withStyles';
+import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Spinner, Alert } from 'react-bootstrap';
 import { Line, defaults } from 'react-chartjs-2';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import sliderStyle from 'rc-slider/assets/index.css';
+import Slider from 'rc-slider';
 import getChartData from './chart-dataset';
 import Icon from './carbonIcon/carbon-icon';
 import Loader from '../../components/Loader/Loader';
@@ -18,6 +20,25 @@ const options = {
   defaultSortOrder: 'desc',
   display: { maintainAspectRatio: true },
   legend: { display: false },
+};
+
+const sliderOption = {
+  borderColor: 'grey',
+};
+
+const marks = {
+  0: {
+    label: <strong>Last Hour</strong>,
+    style: {
+      color: 'red',
+    },
+  },
+  1: <strong>Day</strong>,
+  2: <strong>Week</strong>,
+  3: <strong>Month</strong>,
+  4: {
+    label: <strong>Year</strong>,
+  },
 };
 
 class CarbonMonoxideSensor extends Component {
@@ -57,6 +78,27 @@ class CarbonMonoxideSensor extends Component {
       dispatchChangeStatus(false);
     } else {
       dispatchChangeStatus(true);
+    }
+  };
+
+  handleOnSliderChange = value => {
+    switch (value) {
+      case 1:
+        this.getFilterData('days', 1);
+        break;
+      case 2:
+        this.getFilterData('weeks', 1);
+        break;
+      // eslint-disable-next-line no-magic-numbers
+      case 3:
+        this.getFilterData('months', 1);
+        break;
+      // eslint-disable-next-line no-magic-numbers
+      case 4:
+        this.getFilterData('years', 2);
+        break;
+      default:
+        this.getFilterData('hours', 2);
     }
   };
 
@@ -101,47 +143,21 @@ class CarbonMonoxideSensor extends Component {
         <div className="row mb-9">
           <div className="col-sm-7">
             <Line data={getChartData(events)} options={options} />
-            <div className="col-sm-11">
-              <button
-                type="button"
-                className="btn btn-dark"
-                name="hours"
-                onClick={this.setFilter('hours', 2)}
-              >
-                Last Hours
-              </button>
-              <button
-                type="button"
-                className="btn btn-dark"
-                name="days"
-                onClick={this.setFilter('days', 1)}
-              >
-                Last Day
-              </button>
-              <button
-                type="button"
-                className="btn btn-dark"
-                name="weeks"
-                onClick={this.setFilter('weeks', 1)}
-              >
-                Last Week
-              </button>
-              <button
-                type="button"
-                className="btn btn-dark"
-                name="months"
-                onClick={this.setFilter('months', 1)}
-              >
-                Last Month
-              </button>
-              <button
-                type="button"
-                className="btn btn-dark"
-                name="years"
-                onClick={this.setFilter('years', 2)}
-              >
-                Last Years
-              </button>
+            <div className="col-sm-12">
+              <div style={sliderStyle}>
+                <b>
+                  <Slider
+                    dots
+                    step={1}
+                    onChange={this.handleOnSliderChange}
+                    marks={marks}
+                    max={4}
+                    defaultValue={0}
+                    dotStyle={sliderOption}
+                  />
+                </b>
+              </div>
+              <br />
               <hr />
             </div>
           </div>
@@ -200,10 +216,6 @@ class CarbonMonoxideSensor extends Component {
     });
   };
 
-  setFilter(filter, period) {
-    return () => this.getFilterData(filter, period);
-  }
-
   statusOnClick(status) {
     return () => this.handleOnClick(status);
   }
@@ -237,4 +249,4 @@ export default connect(
     isLoading,
   }),
   { dispatchChangeStatus: changeCarbonStatus, dispatchSetFilter: setFilter },
-)(CarbonMonoxideSensor);
+)(withStyles(sliderStyle)(CarbonMonoxideSensor));
