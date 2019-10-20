@@ -15,11 +15,14 @@ import FilterButtons from './FilterButtons';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
+    critics: PropTypes.shape({ max: PropTypes.string, min: PropTypes.string })
+      .isRequired,
+    currentQuality: PropTypes.string,
     dispatchChangeFilter: PropTypes.func.isRequired,
     dispatchChangeStatus: PropTypes.func.isRequired,
     error: PropTypes.string,
-    eventsQuality: PropTypes.arrayOf(PropTypes.string),
     // isFetching: PropTypes.bool,
+    eventsQuality: PropTypes.arrayOf(PropTypes.string),
     filter: PropTypes.string.isRequired,
     resetInterval: PropTypes.func.isRequired,
     status: PropTypes.number,
@@ -27,6 +30,7 @@ class WaterQualitySensor extends PureComponent {
   };
 
   static defaultProps = {
+    currentQuality: 0,
     error: null,
     eventsQuality: [],
     // isFetching: false,
@@ -45,7 +49,9 @@ class WaterQualitySensor extends PureComponent {
       time,
       filter,
       error,
+      critics,
       // isFetching,
+      currentQuality,
       dispatchChangeStatus,
       dispatchChangeFilter,
       status,
@@ -78,25 +84,37 @@ class WaterQualitySensor extends PureComponent {
             />
           </Col>
         </Row>
-        <Col md={10} className={style.lineChart}>
-          <LineChart quality={eventsQuality} time={time} />
-          <div className={style.filters}>
-            {FilterButtons.map(button => {
-              return (
-                <Button
-                  className={classNames(style.filterBtn, {
-                    [style.filterBtnActive]: filter === button.value,
-                  })}
-                  variant="outline-info"
-                  key={button.id}
-                  onClick={dispatchChangeFilter(button.value)}
-                >
-                  {button.label}
-                </Button>
-              );
-            })}
-          </div>
-        </Col>
+        <Row>
+          <Col md={9} className={style.lineChart}>
+            <LineChart quality={eventsQuality} time={time} />
+            <div className={style.filters}>
+              {FilterButtons.map(button => {
+                return (
+                  <Button
+                    className={classNames(style.filterBtn, {
+                      [style.filterBtnActive]: filter === button.value,
+                    })}
+                    variant="outline-info"
+                    key={button.id}
+                    onClick={dispatchChangeFilter(button.value)}
+                  >
+                    {button.label}
+                  </Button>
+                );
+              })}
+            </div>
+          </Col>
+          <Col className={style.rightContainer}>
+            <div className={style.rightContainerItem}>
+              Current: {currentQuality}
+            </div>
+            <div className={style.rightContainerItem}>Max: {critics.max}</div>
+            <div className={style.rightContainerItem}>Min: {critics.min}</div>
+          </Col>
+        </Row>
+        <Row>
+          <Col />
+        </Row>
       </Container>
     );
   }

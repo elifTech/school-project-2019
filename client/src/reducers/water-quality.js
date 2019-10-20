@@ -8,6 +8,8 @@ import {
 } from '../constants';
 
 const initialState = {
+  critics: { max: 0, min: 0 },
+  currentQuality: 0,
   error: '',
   events: [],
   filter: 'hour',
@@ -25,6 +27,7 @@ export default (state = initialState, action = {}) => {
     case WATER_QUALITY_SUCCESS_EVENTS:
       return {
         ...state,
+        currentQuality: action.currentQuality,
         error: null,
         events: action.events,
         isFetching: action.isFetching,
@@ -38,6 +41,7 @@ export default (state = initialState, action = {}) => {
     case WATER_QUALITY_SUCCESS_INFO:
       return {
         ...state,
+        critics: action.critics,
         info: action.info,
         isFetching: action.isFetching,
       };

@@ -16,9 +16,10 @@ const getEventsRequest = () => {
   };
 };
 
-const getEventsSuccess = data => {
+const getEventsSuccess = (events, currentQuality) => {
   return {
-    events: data,
+    currentQuality,
+    events,
     isFetching: false,
     type: WATER_QUALITY_SUCCESS_EVENTS,
   };
@@ -44,16 +45,21 @@ export function getEvents() {
       const response = await fetch(
         `http://localhost:8080/water_quality/event?${query}`,
       );
+      const currentResponse = await fetch(
+        `http://localhost:8080/water_quality/current`,
+      );
       const events = await response.json();
-      return dispatch(getEventsSuccess(events));
+      const { quality } = await currentResponse.json();
+      return dispatch(getEventsSuccess(events, quality));
     } catch (error) {
       return dispatch(getEventsFailure(error));
     }
   };
 }
 
-const getInfoSuccess = info => {
+const getInfoSuccess = (info, critics) => {
   return {
+    critics,
     info,
     isFetching: false,
     type: WATER_QUALITY_SUCCESS_INFO,
@@ -65,8 +71,12 @@ export function getInfo() {
     dispatch(getEventsRequest());
     try {
       const response = await fetch(`http://localhost:8080/water_quality/ping`);
+      const criticsResponse = await fetch(
+        `http://localhost:8080/water_quality/critic`,
+      );
       const { Name, Status } = await response.json();
-      return dispatch(getInfoSuccess({ Name, Status }));
+      const { max, min } = await criticsResponse.json();
+      return dispatch(getInfoSuccess({ Name, Status }, { max, min }));
     } catch (error) {
       return dispatch(getEventsFailure(error));
     }

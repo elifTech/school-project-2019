@@ -11,14 +11,14 @@
 .lineChart {
   margin: 0;
   background-color: rgba(236, 237, 240, 0.52);
-  box-shadow: 0 0 15px 1px rgb(176, 177, 181);
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
 }
 
 .filters {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-left: 11px;
+  margin: 10px 0 10px 10px;
 }
 
 .filterBtn {
@@ -33,4 +33,16 @@
 .filterBtnActive {
   background-color: #17a2b8;
   color: white;
+}
+
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.rightContainerItem {
+  padding: 32px;
+  background-color: rgba(236, 237, 240, 0.52);
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
 }

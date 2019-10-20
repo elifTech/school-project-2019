@@ -33,7 +33,7 @@ class LineChart extends PureComponent {
   render() {
     return (
       <div>
-        <canvas id="myChart" ref={this.chartRef} />
+        <canvas height="120vh" id="myChart" ref={this.chartRef} />
       </div>
     );
   }
@@ -54,7 +54,7 @@ class LineChart extends PureComponent {
           yAxes: [
             {
               ticks: {
-                max: 18,
+                max: 12,
               },
             },
           ],

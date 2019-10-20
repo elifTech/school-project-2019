@@ -13,7 +13,7 @@ import (
 )
 
 const (
-  mean   = 7
+  mean   = 6
   stdDev = 2
   //minQualityWater = 0
   //maxQualityWater = 16
@@ -33,6 +33,11 @@ type WaterQualityEvent struct {
 type PeriodEvent struct {
   Period  time.Time `json:"period"`
   Quality float64 `json:"quality"`
+}
+
+type Critic struct {
+  Max float64 `json:"max"`
+  Min float64 `json:"min"`
 }
 
 func (WaterQuality) TableName() string {
@@ -66,7 +71,7 @@ func (w *WaterQuality) GetAllEvents() ([] WaterQualityEvent, error) {
 func (w *WaterQuality) GetPeriodEvents(period string) ([] PeriodEvent, error) {
   var events [] PeriodEvent
   //select date_trunc('minute', created) "hour", avg(quality) from water_quality_events group by minute;
-  err := Storage.Table("water_quality_events").Select("date_trunc(?, created) as period, avg(quality) as quality", period).Group("period").Order("period").Scan(&events).Error
+  err := Storage.Table("water_quality_events").Select("date_trunc(?, created) as period, avg(quality) as quality", period).Group("period").Order("period").Limit(20).Scan(&events).Error
   if err != nil {
     err = NOT_FOUND
   }
@@ -150,6 +155,24 @@ func PostCreateEvent() {
 
 func NormGeneration() float64 {
   return rand.NormFloat64()*stdDev + mean
+}
+
+func (w *WaterQuality) GetCurrentEvent() (float64, error) {
+  event := new(WaterQualityEvent)
+  err := Storage.Select("quality").Order("created desc").First(event).Error
+  if err != nil {
+    err = NOT_FOUND
+  }
+  return event.Quality, err
+}
+
+func (w *WaterQuality) GetCritical() (Critic, error) {
+  var critic Critic
+  err := Storage.Table("water_quality_events").Select("max(quality), min(quality)").Scan(&critic).Error
+  if err != nil {
+    err = NOT_FOUND
+  }
+  return critic, err
 }
 
 //func (w *WaterQuality) CreateWaterQualityEventRand() {

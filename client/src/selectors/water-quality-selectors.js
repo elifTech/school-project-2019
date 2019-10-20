@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import moment from 'moment';
 
-const qualityFixed = 2;
+export const FIXED = 2;
 
 const getEvents = state =>
   state.waterQuality.events.map(({ period, quality }) => ({
@@ -11,7 +11,7 @@ const getEvents = state =>
 
 export const getFixedQuality = createSelector(
   [getEvents],
-  events => events.map(event => event.quality.toFixed(qualityFixed)),
+  events => events.map(event => event.quality.toFixed(FIXED)),
 );
 export const getEventsTime = createSelector(
   [getEvents],
