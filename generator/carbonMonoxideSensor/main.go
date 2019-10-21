@@ -34,15 +34,15 @@ func createCarbonEvent() {
 	count := 0
 
 	for {
-		signal := r1.Intn(max-min+1) + min
+		signal := r1.Intn(max-min) + min
 		creationTime := time.Now()
 		count = count + 1
-		if count == 6 {
+		if count == 36 {
 			max = 999
 			count = 0
 		}
 		sensorStatus := false
-		time.Sleep(1 * time.Second)
+		time.Sleep(5 * time.Second)
 		// preparing payload
 
 		var event Status
@@ -53,10 +53,9 @@ func createCarbonEvent() {
 		}
 		data, err := ioutil.ReadAll(res.Body)
 		err = json.Unmarshal(data, &event)
-		fmt.Println(event.Status)
 		if err == nil {
 			if event.Status == 1 {
-				fmt.Println("Port was closed!")
+				fmt.Println("The port was closed!")
 				sensorStatus = true
 			}
 		}
@@ -69,8 +68,6 @@ func createCarbonEvent() {
 			},
 		}
 		if sensorStatus == false {
-			fmt.Println("count", count)
-			fmt.Println("max", max)
 			payloadJSON, _ := json.Marshal(payload)
 			/*
 			 * making request

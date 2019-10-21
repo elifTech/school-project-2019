@@ -30,17 +30,3 @@
 
   /* Large screen / wide desktop */
 }
-
-.background {
-  animation-name: fillChange;
-  animation-duration: 0.5s;
-  animation-timing-function: ease;
-  animation-iteration-count: infinite;
-  animation-fill-mode: both;
-}
-
-@keyframes fillChange {
-  80% {
-    fill: rgba(86, 255, 1, 0.637);
-  }
-}

@@ -98,7 +98,7 @@ class CarbonMonoxideSensor extends Component {
         this.getFilterData('years', 2);
         break;
       default:
-        this.getFilterData('hours', 2);
+        this.getFilterData('hours', 1);
     }
   };
 
@@ -193,7 +193,7 @@ class CarbonMonoxideSensor extends Component {
             </TableHeaderColumn>
             <TableHeaderColumn
               dataField="CreatedAt"
-              dataFormat={this.dateFormatter}
+              dataFormat={this.setDateFormat}
             >
               Event created
             </TableHeaderColumn>
@@ -204,7 +204,7 @@ class CarbonMonoxideSensor extends Component {
     );
   }
 
-  dateFormatter = date => {
+  setDateFormat = date => {
     return moment(date).format('YYYY-MM-DD HH:mm:ss');
   };
 
