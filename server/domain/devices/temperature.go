@@ -12,7 +12,7 @@ type Temperature struct {
 type TemperatureEvent struct {
 	Event
 	Name   string `json:"name"`
-	Degree float32 `json:"degree"`
+	Degree int    `json:"degree"`
 }
 
 func (Temperature) TableName() string {
@@ -23,15 +23,40 @@ func init() {
 	fmt.Printf("Initalising %s sensor... \n", TemperatureSensor)
 }
 
-func (t *Temperature) Get() (*Temperature, error) {
+func (t *Temperature) Get() ([]TemperatureEvent, error) {
+	var device []TemperatureEvent
+	err := Storage.Order("created_at").Find(&device).Error
+	if err != nil {
+		// returning custom DB error message
+		err = ErrNotFound
+	}
+
+	return device, err
+}
+
+func (t *Temperature) GetStatus() (*Temperature, error) {
 	device := new(Temperature)
 	err := Storage.Where(&Sensor{Type: TemperatureSensor}).First(&device).Error
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
+	}
+	return device, err
+}
+
+func (t *Temperature) EventFilter(from string) ([]TemperatureEvent, error) {
+	var events []TemperatureEvent
+
+	var err error
+
+	err = Storage.Where("created_at > ?", from).Order("created_at").Find(&events).Error
+	fmt.Println(events)
+	if err != nil {
+		// returning custom DB error message
+		err = ErrNotFound
 	}
 
-	return device, err
+	return events, err
 }
 
 func (t *Temperature) FindOneEvent(query TemperatureEvent) (*TemperatureEvent, error) {
@@ -43,7 +68,7 @@ func (t *Temperature) FindOneEvent(query TemperatureEvent) (*TemperatureEvent, e
 	err := Storage.Where(&query).First(&event).Error
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
 	}
 
 	return event, err
@@ -67,6 +92,16 @@ func (t *Temperature) CreateSensor() error {
 		Status: StatusOffline,
 	}
 	return Storage.Create(&temperatureSensor).Error
+}
+
+func (t *Temperature) UpdateTemperatureSensorStatus(status SensorState) error {
+	sensor, err := t.GetStatus()
+	if err != nil {
+		fmt.Printf("Sensor is not created")
+		return ErrNotFound
+	}
+	sensor.Status = status
+	return Storage.Save(&sensor).Error
 }
 
 func (t *Temperature) CreateEvent(payload *TemperatureEvent) (err error) {

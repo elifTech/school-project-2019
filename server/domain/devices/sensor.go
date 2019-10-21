@@ -26,14 +26,16 @@ const (
 	WindSensor        string = "wind"
 )
 
+//Sensors type with parameters
 type Sensor struct {
 	gorm.Model
 	SensorID uint `gorm:"primary_key;AUTO_INCREMENT"`
 	Name     string
 	Type     string
-	Status   SensorState
+	Status   SensorState `json:"status"`
 }
 
+// Request represents a request to run a command.
 type Event struct {
 	gorm.Model
 	EventID    uint `gorm:"primary_key;AUTO_INCREMENT"`
@@ -48,7 +50,7 @@ func (s *Sensor) FindManySensors() ([]Sensor, error) {
 
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
 	}
 
 	return sensors, err

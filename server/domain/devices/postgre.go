@@ -17,7 +17,7 @@ const (
 	dbname   = "school"
 )
 
-var NOT_FOUND = errors.New("record not found")
+var ErrNotFound = errors.New("record not found")
 
 //type Storage *gorm.DB
 var Storage *gorm.DB
@@ -34,7 +34,7 @@ func Connect() (*gorm.DB, error) {
 
 	err = db.DB().Ping()
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("Can't ping the DB: %v \n", err))
+		return nil, fmt.Errorf("can't ping the DB: %v \n", err)
 	}
 
 	Storage = db

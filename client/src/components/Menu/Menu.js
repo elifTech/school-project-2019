@@ -23,11 +23,6 @@ class Menu extends React.Component {
     isMenuOpen: false,
   };
 
-  onMenuClick = () => {
-    const { isMenuOpen } = this.state;
-    this.setState({ isMenuOpen: !isMenuOpen });
-  };
-
   render() {
     const { currentTab } = this.props;
     const { isMenuOpen } = this.state;
@@ -79,6 +74,11 @@ class Menu extends React.Component {
     );
   }
 
+  onMenuClick = () => {
+    const { isMenuOpen } = this.state;
+    this.setState({ isMenuOpen: !isMenuOpen });
+  };
+
   menuItems = [
     {
       icon: dashboardIcon,
@@ -87,7 +87,7 @@ class Menu extends React.Component {
     },
     {
       icon: temperatureIcon,
-      path: 'temperature',
+      path: 'temperaturesensor',
       text: 'Temperature',
     },
     {

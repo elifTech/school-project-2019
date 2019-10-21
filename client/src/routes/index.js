@@ -19,6 +19,11 @@ const routes = {
       load: () => import(/* webpackChunkName: 'home' */ './home'),
       path: '',
     },
+    {
+      load: () =>
+        import(/* webpackChunkName: 'temperature' */ './temperaturesensor'),
+      path: '/temperaturesensor',
+    },
 
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
