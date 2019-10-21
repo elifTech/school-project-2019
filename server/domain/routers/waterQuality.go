@@ -27,6 +27,7 @@ func WaterQualityInit(router *httprouter.Router) {
   router.GET("/water_quality/event", GetPeriodEvents)
   router.GET("/water_quality/current", GetCurrent)
   router.GET("/water_quality/critic", GetCritic)
+  router.GET("/water_quality/structure", GetWaterStructure)
 
   router.GET("/water_quality/events", GetEvents)
 
@@ -77,7 +78,7 @@ func ChangeWaterQualityStatus(w http.ResponseWriter, r *http.Request, ps httprou
   type Status struct {
     Status devices.SensorState
   }
-  response, err := json.Marshal(Status{ Status: status })
+  response, err := json.Marshal(Status{Status: status})
   if err != nil {
     http.Error(w, err.Error(), http.StatusNotFound)
     return
@@ -105,6 +106,7 @@ func GetEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
   w.Header().Set("Content-Type", "application/json")
   _, _ = w.Write(response)
 }
+
 // test query ?period=hour
 func GetPeriodEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
   payload, isOk := r.URL.Query()["period"]
@@ -130,7 +132,6 @@ func GetPeriodEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params
   w.Header().Set("Content-Type", "application/json")
   _, _ = w.Write(response)
 }
-
 
 // test payload {"name": "dat", "quality": 10.234}
 func CreateWaterQualityEvent(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -168,7 +169,7 @@ func GetCurrent(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
     return
   }
   type CurrentQuality struct {
-   Quality float64 `json:"quality"`
+    Quality float64 `json:"quality"`
   }
   response, err := json.Marshal(CurrentQuality{Quality: current})
   if err != nil {
@@ -188,6 +189,23 @@ func GetCritic(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
     return
   }
   response, err := json.Marshal(critic)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusNotFound)
+    return
+  }
+  w.WriteHeader(http.StatusOK)
+  _, _ = w.Write(response)
+}
+
+func GetWaterStructure(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+  var waterQuality devices.WaterQuality
+
+  waterStructure, err := waterQuality.GetWaterStructure()
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+  response, err := json.Marshal(waterStructure)
   if err != nil {
     http.Error(w, err.Error(), http.StatusNotFound)
     return

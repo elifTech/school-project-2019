@@ -12,12 +12,10 @@ import (
   //"github.com/jinzhu/gorm"
 )
 
-const (
-  mean   = 6
-  stdDev = 2
-  //minQualityWater = 0
-  //maxQualityWater = 16
-)
+//const (
+//  mean   = 6
+//  stdDev = 2
+//)
 
 type WaterQuality struct {
   Sensor
@@ -28,11 +26,23 @@ type WaterQualityEvent struct {
   Event
   Name    string  `json:"name"`
   Quality float64 `json:"quality"`
+  Ca      float64
+  Na      float64
+  Mg      float64
+  K       float64
 }
 
 type PeriodEvent struct {
   Period  time.Time `json:"period"`
-  Quality float64 `json:"quality"`
+  Quality float64   `json:"quality"`
+}
+
+type WaterStructure struct {
+  Period time.Time `json:"period"`
+  Ca     float64
+  Na     float64
+  Mg     float64
+  K      float64
 }
 
 type Critic struct {
@@ -71,12 +81,31 @@ func (w *WaterQuality) GetAllEvents() ([] WaterQualityEvent, error) {
 func (w *WaterQuality) GetPeriodEvents(period string) ([] PeriodEvent, error) {
   var events [] PeriodEvent
   //select date_trunc('minute', created) "hour", avg(quality) from water_quality_events group by minute;
-  err := Storage.Table("water_quality_events").Select("date_trunc(?, created) as period, avg(quality) as quality", period).Group("period").Order("period").Limit(20).Scan(&events).Error
+  err := Storage.Table("water_quality_events").
+    Select("date_trunc(?, created) as period, avg(quality) as quality", period).
+    Group("period").
+    Order("period").
+    Limit(50).
+    Scan(&events).Error
   if err != nil {
     err = NOT_FOUND
   }
-  //events,_ := json.Marshal(test)
   return events, err
+}
+
+func (w *WaterQuality) GetWaterStructure() (*WaterStructure, error) {
+ lastDayEvent := new(WaterStructure)
+ //select date_trunc('day', created) as period, avg(ca) ca, avg(mg) mg, avg(na) na, avg(k) k from water_quality_events group by period order by period desc limit 1;
+ err := Storage.Table("water_quality_events").
+   Select("date_trunc(?, created) as period, avg(ca) ca, avg(mg) mg, avg(na) na, avg(k) k", "day").
+   Group("period").
+   Order("period desc").
+   Limit(1).
+   Scan(&lastDayEvent).Error
+ if err != nil {
+   err = NOT_FOUND
+ }
+ return lastDayEvent, err
 }
 
 func (w *WaterQuality) FindOneEvent(query WaterQualityEvent) (*WaterQualityEvent, error) {
@@ -144,7 +173,11 @@ func (w *WaterQuality) CreateEvent(payload *WaterQualityEvent) (err error) {
 func PostCreateEvent() {
   payload := WaterQualityEvent{
     Name:    "Quality of water",
-    Quality: NormGeneration(),
+    Quality: NormGeneration(2, 6),
+    Ca:      NormGeneration(17, 45),
+    Na:      NormGeneration(10, 25),
+    Mg:      NormGeneration(15, 30),
+    K:       NormGeneration(5, 10),
   }
   payloadJson, _ := json.Marshal(payload)
   _, err := http.Post("http://localhost:8080/water_quality/event", "application/json", bytes.NewReader(payloadJson))
@@ -153,7 +186,7 @@ func PostCreateEvent() {
   }
 }
 
-func NormGeneration() float64 {
+func NormGeneration(stdDev float64, mean float64) float64 {
   return rand.NormFloat64()*stdDev + mean
 }
 

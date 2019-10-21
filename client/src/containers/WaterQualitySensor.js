@@ -5,6 +5,8 @@ import {
   FIXED,
   getFixedQuality,
   getEventsTime,
+  getFixedStructure,
+  getStructureLabels,
 } from '../selectors/water-quality-selectors';
 
 const mapStateToProps = state => ({
@@ -15,10 +17,12 @@ const mapStateToProps = state => ({
   currentQuality: state.waterQuality.currentQuality.toFixed(FIXED),
   error: state.waterQuality.error,
   eventsQuality: getFixedQuality(state),
-  // isFetching: state.waterQuality.isFetching,
   filter: state.waterQuality.filter,
   status: state.waterQuality.info.Status,
+  // isFetching: state.waterQuality.isFetching,
   time: getEventsTime(state),
+  waterStructure: getFixedStructure(state),
+  waterStructureLabels: getStructureLabels(state),
 });
 
 const mapDispatchToProps = {

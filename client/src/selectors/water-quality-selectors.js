@@ -17,3 +17,16 @@ export const getEventsTime = createSelector(
   [getEvents],
   events => events.map(({ period }) => moment(period).format('MM.DD HH:mm')),
 );
+
+const getWaterStructure = state =>
+  Object.entries(state.waterQuality.waterStructure);
+
+export const getFixedStructure = createSelector(
+  [getWaterStructure],
+  elements => elements.map(element => element[1].toFixed(FIXED)),
+);
+
+export const getStructureLabels = createSelector(
+  [getWaterStructure],
+  elements => elements.map(element => element[0]),
+);

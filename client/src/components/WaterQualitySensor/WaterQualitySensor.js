@@ -12,6 +12,7 @@ import style from './WaterQualitySensor.css';
 import LineChart from '../LineChart/LineChart';
 import GrowSpinner from '../GrowSpinner/GrowSpinner';
 import FilterButtons from './FilterButtons';
+import DoughnutChart from '../DoughnutChart/DoughnutChart';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
@@ -27,15 +28,18 @@ class WaterQualitySensor extends PureComponent {
     resetInterval: PropTypes.func.isRequired,
     status: PropTypes.number,
     time: PropTypes.arrayOf(PropTypes.string),
+    waterStructure: PropTypes.arrayOf(PropTypes.string),
+    waterStructureLabels: PropTypes.arrayOf(PropTypes.string),
   };
 
   static defaultProps = {
     currentQuality: 0,
     error: null,
     eventsQuality: [],
-    // isFetching: false,
     status: 0,
     time: [],
+    waterStructure: [],
+    waterStructureLabels: [],
   };
 
   componentWillUnmount() {
@@ -51,9 +55,11 @@ class WaterQualitySensor extends PureComponent {
       error,
       critics,
       // isFetching,
+      waterStructure,
       currentQuality,
       dispatchChangeStatus,
       dispatchChangeFilter,
+      waterStructureLabels,
       status,
     } = this.props;
     return eventsQuality.length === 0 ? (
@@ -117,7 +123,12 @@ class WaterQualitySensor extends PureComponent {
           </Col>
         </Row>
         <Row>
-          <Col />
+          <Col className="my-3">
+            <DoughnutChart
+              waterStructure={waterStructure}
+              labels={waterStructureLabels}
+            />
+          </Col>
         </Row>
       </Container>
     );

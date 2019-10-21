@@ -7,6 +7,7 @@ import {
   WATER_QUALITY_SUCCESS_STATUS,
   WATER_QUALITY_SUCCESS_INFO,
   WATER_QUALITY_FILTER,
+  WATER_QUALITY_SUCCESS_STRUCTURE,
 } from '../constants';
 
 const getEventsRequest = () => {
@@ -77,6 +78,29 @@ export function getInfo() {
       const { Name, Status } = await response.json();
       const { max, min } = await criticsResponse.json();
       return dispatch(getInfoSuccess({ Name, Status }, { max, min }));
+    } catch (error) {
+      return dispatch(getEventsFailure(error));
+    }
+  };
+}
+
+const getWaterStructureSuccess = waterStructure => {
+  return {
+    isFetching: false,
+    type: WATER_QUALITY_SUCCESS_STRUCTURE,
+    waterStructure,
+  };
+};
+
+export function getWaterStructure() {
+  return async dispatch => {
+    dispatch(getEventsRequest());
+    try {
+      const response = await fetch(
+        `http://localhost:8080/water_quality/structure`,
+      );
+      const { Ca, Na, Mg, K } = await response.json();
+      return dispatch(getWaterStructureSuccess({ Ca, K, Mg, Na }));
     } catch (error) {
       return dispatch(getEventsFailure(error));
     }

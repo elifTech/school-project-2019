@@ -1,19 +1,18 @@
-export default function setData(quality, time) {
-  const chartColor = 'rgba(63, 73, 111, .6)';
-  const backgroundColor = '#82b6f69c';
+export default function setData(data, labels, colors = '#82b6f69c') {
+  const chartColor = 'rgba(116,129,150,0.6)';
   return {
     datasets: [
       {
-        backgroundColor,
+        backgroundColor: colors,
         borderColor: chartColor,
         borderWidth: 2,
-        data: quality,
+        data,
         label: 'Water quality',
         lineTension: 0.4,
         pointHoverRadius: 3,
         pointRadius: 2,
       },
     ],
-    labels: time,
+    labels,
   };
 }

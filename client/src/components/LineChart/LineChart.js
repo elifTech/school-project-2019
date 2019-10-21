@@ -33,7 +33,7 @@ class LineChart extends PureComponent {
   render() {
     return (
       <div>
-        <canvas height="120vh" id="myChart" ref={this.chartRef} />
+        <canvas height="100vh" id="myChart" ref={this.chartRef} />
       </div>
     );
   }
