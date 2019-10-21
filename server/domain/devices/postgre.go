@@ -19,6 +19,8 @@ const (
 
 // ErrNotFound ...
 var ErrNotFound = errors.New("record not found")
+// ErrBadStatus ...
+var ErrBadStatus = errors.New("status is not correct")
 
 // Storage type *gorm.DB
 var Storage *gorm.DB

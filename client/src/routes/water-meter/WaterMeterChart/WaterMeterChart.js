@@ -28,6 +28,8 @@ class WaterMeterChart extends React.Component {
   render() {
     const { events, filter } = this.props;
     const dataset = getWaterMeterDataSet(events, filter);
+    const chartHeight =
+      dataset.options.scales.yAxes[0].maxBarThickness * events.length;
     const minusOne = -1;
     let lastSync = 'Disabled';
     if (events.length > 0) {
@@ -40,9 +42,11 @@ class WaterMeterChart extends React.Component {
             <h3 className={s.heading}>Water consumption</h3>
             <span className={s.lastsync}>{lastSync}</span>
           </div>
-          {dataset && (
-            <HorizontalBar data={dataset.data} options={dataset.options} />
-          )}
+          <div style={{ height: chartHeight }}>
+            {dataset && (
+              <HorizontalBar data={dataset.data} options={dataset.options} />
+            )}
+          </div>
         </div>
         <div>
           <button

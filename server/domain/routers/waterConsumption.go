@@ -12,12 +12,19 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+// Data ...
+type Data struct {
+	Status devices.SensorState
+}
+
 //WaterConsumptionInit ...
 func WaterConsumptionInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
 
 	router.GET("/waterconsumption/", GetWaterMeterSensor)
+
+	router.PUT("/waterconsumption/", UpdateWaterMeter)
 
 	router.POST("/waterconsumption/poll", PollWaterConsumption)
 
@@ -128,4 +135,45 @@ func QueryWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(response)
 
+}
+
+// UpdateWaterMeter ...
+func UpdateWaterMeter(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	defer r.Body.Close()
+
+	waterMeter := devices.WaterConsumption{}
+	_, err := waterMeter.Get()
+	if err == devices.ErrNotFound {
+		http.Error(w, "the device is not found", http.StatusNotFound)
+		return
+	}
+
+	var data Data
+
+	rBytes, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, devices.ErrBadStatus.Error(), http.StatusInternalServerError)
+		return
+	}
+	err = json.Unmarshal(rBytes, &data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	updatedStatus, err := waterMeter.UpdateWaterMeterStatus(data.Status)
+	fmt.Println("status", updatedStatus)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	response, err := json.Marshal(updatedStatus)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Write(response)
 }

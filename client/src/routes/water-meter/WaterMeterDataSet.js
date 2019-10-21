@@ -21,8 +21,8 @@ const processTimeGroups = groups =>
     )
     .map(date => moment(date).toDate());
 
-const getInterval = (begin, end, max) => {
-  const interval = Math.round((end - begin) / max);
+const getInterval = (begin, end) => {
+  const interval = Math.round(end - begin);
   const HOURS_IN_DAY = 24;
   const MINUTES_IN_HOUR = 60;
   const SECONDS_IN_MINUTE = 60;
@@ -33,15 +33,12 @@ const getInterval = (begin, end, max) => {
 
 const breakIntoGroups = (events, period) => {
   let filteredEvents = events;
-  const maxEventsPerMinute = 60;
-  if (period === 'hour') {
-    filteredEvents = filteredEvents
-      .slice(-maxEventsPerMinute)
-      .filter(
-        ({ Created }) =>
-          moment(Created).isAfter(moment().startOf('hour')) &&
-          moment(Created).isBefore(moment().endOf('hour')),
-      );
+  if (period === 'week') {
+    filteredEvents = filteredEvents.filter(
+      ({ Created }) =>
+        moment(Created).isAfter(moment().startOf('week')) &&
+        moment(Created).isBefore(moment().endOf('week')),
+    );
   }
 
   if (filteredEvents.length === 0) return [];
@@ -70,6 +67,8 @@ const breakIntoGroups = (events, period) => {
       timespanGroup = [event];
     }
   });
+  groups.shift();
+
   groups.push(timespanGroup);
 
   return groups;
@@ -97,6 +96,7 @@ export default function getWaterMeterDataSet(events, period) {
       scales: {
         xAxes: [
           {
+            position: 'top',
             ticks: {
               beginAtZero: true,
             },
@@ -105,11 +105,11 @@ export default function getWaterMeterDataSet(events, period) {
         yAxes: [
           {
             barPercentage: 0.8,
-            barThickness: 25,
-            maxBarThickness: 30,
+            barThickness: 30,
+            maxBarThickness: 40,
             ticks: {
               callback(value) {
-                return moment(value).format('HH:mm');
+                return moment(value).format('MMM D, HH:mm');
               },
             },
           },

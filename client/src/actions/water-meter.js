@@ -71,7 +71,7 @@ export function applyFilter({ from, value }) {
   };
 }
 
-export function changeWindStatus(status) {
+export function changeWaterMeterStatus(status) {
   return async dispatch => {
     dispatch(loadWaterMeterStatus());
     try {
