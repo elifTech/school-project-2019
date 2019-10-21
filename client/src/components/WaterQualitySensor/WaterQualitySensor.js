@@ -63,13 +63,17 @@ class WaterQualitySensor extends PureComponent {
         <Col md={10} className={style.header}>
           Water Quality sensor
         </Col>
-        <Col md={10} className="px-0">
-          <Alert variant="danger" show={!!error}>
-            {error}
-          </Alert>
-        </Col>
         <Row>
-          <Col md={1}>Status</Col>
+          <Col className="pl-0">
+            <Alert variant="danger" show={!!error}>
+              {error}
+            </Alert>
+          </Col>
+        </Row>
+        <Row className="py-2">
+          <Col md={1} className="px-0">
+            Status
+          </Col>
           <Col>
             <Switch
               onChange={dispatchChangeStatus}
