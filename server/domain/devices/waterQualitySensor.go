@@ -173,7 +173,7 @@ func (w *WaterQuality) CreateEvent(payload *WaterQualityEvent) (err error) {
 func PostCreateEvent() {
   payload := WaterQualityEvent{
     Name:    "Quality of water",
-    Quality: NormGeneration(2, 6),
+    Quality: NormGeneration(2, 7.5),
     Ca:      NormGeneration(17, 45),
     Na:      NormGeneration(10, 25),
     Mg:      NormGeneration(15, 30),

@@ -13,6 +13,7 @@ import LineChart from '../LineChart/LineChart';
 import GrowSpinner from '../GrowSpinner/GrowSpinner';
 import FilterButtons from './FilterButtons';
 import DoughnutChart from '../DoughnutChart/DoughnutChart';
+import TableStructure from './TableStructure';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
@@ -66,9 +67,7 @@ class WaterQualitySensor extends PureComponent {
       <GrowSpinner error={error} />
     ) : (
       <Container className={style.container}>
-        <Col md={10} className={style.header}>
-          Water Quality sensor
-        </Col>
+        <Col className={style.header}>Water Quality sensor</Col>
         <Row>
           <Col className="pl-0">
             <Alert variant="danger" show={!!error}>
@@ -80,7 +79,7 @@ class WaterQualitySensor extends PureComponent {
           <Col md={1} className="px-0">
             Status
           </Col>
-          <Col>
+          <Col md={2}>
             <Switch
               onChange={dispatchChangeStatus}
               checked={this.checkStatus(status)}
@@ -96,6 +95,7 @@ class WaterQualitySensor extends PureComponent {
         </Row>
         <Row>
           <Col md={9} className={style.lineChart}>
+            <p className={style.lineChartHeader}>Changes in water quality</p>
             <LineChart quality={eventsQuality} time={time} />
             <div className={style.filters}>
               {FilterButtons.map(button => {
@@ -114,20 +114,37 @@ class WaterQualitySensor extends PureComponent {
               })}
             </div>
           </Col>
-          <Col className={style.rightContainer}>
-            <div className={style.rightContainerItem}>
-              Current: {currentQuality}
+          <Col
+            md={2}
+            className={classNames(style.rightContainerQuality, 'ml-4')}
+          >
+            <div className={style.rightContainerQualityItem}>
+              <span className={style.criticTitle}>Current</span>
+              <p className={style.criticValue}>{currentQuality}</p>
             </div>
-            <div className={style.rightContainerItem}>Max: {critics.max}</div>
-            <div className={style.rightContainerItem}>Min: {critics.min}</div>
+            <div className={style.rightContainerQualityItem}>
+              <span className={style.criticTitle}>Max</span>
+              <p className={style.criticValue}>{critics.max}</p>
+            </div>
+            <div className={style.rightContainerQualityItem}>
+              <span className={style.criticTitle}>Min</span>
+              <p className={style.criticValue}>{critics.min}</p>
+            </div>
           </Col>
         </Row>
-        <Row>
-          <Col className="my-3">
+        <Row className="mt-4">
+          <Col md={7} className={style.doughnutChart}>
+            <p className={style.doughnutChartHeader}>Structure of water</p>
             <DoughnutChart
               waterStructure={waterStructure}
               labels={waterStructureLabels}
             />
+          </Col>
+          <Col
+            md={4}
+            className={classNames(style.rightContainerStructure, 'ml-4')}
+          >
+            <TableStructure />
           </Col>
         </Row>
       </Container>
