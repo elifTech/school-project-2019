@@ -99,11 +99,28 @@ textarea {
  * Browser upgrade prompt
  * ========================================================================== */
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7a7b7e;
+  border-radius: 5px;
+}
+
 :global(.browserupgrade) {
   margin: 0.2em 0;
   background: #ccc;
   color: #000;
   padding: 0.2em 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #696a6b;
 }
 
 /*
@@ -194,7 +211,8 @@ textarea {
   height: 100vh;
 }
 
-.paddingLeft {
-  padding-left: 50px;
+.rightContainer {
+  position: relative;
+  padding-left: 50px !important;
   padding-top: 20px;
 }

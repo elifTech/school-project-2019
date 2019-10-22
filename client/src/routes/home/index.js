@@ -1,17 +1,15 @@
 import React from 'react';
-import Dashboard from './Dashboard';
+import Home from './Home';
 import Layout from '../../components/Layout';
-import setCurrentTab from '../../actions/menu';
 
-export default function action({ store: { dispatch } }) {
-  dispatch(setCurrentTab('Dashboard'));
+export default function action() {
   return {
     chunks: ['home'],
     component: (
       <Layout>
-        <Dashboard />
+        <Home />
       </Layout>
     ),
-    title: 'Smart Things Dashboard',
+    title: 'ElifTech School 2019 Project',
   };
 }
