@@ -17,7 +17,7 @@ const initialState = {
       .local()
       .startOf('day')
       .toJSON(),
-    value: 'hour',
+    value: 'day',
   },
   info: { Name: '', Status: 0, Type: '' },
   loading: true,

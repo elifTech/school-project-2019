@@ -28,12 +28,13 @@ class WaterMeterChart extends React.Component {
   render() {
     const { events, filter } = this.props;
     const dataset = getWaterMeterDataSet(events, filter);
-    const chartHeight =
-      dataset.options.scales.yAxes[0].maxBarThickness * events.length;
-    const minusOne = -1;
+    const amountOfBars = dataset.data.labels.length;
+    const oneBarHeight = dataset.options.scales.yAxes[0].maxBarThickness;
+    const chartHeight = oneBarHeight * amountOfBars;
+
     let lastSync = 'Disabled';
     if (events.length > 0) {
-      lastSync = this.parseLastSync(events.slice(minusOne)[0].Created);
+      lastSync = this.parseLastSync(events[0].Created);
     }
     return (
       <div className={s.container}>
@@ -62,9 +63,9 @@ class WaterMeterChart extends React.Component {
 
           <button
             type="button"
-            name="week"
+            name="isoWeek"
             className={classNames(s.filterButton, {
-              [s.filterButtonActive]: filter === 'week',
+              [s.filterButtonActive]: filter === 'isoWeek',
             })}
             onClick={this.handleFilterClick}
           >
@@ -82,6 +83,17 @@ class WaterMeterChart extends React.Component {
             Month
           </button>
 
+          <button
+            type="button"
+            name="year"
+            className={classNames(s.filterButton, {
+              [s.filterButtonActive]: filter === 'year',
+            })}
+            onClick={this.handleFilterClick}
+          >
+            Year
+          </button>
+
           <div className={s.currentFilter}>
             Period:
             <br />
@@ -93,22 +105,17 @@ class WaterMeterChart extends React.Component {
   }
 
   getFilterData = period => {
-    const { dispatchApplyFilter, filter } = this.props;
+    const { dispatchApplyFilter } = this.props;
     dispatchApplyFilter({
-      from:
-        filter === period
-          ? moment()
-              .startOf('day')
-              .toJSON()
-          : moment()
-              .startOf(period)
-              .toJSON(),
-      value: filter === period ? 'hour' : period,
+      from: moment()
+        .startOf(period)
+        .toJSON(),
+      value: period,
     });
   };
 
   parseLastSync = lastSync => {
-    const inactiveTime = 60;
+    const inactiveTime = 3600;
     const lsMoment = moment(lastSync);
     const today = moment()
       .clone()
@@ -118,7 +125,6 @@ class WaterMeterChart extends React.Component {
       .subtract(1, 'days')
       .startOf('day');
     let day;
-
     switch (true) {
       case lsMoment.isSame(today, 'd'):
         if (Math.abs(lsMoment.diff(moment(), 'seconds')) < inactiveTime)

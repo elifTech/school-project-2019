@@ -97,10 +97,11 @@ func (wc *WaterConsumption) CreateEvent(payload *WaterConsumptionEvent) (err err
 	// a good example: we are returning the error directly from the Create method
 	return Storage.Create(&payload).Error
 }
+
 // QueryWaterConsumptionEvents ...
 type QueryWaterConsumptionEvents struct {
-	EventID    uint
-	Created    time.Time
+	EventID     uint
+	Created     time.Time
 	Consumption float32
 }
 

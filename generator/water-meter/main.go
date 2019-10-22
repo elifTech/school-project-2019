@@ -40,7 +40,7 @@ type Event struct {
 
 func main() {
 	// ticker
-	ticker := time.NewTicker(15 * time.Second)
+	ticker := time.NewTicker(30 * time.Second)
 	done := make(chan bool)
 	var wg sync.WaitGroup
 	wg.Add(1)
