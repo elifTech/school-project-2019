@@ -14,6 +14,7 @@ func (s *IoTService) NewRouter() *httprouter.Router {
 	routers.WaterConsumptionInit(router)
 	routers.WindInit(router)
 	routers.DashboardInit(router)
+	routers.WaterQualityInit(router)
 
 	return router
 }

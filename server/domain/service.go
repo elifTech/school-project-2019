@@ -20,4 +20,5 @@ type Devices struct {
 	Temperature      *devices.Temperature
 	WaterConsumption *devices.WaterConsumption
 	Wind             *devices.Wind
+	WaterQuality     *devices.WaterQuality
 }

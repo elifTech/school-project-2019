@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import s from './Dashboard.css';
 
-function Dashboard() {
+function Home() {
   return (
     <div className={s.root}>
       <div className={s.container}>
@@ -11,5 +11,5 @@ function Dashboard() {
     </div>
   );
 }
-Dashboard.whyDidYouRender = true;
-export default withStyles(s)(React.memo(Dashboard));
+Home.whyDidYouRender = true;
+export default withStyles(s)(React.memo(Home));

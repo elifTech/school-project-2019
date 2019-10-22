@@ -98,7 +98,7 @@ class Menu extends React.Component {
     },
     {
       icon: qualityIcon,
-      path: 'waterquality',
+      path: 'water-quality',
       text: 'Water Quality',
     },
     {

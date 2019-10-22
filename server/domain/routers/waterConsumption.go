@@ -22,9 +22,9 @@ func WaterConsumptionInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
 
-	router.GET("/waterconsumption/", GetWaterMeterSensor)
+	router.GET("/waterconsumption", GetWaterMeterSensor)
 
-	router.PUT("/waterconsumption/", UpdateWaterMeter)
+	router.PUT("/waterconsumption", UpdateWaterMeter)
 
 	router.POST("/waterconsumption/poll", PollWaterConsumption)
 

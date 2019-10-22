@@ -19,6 +19,13 @@ const routes = {
       load: () => import(/* webpackChunkName: 'home' */ './home'),
       path: '',
     },
+    {
+      load: () =>
+        import(
+          /* webpackChunkName: 'water-quality-sensor' */ './water-quality-sensor'
+        ),
+      path: '/water-quality',
+    },
 
     {
       load: () => import(/* webpackChunkName: 'water-meter' */ './water-meter'),
