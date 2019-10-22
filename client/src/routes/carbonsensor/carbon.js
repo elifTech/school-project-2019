@@ -60,8 +60,8 @@ class CarbonMonoxideSensor extends Component {
     ).isRequired,
     info: PropTypes.shape({
       Name: PropTypes.string.isRequired,
+      Status: PropTypes.number.isRequired,
       Type: PropTypes.string.isRequired,
-      status: PropTypes.number.isRequired,
     }).isRequired,
     isLoading: PropTypes.bool.isRequired,
     removeInterval: PropTypes.func.isRequired,
@@ -135,7 +135,7 @@ class CarbonMonoxideSensor extends Component {
             {' '}
             <h3>{info.Name}</h3>
             <h5>{info.Type}</h5>
-            <span>Port: {this.parseStatus(info.status)}</span>
+            <span>Port: {this.parseStatus(info.Status)}</span>
             <hr />
           </div>
         </div>
@@ -166,8 +166,8 @@ class CarbonMonoxideSensor extends Component {
             <button
               type="button"
               className="btn btn-dark"
-              checked={this.parseStatus(info.status)}
-              onClick={this.statusOnClick(info.status)}
+              checked={this.parseStatus(info.Status)}
+              onClick={this.statusOnClick(info.Status)}
             >
               {this.text}
             </button>

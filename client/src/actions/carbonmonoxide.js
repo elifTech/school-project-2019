@@ -35,7 +35,7 @@ export const changeCarbonStatus = status => async dispatch => {
   try {
     // alert(status);
     const { data } = await axios.put('http://localhost:8080/sensor/carbon', {
-      status: status ? 1 : 0,
+      Status: status ? 1 : 0,
     });
     dispatch(updateCarbonStatus(data));
   } catch (error) {

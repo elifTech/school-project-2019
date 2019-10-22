@@ -16,6 +16,8 @@ type IoTService struct {
 
 // declare your device
 type Devices struct {
-	Carbon *devices.Carbon
-	Wind *devices.Wind
+	Carbon       *devices.Carbon
+	Wind         *devices.Wind
+	Temperature  *devices.Temperature
+	WaterQuality *devices.WaterQuality
 }

@@ -25,7 +25,7 @@ export default (state = initialState, action) => {
     case CARBON_MONOXIDE_SENSOR_STATUS_UPDATE:
       return {
         ...state,
-        info: { ...state.info, Status: action.status },
+        info: { ...state.info, Status: action.Status },
         statusLoading: false,
       };
     case CARBON_MONOXIDE_SENSOR_DATA_LOADING:

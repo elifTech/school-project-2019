@@ -7,11 +7,12 @@ import (
 	//"fmt"
 	//"github.com/jinzhu/gorm"
 	//_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/rs/cors"
 	"log"
 	"net/http"
 	"school-project-2019/server/domain"
 	"school-project-2019/server/domain/devices"
+
+	"github.com/rs/cors"
 	//"school-project-2019/server/storage"
 )
 
@@ -27,15 +28,19 @@ func main() {
 
 	// init your devices here
 	d := domain.Devices{
-		Carbon: &devices.Carbon{},
-		Wind:        &devices.Wind{},
+		Carbon:       &devices.Carbon{},
+		Wind:         &devices.Wind{},
+		Temperature:  &devices.Temperature{},
+		WaterQuality: &devices.WaterQuality{},
 	}
 
 	s := &domain.IoTService{DB: db, Devices: &d}
 	//storage.Storage = db
 	router := s.NewRouter()
 
-	s.DB.AutoMigrate(devices.CarbonEvent{}, devices.Sensor{})
+	s.DB.AutoMigrate(devices.Carbon{}, devices.Sensor{})
+	s.DB.AutoMigrate(devices.WaterQualityEvent{}, devices.Sensor{})
+	s.DB.AutoMigrate(devices.Temperature{}, devices.Sensor{})
 	// prepare device
 	err = s.Devices.Carbon.CreateSensor()
 	if err != nil {
@@ -43,11 +48,19 @@ func main() {
 		return
 	}
 
-	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
-	  })
-	
-	  // init server
-	  log.Fatal(http.ListenAndServe(":8080", c.Handler(router)))
+	err = s.Devices.Temperature.CreateSensor()
+	if err != nil {
+		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
+		return
+	}
+	err = s.Devices.WaterQuality.CreateSensor()
+	if err != nil {
+		log.Fatal(fmt.Printf("Error creating : %s %v \n", devices.WaterQualitySensor, err))
+		return
+	}
+
+	handler := cors.AllowAll().Handler(router)
+
+	// init server
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }
