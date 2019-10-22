@@ -20,6 +20,13 @@ const options = {
   defaultSortOrder: 'desc',
   display: { maintainAspectRatio: true },
   legend: { display: false },
+  scales: {
+    xAxes: [
+      {
+        display: false,
+      },
+    ],
+  },
 };
 
 class TemperatureSensor extends Component {
@@ -64,6 +71,8 @@ class TemperatureSensor extends Component {
 
   render() {
     const { events, info, isLoading, error } = this.props;
+
+    const lastEvent = events.pop().degree;
 
     if (error) {
       return (
@@ -136,15 +145,6 @@ class TemperatureSensor extends Component {
               >
                 Last Month
               </button>
-              {/* <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                name="years"
-                onClick={this.setFilter('years', 2)}
-              >
-                Last Years
-              </button> */}
-              <hr />
             </div>
           </div>
 
@@ -161,7 +161,7 @@ class TemperatureSensor extends Component {
             <h1>{events.degree}</h1>
           </div>
         </div>
-
+        {/* <Icon  /> */}
         {/* <div className="col-sm-11">
           <BootstrapTable
             data={events}
@@ -186,6 +186,8 @@ class TemperatureSensor extends Component {
             <TableHeaderColumn dataField="degree">Degree</TableHeaderColumn>
           </BootstrapTable>
         </div> */}
+
+        <div>{lastEvent}</div>
       </div>
     );
   }
