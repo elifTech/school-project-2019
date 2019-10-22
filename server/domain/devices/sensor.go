@@ -22,8 +22,9 @@ const (
 //}
 
 const (
-	TemperatureSensor string = "temperature"
-	WindSensor        string = "wind"
+	TemperatureSensor  string = "temperature"
+	WaterQualitySensor string = "waterQuality"
+	WindSensor         string = "wind"
 )
 
 //Sensors type with parameters
@@ -32,15 +33,15 @@ type Sensor struct {
 	SensorID uint `gorm:"primary_key;AUTO_INCREMENT"`
 	Name     string
 	Type     string
-	Status   SensorState `json:"status"`
+	Status   SensorState
 }
 
 // Request represents a request to run a command.
 type Event struct {
 	gorm.Model
-	EventID    uint `gorm:"primary_key;AUTO_INCREMENT"`
-	Created    time.Time
-	SensorType string `json:"device_type"`
+	EventID    uint      `gorm:"primary_key;AUTO_INCREMENT"`
+	Created    time.Time `json:"created"`
+	SensorType string    `json:"device_type"`
 }
 
 func (s *Sensor) FindManySensors() ([]Sensor, error) {
@@ -52,6 +53,13 @@ func (s *Sensor) FindManySensors() ([]Sensor, error) {
 		// returning custom DB error message
 		err = ErrNotFound
 	}
-
 	return sensors, err
+}
+
+func (e *Event) BeforeSave() (err error) {
+	if e.Created.IsZero() {
+		e.Created = time.Now()
+	}
+
+	return err
 }

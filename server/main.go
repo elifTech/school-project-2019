@@ -28,14 +28,15 @@ func main() {
 
 	// init your devices here
 	d := domain.Devices{
-		Temperature: &devices.Temperature{},
+		Temperature:  &devices.Temperature{},
+		WaterQuality: &devices.WaterQuality{},
 	}
 
 	s := &domain.IoTService{DB: db, Devices: &d}
 	//storage.Storage = db
 	router := s.NewRouter()
 
-	s.DB.AutoMigrate(devices.TemperatureEvent{}, devices.Sensor{})
+	s.DB.AutoMigrate(devices.TemperatureEvent{}, devices.WaterQualityEvent{}, devices.Sensor{})
 	// prepare device
 	err = s.Devices.Temperature.CreateSensor()
 	if err != nil {
@@ -43,11 +44,14 @@ func main() {
 		return
 	}
 
-	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
-	})
+	err = s.Devices.WaterQuality.CreateSensor()
+	if err != nil {
+		log.Fatal(fmt.Printf("Error creating : %s %v \n", devices.WaterQualitySensor, err))
+		return
+	}
+
+	handler := cors.AllowAll().Handler(router)
 
 	// init server
-	log.Fatal(http.ListenAndServe(":8080", c.Handler(router)))
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }

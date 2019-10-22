@@ -2,6 +2,7 @@ package devices
 
 import (
 	"fmt"
+	//"github.com/jinzhu/gorm"
 )
 
 type Temperature struct {
@@ -36,7 +37,7 @@ func (t *Temperature) Get() ([]TemperatureEvent, error) {
 
 func (t *Temperature) GetStatus() (*Temperature, error) {
 	device := new(Temperature)
-	err := Storage.Where(&Sensor{Type: TemperatureSensor}).First(&device).Error
+	err := Storage.Where(&Sensor{Type: TemperatureSensor}).Select("status").First(&device).Error
 	if err != nil {
 		// returning custom DB error message
 		err = ErrNotFound
@@ -80,18 +81,17 @@ func (t *Temperature) CreateSensor() error {
 	var err error
 	r, err := t.Get()
 	if err == nil {
-		fmt.Printf("Not Creating Sensor: %v \n", r)
-		return nil
+    fmt.Printf("Sensor is already created: %v \n", r)
+    return nil
 	}
-
-	fmt.Printf("Creating Sensor: %v \n", err)
 
 	temperatureSensor := Sensor{
 		Name:   "Temperature Sensor",
 		Type:   TemperatureSensor,
 		Status: StatusOffline,
 	}
-	return Storage.Create(&temperatureSensor).Error
+  fmt.Printf("Sensor is created %v \n", temperatureSensor)
+  return Storage.Create(&temperatureSensor).Error
 }
 
 func (t *Temperature) UpdateTemperatureSensorStatus(status SensorState) error {

@@ -48,8 +48,8 @@ class TemperatureSensor extends Component {
     ).isRequired,
     info: PropTypes.shape({
       Name: PropTypes.string.isRequired,
+      Status: PropTypes.number.isRequired,
       Type: PropTypes.string.isRequired,
-      status: PropTypes.number.isRequired,
     }).isRequired,
     isLoading: PropTypes.bool.isRequired,
     removeInterval: PropTypes.func.isRequired,
@@ -72,7 +72,7 @@ class TemperatureSensor extends Component {
   render() {
     const { events, info, isLoading, error } = this.props;
 
-    const lastEvent = events.pop().degree;
+    // const lastEvent = events.pop().Degree;
 
     if (error) {
       return (
@@ -104,7 +104,7 @@ class TemperatureSensor extends Component {
             {' '}
             <h3>{info.Name}</h3>
             <h5>{info.Type}</h5>
-            <span>Port: {this.parseStatus(info.status)}</span>
+            <span>Port: {this.parseStatus(info.Status)}</span>
             <hr />
           </div>
         </div>
@@ -152,8 +152,8 @@ class TemperatureSensor extends Component {
             <button
               type="button"
               className={startButton}
-              checked={this.parseStatus(info.status)}
-              onClick={this.statusOnClick(info.status)}
+              checked={this.parseStatus(info.Status)}
+              onClick={this.statusOnClick(info.Status)}
             >
               {this.text}
             </button>
@@ -187,7 +187,7 @@ class TemperatureSensor extends Component {
           </BootstrapTable>
         </div> */}
 
-        <div>{lastEvent}</div>
+        {/* <div>{lastEvent}</div> */}
       </div>
     );
   }

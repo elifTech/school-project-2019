@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-
-	//"strconv"
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
