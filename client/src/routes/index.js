@@ -30,6 +30,10 @@ const routes = {
       load: () =>
         import(/* webpackChunkName: 'temperature' */ './temperaturesensor'),
       path: '/temperaturesensor',
+    {
+      load: () => import(/* webpackChunkName: 'water-meter' */ './water-meter'),
+      path: '/water-meter',
+
     },
 
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)

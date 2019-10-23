@@ -10,9 +10,5 @@
     "*.{css,less,styl,scss,sass,sss}": [
       "stylelint --fix",
       "git add --force"
-    ],
-    "../server/*.{go}": [
-      "gofmt -w",
-      "git add --force"
     ]
   }

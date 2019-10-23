@@ -13,6 +13,7 @@ import windIcon from '../../assets/wind.svg';
 import qualityIcon from '../../assets/quality.svg';
 import websiteIcon from '../../assets/website.svg';
 import facebookIcon from '../../assets/facebook.svg';
+import waterMeterIcon from '../../assets/water-meter.svg';
 
 class Menu extends React.Component {
   static propTypes = {
@@ -99,6 +100,11 @@ class Menu extends React.Component {
       icon: qualityIcon,
       path: 'water-quality',
       text: 'Water Quality',
+    },
+    {
+      icon: waterMeterIcon,
+      path: 'water-meter',
+      text: 'Water Consumption',
     },
   ];
 }

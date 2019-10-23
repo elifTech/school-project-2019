@@ -6,8 +6,10 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// SensorState ...
 type SensorState int
 
+// SensorState ...
 const (
 	StatusOffline SensorState = iota
 	StatusOnline
@@ -16,18 +18,23 @@ const (
 
 // we may use it for some future logic
 // defining sensor types
-//type SensorType string
-//func (st SensorType) String() string {
+// type SensorType string
+// func (st SensorType) String() string {
 //  return string(st)
-//}
-
+// }
+// Sensors ...
 const (
 	TemperatureSensor  string = "temperature"
-	WaterQualitySensor string = "waterQuality"
-	WindSensor         string = "wind"
-)
 
 //Sensors type with parameters
+
+	WaterMeter         string = "waterConsumption"
+	WindSensor         string = "wind"
+	WaterQualitySensor string = "waterQuality"
+)
+
+// Sensor ...
+
 type Sensor struct {
 	gorm.Model
 	SensorID uint `gorm:"primary_key;AUTO_INCREMENT"`
@@ -36,12 +43,17 @@ type Sensor struct {
 	Status   SensorState
 }
 
+
 // Request represents a request to run a command.
+
+// Event ...
+
 type Event struct {
 	gorm.Model
 	EventID    uint      `gorm:"primary_key;AUTO_INCREMENT"`
 	Created    time.Time `json:"created"`
 	SensorType string    `json:"device_type"`
+
 }
 
 func (s *Sensor) FindManySensors() ([]Sensor, error) {
@@ -54,12 +66,27 @@ func (s *Sensor) FindManySensors() ([]Sensor, error) {
 		err = ErrNotFound
 	}
 	return sensors, err
+
 }
 
+// BeforeSave ...
 func (e *Event) BeforeSave() (err error) {
 	if e.Created.IsZero() {
 		e.Created = time.Now()
 	}
 
 	return err
+}
+
+// FindManySensors ...
+func (s *Sensor) FindManySensors() ([]Sensor, error) {
+	var sensors []Sensor
+
+	err := Storage.Find(&sensors).Error
+
+	if err != nil {
+		// returning custom DB error message
+		err = ErrNotFound
+	}
+	return sensors, err
 }

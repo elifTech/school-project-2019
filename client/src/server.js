@@ -19,7 +19,6 @@ import router from './router';
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
 import configureStore from './store/configure-store';
-import { setRuntimeVariable } from './actions/runtime';
 
 const FOUND = 302;
 const INTERNAL_SERVER_ERROR = 500;
@@ -74,12 +73,6 @@ app.get('*', async (request, response, next) => {
       // I should not use `history` on server.. but how I do redirection? follow universal-router
     });
 
-    store.dispatch(
-      setRuntimeVariable({
-        name: 'initialNow',
-        value: Date.now(),
-      }),
-    );
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
     const context = {

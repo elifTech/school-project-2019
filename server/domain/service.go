@@ -7,6 +7,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+// IoTService ...
 type IoTService struct {
 	DB     *gorm.DB
 	Router *httprouter.Router
@@ -14,8 +15,12 @@ type IoTService struct {
 	Devices *Devices
 }
 
-// declare your device
+// Devices ... declare your device
 type Devices struct {
-	Temperature  *devices.Temperature
-	WaterQuality *devices.WaterQuality
+
+	Temperature      *devices.Temperature
+	WaterConsumption *devices.WaterConsumption
+	Wind             *devices.Wind
+	WaterQuality     *devices.WaterQuality
+
 }

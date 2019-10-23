@@ -17,11 +17,17 @@ const (
 	dbname   = "school"
 )
 
-var ErrNotFound = errors.New("record not found")
 
-//type Storage *gorm.DB
+// ErrNotFound ...
+var ErrNotFound = errors.New("record not found")
+// ErrBadStatus ...
+var ErrBadStatus = errors.New("status is not correct")
+
+
+// Storage type *gorm.DB
 var Storage *gorm.DB
 
+// Connect ...
 func Connect() (*gorm.DB, error) {
 	db, err := gorm.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
 		host, port, user, dbname, password))
@@ -35,6 +41,7 @@ func Connect() (*gorm.DB, error) {
 	err = db.DB().Ping()
 	if err != nil {
 		return nil, fmt.Errorf("can't ping the DB: %v \n", err)
+
 	}
 
 	Storage = db
