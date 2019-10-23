@@ -9,10 +9,9 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import classNames from 'classnames';
 import style from './WaterQualitySensor.css';
-import LineChart from '../LineChart/LineChart';
-import GrowSpinner from '../GrowSpinner/GrowSpinner';
+import LineChart from '../LineChart';
 import FilterButtons from './FilterButtons';
-import DoughnutChart from '../DoughnutChart/DoughnutChart';
+import DoughnutChart from '../DoughnutChart';
 import TableStructure from './TableStructure';
 import Loader from '../Loader';
 
@@ -64,16 +63,20 @@ class WaterQualitySensor extends PureComponent {
       waterStructureLabels,
       status,
     } = this.props;
-    return error ? (
-      <Col md={10}>
-        <Alert variant="danger">
-          <Alert.Heading>You got an error!</Alert.Heading>
-          <p>Server is unavailable. Please check your Internet connection. </p>
-        </Alert>
-      </Col>
-    ) : eventsQuality.length === 0 ? (
-      <Loader />
-    ) : (
+    if (error)
+      return (
+        <Col md={10}>
+          <Alert variant="danger">
+            <Alert.Heading>You got an error!</Alert.Heading>
+            <p>
+              Server is unavailable. Please check your Internet connection.{' '}
+            </p>
+          </Alert>
+        </Col>
+      );
+    if (eventsQuality.length === 0) return <Loader />;
+
+    return (
       <Container className={style.container}>
         <Col className={style.header}>Water Quality sensor</Col>
         <Row className="py-2">

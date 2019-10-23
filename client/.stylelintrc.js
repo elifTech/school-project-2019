@@ -12,6 +12,16 @@ module.exports = {
   ],
 
   rules: {
+    'order/order': [
+      'custom-properties',
+      'dollar-variables',
+      'declarations',
+      'at-rules',
+      'rules',
+    ],
+
+    // Opinionated rule, you can disable it if you want
+    'order/properties-order': [],
     'property-no-unknown': [
       true,
       {
@@ -23,6 +33,7 @@ module.exports = {
       },
     ],
 
+    // https://github.com/hudochenkov/stylelint-order/blob/master/rules/order/README.md
     'selector-pseudo-class-no-unknown': [
       true,
       {
@@ -35,19 +46,7 @@ module.exports = {
       },
     ],
 
-    // Opinionated rule, you can disable it if you want
-    'string-quotes': 'single',
-
-    // https://github.com/hudochenkov/stylelint-order/blob/master/rules/order/README.md
-    'order/order': [
-      'custom-properties',
-      'dollar-variables',
-      'declarations',
-      'at-rules',
-      'rules',
-    ],
-
     // https://github.com/hudochenkov/stylelint-order/blob/master/rules/properties-order/README.md
-    'order/properties-order': [],
+    'string-quotes': 'single',
   },
 };

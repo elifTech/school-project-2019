@@ -1,7 +1,5 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import s from './Dashboard.css';
 import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget';
 
