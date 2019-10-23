@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
+	"school-project-2019/server/domain/middlewares"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -15,11 +16,11 @@ type Data struct {
 }
 
 func WindInit(router *httprouter.Router) {
-	router.GET("/wind", GetWindSensor)
-	router.GET("/wind/events", FindWindEvents)
-	router.POST("/wind/event", CreateWindEvent)
-	router.GET("/wind/event/last", GetLastDate)
-	router.PUT("/wind", UpdateWindSensor)
+	router.GET("/wind", middlewares.Authorize(GetWindSensor))
+	router.GET("/wind/events", middlewares.Authorize(FindWindEvents))
+	router.POST("/wind/event", middlewares.Authorize(CreateWindEvent))
+	router.GET("/wind/event/last", middlewares.Authorize(GetLastDate))
+	router.PUT("/wind", middlewares.Authorize(UpdateWindSensor))
 }
 
 func GetWindSensor(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -76,7 +77,6 @@ func UpdateWindSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(response)
 }
 

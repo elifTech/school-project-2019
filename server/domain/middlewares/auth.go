@@ -5,17 +5,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
 	"strings"
-)
+	"time"
 
-type User struct {
-	Email    string `json:"email"`
-	Password string
-}
+	"school-project-2019/server/domain/devices"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/julienschmidt/httprouter"
+)
 
 type JwtToken struct {
 	Token string
@@ -25,8 +24,14 @@ type Exception struct {
 	Message string
 }
 
+type Claims struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	jwt.StandardClaims
+}
+
 func Authenticate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	var user User
+	var user devices.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, "invalid user data", http.StatusNotAcceptable)
@@ -51,6 +56,7 @@ func Authorize(next httprouter.Handle) httprouter.Handle {
 		}
 
 		bearerToken := strings.Split(bearerHeader, ":")
+		fmt.Println(bearerToken)
 		if len(bearerToken) != 2 {
 			json.NewEncoder(w).Encode(Exception{Message: "Invalid Authorization token"})
 			return
@@ -87,27 +93,32 @@ func parseBearer(token string) (*jwt.Token, error) {
 
 /*---------- HELPERS ---------*/
 
-// mocked data
 const (
-	username = "test@t.com"
-	pwd      = "eliftech"
-	secret   = "Som35eCre7TokEn!"
+	secret = "Som35eCre7TokEn!"
 )
 
-func valid(user *User) bool {
-	if user.Email == username && user.Password == pwd {
-		return true
+func valid(user *devices.User) bool {
+	var dbUser devices.User
+	_, err := dbUser.Get(user.Email, user.Password)
+	if err != nil {
+		return false
 	}
 
-	return false
+	return true
 }
 
 // sign token
-func signedTokenString(user User) string {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS384, jwt.MapClaims{
-		"username": user.Email,
-		"password": user.Password,
-	})
+func signedTokenString(user devices.User) string {
+	expirationTime := time.Now().Add(15 * time.Minute)
+	claims := &Claims{
+		Username: user.Email,
+		Password: user.Password,
+		StandardClaims: jwt.StandardClaims{
+			// In JWT, the expiry time is expressed as unix milliseconds
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS384, claims)
 
 	fmt.Printf("user %v \n", user)
 

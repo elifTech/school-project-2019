@@ -37,7 +37,7 @@ func main() {
 	//storage.Storage = db
 	router := s.NewRouter()
 
-	s.DB.AutoMigrate(devices.WindEvent{}, devices.TemperatureEvent{}, devices.Sensor{})
+	s.DB.AutoMigrate(devices.User{}, devices.WindEvent{}, devices.TemperatureEvent{}, devices.Sensor{})
 	// prepare device
 	err = s.Devices.Temperature.CreateSensor()
 	if err != nil {
@@ -54,6 +54,7 @@ func main() {
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
 		AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
+		AllowedHeaders: []string{"Authorization"},
 	})
 
 	// init server
