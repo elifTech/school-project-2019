@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
-// import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Spinner, Alert } from 'react-bootstrap';
 import { Line, defaults } from 'react-chartjs-2';
-// import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import getChartData from './chart-dataset';
-// import Icon from './carbonIcon/carbon-icon';
-// import Loader from '../../components/Loader/Loader';
 import { setFilter, changeTemperatureStatus } from '../../actions/temperature';
 
 defaults.global.defaultFontFamily = 'Montserrat';
 
-let startButton = '';
+// let this.startButton = '';
 
 const options = {
   defaultSortName: 'EventID',
@@ -151,7 +147,7 @@ class TemperatureSensor extends Component {
           <div className="col-sm-5">
             <button
               type="button"
-              className={startButton}
+              className={this.startButton}
               checked={this.parseStatus(info.Status)}
               onClick={this.statusOnClick(info.Status)}
             >
@@ -161,33 +157,6 @@ class TemperatureSensor extends Component {
             <h1>{events.degree}</h1>
           </div>
         </div>
-        {/* <Icon  /> */}
-        {/* <div className="col-sm-11">
-          <BootstrapTable
-            data={events}
-            pagination
-            options={options}
-            hover
-            version="4"
-          >
-            <TableHeaderColumn dataField="EventID" dataSort isKey>
-              ID
-            </TableHeaderColumn>
-            <TableHeaderColumn dataField="name">Device Name</TableHeaderColumn>
-            <TableHeaderColumn dataField="device_type">
-              Device Type
-            </TableHeaderColumn>
-            <TableHeaderColumn
-              dataField="CreatedAt"
-              dataFormat={this.dateFormatter}
-            >
-              Event created
-            </TableHeaderColumn>
-            <TableHeaderColumn dataField="degree">Degree</TableHeaderColumn>
-          </BootstrapTable>
-        </div> */}
-
-        {/* <div>{lastEvent}</div> */}
       </div>
     );
   }
@@ -216,11 +185,11 @@ class TemperatureSensor extends Component {
     switch (status) {
       case 0:
         this.text = 'ON';
-        startButton = 'btn btn-success';
+        this.startButton = 'btn btn-success';
         return 'Open';
       default:
         this.text = 'OFF';
-        startButton = 'btn btn-danger';
+        this.startButton = 'btn btn-danger';
         return 'Close';
     }
   };

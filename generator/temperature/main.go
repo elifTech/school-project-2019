@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math"
 	"math/rand"
 	"net/http"
 	"time"
@@ -26,6 +27,15 @@ func main() {
 	http.ListenAndServe(":3003", nil)
 }
 
+func toFixed(num float64, precision int) float64 {
+	output := math.Pow(10, float64(precision))
+	return float64(round(num*output)) / output
+}
+
+func round(num float64) int {
+	return int(num + math.Copysign(0.5, num))
+}
+
 func createTemperatureEvent() {
 	s1 := rand.NewSource(time.Now().UnixNano())
 	r1 := rand.New(s1)
@@ -35,8 +45,17 @@ func createTemperatureEvent() {
 	degree := r1.Intn(max-min+1) + min
 	step := 1
 	for {
-		moveStep := r1.Intn(3)
+		//moveStep := r1.Intn(3)
 
+		moveStepFloat := rand.NormFloat64()*1 + 0
+
+		moveStep := toFixed(moveStepFloat, 0)
+
+		if moveStep > 1 {
+			moveStep = 1
+		} else if moveStep < -1 {
+			moveStep = -1
+		}
 		//fmt.Println("Max degree > max? %v", degree > max)
 		//fmt.Println("max  %v, degree %v", max, degree)
 		//increase temperature
@@ -46,7 +65,7 @@ func createTemperatureEvent() {
 			degree += 3 * step
 		} else if moveStep == 1 && degree <= max {
 			degree += step
-		} else if moveStep == 2 && degree >= min { //decrease temperature
+		} else if moveStep == -1 && degree >= min { //decrease temperature
 			degree -= step
 		}
 
