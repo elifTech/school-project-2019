@@ -43,7 +43,6 @@
     "redux-form": "~8.2.6",
     "redux-thunk": "~2.3.0",
     "reselect": "~4.0.0",
-    "runtime": "^0.14.1",
     "serialize-javascript": "~1.9.0",
     "universal-router": "~8.2.1",
     "whatwg-fetch": "~3.0.0"
