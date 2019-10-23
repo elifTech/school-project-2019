@@ -2,6 +2,7 @@ package devices
 
 import (
 	"fmt"
+	"time"
 )
 
 type Wind struct {
@@ -50,7 +51,7 @@ func (t *Wind) UpdateWindStatus(status SensorState) (SensorState, error) {
 	return status, Storage.Save(&sensor).Error
 }
 
-func (t *Wind) FindManyEvents(from string, to string) (*[]WindEvent, error) {
+func (t *Wind) FindManyEvents(from time.Time, to time.Time) (*[]WindEvent, error) {
 	var events []WindEvent
 
 	var err error

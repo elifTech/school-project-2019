@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
+	"time"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -82,8 +83,16 @@ func UpdateWindSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 
 func FindWindEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	keys := r.URL.Query()
-	from := keys.Get("from")
-	to := keys.Get("to")
+	from, err := time.Parse(time.RFC3339, keys.Get("from"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	to, err := time.Parse(time.RFC3339, keys.Get("to"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
 	wind := devices.Wind{}
 	windEvents, err := wind.FindManyEvents(from, to)
