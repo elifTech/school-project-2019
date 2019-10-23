@@ -5,17 +5,20 @@ import (
 	//"github.com/jinzhu/gorm"
 )
 
+// Temperature ...
 type Temperature struct {
 	Sensor
 	Events []TemperatureEvent `gorm:"foreignkey:SensorType;association_foreignkey:Type"`
 }
 
+// TemperatureEvent ...
 type TemperatureEvent struct {
 	Event
 	Name   string  `json:"name"`
 	Degree float32 `json:"degree"`
 }
 
+// TableName ...
 func (Temperature) TableName() string {
 	return "sensors"
 }
@@ -23,6 +26,7 @@ func (Temperature) TableName() string {
 func init() {
 	fmt.Printf("Initalising %s sensor... \n", TemperatureSensor)
 }
+
 
 func (t *Temperature) Get() ([]TemperatureEvent, error) {
 	var device []TemperatureEvent
@@ -36,6 +40,7 @@ func (t *Temperature) Get() ([]TemperatureEvent, error) {
 }
 
 func (t *Temperature) GetStatus() (*Temperature, error) {
+
 	device := new(Temperature)
 	err := Storage.Where(&Sensor{Type: TemperatureSensor}).Select("status").First(&device).Error
 	if err != nil {
@@ -44,6 +49,7 @@ func (t *Temperature) GetStatus() (*Temperature, error) {
 	}
 	return device, err
 }
+
 
 func (t *Temperature) EventFilter(from string) ([]TemperatureEvent, error) {
 	var events []TemperatureEvent
@@ -60,7 +66,24 @@ func (t *Temperature) EventFilter(from string) ([]TemperatureEvent, error) {
 	return events, err
 }
 
+
 func (t *Temperature) FindOneEvent(query TemperatureEvent) (*TemperatureEvent, error) {
+	event := new(TemperatureEvent)
+
+	if len(query.SensorType) == 0 {
+		query.SensorType = TemperatureSensor
+	}
+	err := Storage.Where(&query).Error
+	if err != nil {
+		// returning custom DB error message
+		err = ErrNotFound
+	}
+
+	return event, err
+}
+
+// FindAllEvent ...
+func (t *Temperature) FindAllEvent(query TemperatureEvent) (*TemperatureEvent, error) {
 	event := new(TemperatureEvent)
 
 	if len(query.SensorType) == 0 {
@@ -75,7 +98,7 @@ func (t *Temperature) FindOneEvent(query TemperatureEvent) (*TemperatureEvent, e
 	return event, err
 }
 
-// just for device initialising
+// CreateSensor just for device initialising
 func (t *Temperature) CreateSensor() error {
 	// if device is found - do not do anything
 	var err error
@@ -104,6 +127,7 @@ func (t *Temperature) UpdateTemperatureSensorStatus(status SensorState) error {
 	return Storage.Save(&sensor).Error
 }
 
+// CreateEvent ...
 func (t *Temperature) CreateEvent(payload *TemperatureEvent) (err error) {
 	// event should be populate with sensor type
 	if len(payload.SensorType) == 0 {

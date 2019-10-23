@@ -1,0 +1,6 @@
+{
+  "name": "WaterMeterStatus",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./WaterMeterStatus.js"
+}
