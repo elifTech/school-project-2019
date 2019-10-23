@@ -37,7 +37,7 @@ func PingWaterQuality(w http.ResponseWriter, r *http.Request, ps httprouter.Para
   waterQuality := devices.WaterQuality{}
   device, err := waterQuality.Get()
   // testing custom error response
-  if err == devices.NOT_FOUND {
+  if err == devices.ErrNotFound {
     http.Error(w, errors.New("the water quality sensor is not found").Error(), http.StatusNotFound)
     return
   }
@@ -90,7 +90,7 @@ func ChangeWaterQualityStatus(w http.ResponseWriter, r *http.Request, ps httprou
 func GetEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
   var waterQuality devices.WaterQuality
   _, err := waterQuality.Get()
-  if err == devices.NOT_FOUND {
+  if err == devices.ErrNotFound {
     http.Error(w, errors.New("the water quality sensor is not found").Error(), http.StatusNotFound)
     return
   }
@@ -118,7 +118,7 @@ func GetPeriodEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 
   var waterQuality devices.WaterQuality
   _, err := waterQuality.Get()
-  if err == devices.NOT_FOUND {
+  if err == devices.ErrNotFound {
     http.Error(w, errors.New("the water quality sensor is not found").Error(), http.StatusNotFound)
     return
   }
