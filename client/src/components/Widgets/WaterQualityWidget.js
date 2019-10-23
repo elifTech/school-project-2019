@@ -7,17 +7,16 @@ import Col from 'react-bootstrap/Col';
 import { segmentColors } from '../WaterQualitySensor/HelperChartData';
 import style from './WaterQualityWidget.css';
 
+const inlineStyle = {
+  background: 'rgba(215,233,226,0.41)',
+  boxShadow: '0 0 8px 1px rgb(198, 199, 203)',
+};
+
 function WaterQualityWidget({ value }) {
   return (
     <Container>
       <Row>
-        <Col
-          md={4}
-          style={{
-            background: 'rgba(215,233,226,0.41)',
-            boxShadow: '0 0 8px 1px rgb(198, 199, 203)',
-          }}
-        >
+        <Col md={4} style={inlineStyle}>
           <p>Water quality</p>
           <ReactSpeedometer
             value={Number(value)}
@@ -25,7 +24,7 @@ function WaterQualityWidget({ value }) {
             minValue={1}
             maxValue={14}
             segments={500}
-            height={250}
+            height={200}
             width={300}
             maxSegmentLabels={5}
             needleHeightRatio={0.7}
@@ -35,6 +34,8 @@ function WaterQualityWidget({ value }) {
     </Container>
   );
 }
+
+
 WaterQualityWidget.propTypes = {
   value: PropTypes.string,
 };
