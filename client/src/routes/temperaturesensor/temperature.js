@@ -69,22 +69,6 @@ class TemperatureSensor extends Component {
 
     // const lastEvent = events.pop().Degree;
 
-    if (error) {
-      return (
-        <div className="container-fluid">
-          <Alert variant="danger">
-            <Alert.Heading>Failed to load resource!</Alert.Heading>
-            <p>Server is not listening</p>
-            <Spinner animation="border" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-            <hr />
-            <p className="mb-0">{error}</p>
-          </Alert>
-        </div>
-      );
-    }
-
     if (isLoading) {
       //   return (
       //     <div>
@@ -104,6 +88,19 @@ class TemperatureSensor extends Component {
           </div>
         </div>
 
+        {error ? (
+          <div className="container-fluid">
+            <Alert variant="danger">
+              <Alert.Heading>Failed to load resource!</Alert.Heading>
+              <p>Server is not listening</p>
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+              <hr />
+              <p className="mb-0">{error}</p>
+            </Alert>
+          </div>
+        ) : null}
         <div className="row mb-9">
           <div className="col-sm-7">
             <Line data={getChartData(events)} options={options} />
