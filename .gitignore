@@ -32,3 +32,4 @@ yarn-error.log*
 server/server
 generator/
 !generator/**/*.go
+eventGenerator/eventGenerator
