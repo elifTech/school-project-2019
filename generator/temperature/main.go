@@ -12,7 +12,7 @@ import (
 )
 
 type Event struct {
-	Degree  int
+	Degree  float32
 	Name    string
 	Created time.Time
 	Event   map[string]string
@@ -42,28 +42,27 @@ func createTemperatureEvent() {
 	min := 18
 	max := 28
 
-	degree := r1.Intn(max-min+1) + min
-	step := 1
+	var degree float32 = float32(r1.Intn(max-min+1) + min)
+
 	for {
 		//moveStep := r1.Intn(3)
 
-		moveStepFloat := rand.NormFloat64()*0.3 + 0
+		moveStepFloat := rand.NormFloat64()*0.2 + 0
 
-		moveStep := toFixed(moveStepFloat, 0)
+		//moveStep := toFixed(moveStepFloat, 1)
+		moveStep := float32(toFixed(moveStepFloat, 1))
+		//fmt.Printf("move step float is %v, move step is %v", moveStepFloat, moveStep)
 
-		fmt.Printf("move step float is %v, move step is %v", moveStepFloat, moveStep)
-		//fmt.Println("Max degree > max? %v", degree > max)
-		//fmt.Println("max  %v, degree %v", max, degree)
-		//increase temperature
-		if degree > max {
-			degree -= 3 * step
-		} else if degree < min {
-			degree += 3 * step
-		} else if moveStep == 1 && degree <= max {
-			degree += step
-		} else if moveStep == -1 && degree >= min { //decrease temperature
-			degree -= step
+		fmt.Printf(" move step is %v", moveStep)
+		if degree > float32(max) {
+			degree -= 2
+		} else if degree < float32(min) {
+			degree += 2
+		} else { // change temperature
+			degree += moveStep
 		}
+
+		degree = float32(toFixed(float64(degree), 1))
 
 		creationTime := time.Now()
 		fmt.Println(moveStep)

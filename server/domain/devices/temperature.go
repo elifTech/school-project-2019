@@ -12,8 +12,8 @@ type Temperature struct {
 
 type TemperatureEvent struct {
 	Event
-	Name   string `json:"name"`
-	Degree int    `json:"degree"`
+	Name   string  `json:"name"`
+	Degree float32 `json:"degree"`
 }
 
 func (Temperature) TableName() string {
