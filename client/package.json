@@ -106,6 +106,7 @@
     "stylelint": "~10.1.0",
     "stylelint-config-standard": "~18.3.0",
     "stylelint-order": "~3.0.1",
+    "unused-webpack-plugin": "~2.4.0",
     "webpack": "~4.39.3",
     "webpack-assets-manifest": "~3.1.1",
     "webpack-bundle-analyzer": "~3.4.1",

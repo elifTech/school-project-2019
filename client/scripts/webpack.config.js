@@ -7,6 +7,8 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import overrideRules from './lib/override-rules';
 import pkg from '../package.json';
 
+const UnusedWebpackPlugin = require('unused-webpack-plugin');
+
 const ROOT_DIR = path.resolve(__dirname, '..');
 const resolvePath = (...parameters) => path.resolve(ROOT_DIR, ...parameters);
 const SRC_DIR = resolvePath('src');
@@ -348,7 +350,24 @@ const clientConfig = {
     }),
 
     ...(isDebug
-      ? []
+      ? [
+          new UnusedWebpackPlugin({
+            // Source directories
+            directories: [SRC_DIR],
+            // Exclude patterns
+            exclude: [
+              '*.test.js',
+              'client.js',
+              'config.js',
+              'server.js',
+              '*.server.js',
+              'package.json',
+              'components/Html.js',
+            ],
+            // Root directory (optional)
+            root: ROOT_DIR,
+          }),
+        ]
       : Array.from(isAnalyze ? [new BundleAnalyzerPlugin()] : [])),
   ],
 
@@ -460,6 +479,21 @@ const serverConfig = {
       banner: 'require("source-map-support").install();',
       entryOnly: false,
       raw: true,
+    }),
+    new UnusedWebpackPlugin({
+      // Source directories
+      directories: [SRC_DIR],
+      // Exclude patterns
+      exclude: [
+        '*.test.js',
+        'client.js',
+        '*.client.js',
+        'server.js',
+        'package.json',
+        'dom-utils.js',
+      ],
+      // Root directory (optional)
+      root: ROOT_DIR,
     }),
   ],
 
