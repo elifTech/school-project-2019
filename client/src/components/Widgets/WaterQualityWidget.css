@@ -1,6 +1,10 @@
 .container {
-  /*box-sizing: content-box;*/
-  height: 300px;
-  background-color: rgba(215, 233, 226, 0.86);
+  padding: 1em;
+  height: 17em;
+  width: 24em;
+  background-color: rgba(231, 249, 242, 0.34);
   box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+  border-radius: 0.5em;
+  color: #626364;
+  font: bold 16px serif;
 }

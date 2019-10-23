@@ -7975,7 +7975,7 @@ react-context-toolbox@^2.0.2:
   resolved "https://registry.yarnpkg.com/react-context-toolbox/-/react-context-toolbox-2.0.2.tgz#35637287cb23f801e6ed802c2bb7a97e1f04e3fb"
   integrity sha512-tY4j0imkYC3n5ZlYSgFkaw7fmlCp3IoQQ6DxpqeNHzcD0hf+6V+/HeJxviLUZ1Rv1Yn3N3xyO2EhkkZwHn0m1A==
 
-react-d3-speedometer@~0.7.1:
+react-d3-speedometer@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/react-d3-speedometer/-/react-d3-speedometer-0.7.1.tgz#ade9b42abd47a650d0b253a79c5ccbd8db3ac9af"
   integrity sha512-kdnyF/O5EBqJCe1B3v4ygFIHlu0iV8Lo5IedgKp2+uGKYCsDETLzwaj9EKUZkgp0lo6ewNn72EDau9BnhmCPUA==

@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from './Home';
+import Dashboard from './Dashboard';
 import Layout from '../../components/Layout';
 import setCurrentTab from '../../actions/menu';
 
@@ -9,9 +9,9 @@ export default function action({ store: { dispatch } }) {
     chunks: ['home'],
     component: (
       <Layout>
-        <Home />
+        <Dashboard />
       </Layout>
     ),
-    title: 'ElifTech School 2019 Project',
+    title: 'Smart Things Dashboard',
   };
 }
