@@ -1,4 +1,4 @@
-import format from 'moment';
+import moment from 'moment';
 
 export default events => {
   const chartColor = '#5b92e5';
@@ -28,7 +28,7 @@ export default events => {
       },
     ],
     labels: events.map(({ CreatedAt }) =>
-      format(CreatedAt).format('DD-MM HH:mm:ss'),
+      moment(CreatedAt).format('DD-MM HH:mm:ss'),
     ),
   };
 };

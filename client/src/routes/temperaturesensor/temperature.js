@@ -9,8 +9,6 @@ import { setFilter, changeTemperatureStatus } from '../../actions/temperature';
 
 defaults.global.defaultFontFamily = 'Montserrat';
 
-// let this.startButton = '';
-
 const options = {
   defaultSortName: 'EventID',
   defaultSortOrder: 'desc',
@@ -20,6 +18,7 @@ const options = {
     xAxes: [
       {
         display: false,
+        labelString: 'time',
       },
     ],
   },
