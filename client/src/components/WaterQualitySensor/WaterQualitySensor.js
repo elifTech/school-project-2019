@@ -14,6 +14,7 @@ import GrowSpinner from '../GrowSpinner/GrowSpinner';
 import FilterButtons from './FilterButtons';
 import DoughnutChart from '../DoughnutChart/DoughnutChart';
 import TableStructure from './TableStructure';
+import Loader from '../Loader';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
@@ -63,18 +64,18 @@ class WaterQualitySensor extends PureComponent {
       waterStructureLabels,
       status,
     } = this.props;
-    return eventsQuality.length === 0 ? (
-      <GrowSpinner error={error} />
+    return error ? (
+      <Col md={10}>
+        <Alert variant="danger">
+          <Alert.Heading>You got an error!</Alert.Heading>
+          <p>Server is unavailable. Please check your Internet connection. </p>
+        </Alert>
+      </Col>
+    ) : eventsQuality.length === 0 ? (
+      <Loader />
     ) : (
       <Container className={style.container}>
         <Col className={style.header}>Water Quality sensor</Col>
-        <Row>
-          <Col className="pl-0">
-            <Alert variant="danger" show={!!error}>
-              {error}
-            </Alert>
-          </Col>
-        </Row>
         <Row className="py-2">
           <Col md={1} className="px-0">
             Status

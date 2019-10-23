@@ -63,7 +63,7 @@ func (w *WaterQuality) Get() (*WaterQuality, error) {
   err := Storage.Where(&Sensor{Type: WaterQualitySensor}).First(&waterQualitySensor).Error
   if err != nil {
     // returning custom DB error message
-    err = NOT_FOUND
+    err = ErrNotFound
   }
 
   return waterQualitySensor, err
@@ -73,7 +73,7 @@ func (w *WaterQuality) GetAllEvents() ([] WaterQualityEvent, error) {
   var events [] WaterQualityEvent
   err := Storage.Find(&events).Error
   if err != nil {
-    err = NOT_FOUND
+    err = ErrNotFound
   }
   return events, err
 }
@@ -88,7 +88,7 @@ func (w *WaterQuality) GetPeriodEvents(period string) ([] PeriodEvent, error) {
     Limit(50).
     Scan(&events).Error
   if err != nil {
-    err = NOT_FOUND
+    err = ErrNotFound
   }
   return events, err
 }
@@ -103,7 +103,7 @@ func (w *WaterQuality) GetWaterStructure() (*WaterStructure, error) {
    Limit(1).
    Scan(&lastDayEvent).Error
  if err != nil {
-   err = NOT_FOUND
+   err = ErrNotFound
  }
  return lastDayEvent, err
 }
@@ -117,7 +117,7 @@ func (w *WaterQuality) FindOneEvent(query WaterQualityEvent) (*WaterQualityEvent
   err := Storage.Where(&query).First(&event).Error
   if err != nil {
     // returning custom DB error message
-    err = NOT_FOUND
+    err = ErrNotFound
   }
 
   return event, err
@@ -194,7 +194,7 @@ func (w *WaterQuality) GetCurrentEvent() (float64, error) {
   event := new(WaterQualityEvent)
   err := Storage.Select("quality").Order("created desc").First(event).Error
   if err != nil {
-    err = NOT_FOUND
+    err = ErrNotFound
   }
   return event.Quality, err
 }
@@ -203,7 +203,7 @@ func (w *WaterQuality) GetCritical() (Critic, error) {
   var critic Critic
   err := Storage.Table("water_quality_events").Select("max(quality), min(quality)").Scan(&critic).Error
   if err != nil {
-    err = NOT_FOUND
+    err = ErrNotFound
   }
   return critic, err
 }

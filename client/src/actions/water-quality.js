@@ -40,9 +40,6 @@ export function getEvents() {
     const { waterQuality } = getState();
     const query = queryString.stringify({ period: waterQuality.filter });
     try {
-      // const response = await fetch(
-      //   `http://localhost:8080/water_quality/events`,
-      // );
       const response = await fetch(
         `http://localhost:8080/water_quality/event?${query}`,
       );

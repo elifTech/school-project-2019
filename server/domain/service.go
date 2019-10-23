@@ -1,20 +1,24 @@
 package domain
 
 import (
-  "github.com/jinzhu/gorm"
-  "github.com/julienschmidt/httprouter"
-  "school-project-2019/server/domain/devices"
+	"school-project-2019/server/domain/devices"
+
+	"github.com/jinzhu/gorm"
+	"github.com/julienschmidt/httprouter"
 )
 
+// IoTService ...
 type IoTService struct {
-  DB     *gorm.DB
-  Router *httprouter.Router
+	DB     *gorm.DB
+	Router *httprouter.Router
 
-  Devices *Devices
+	Devices *Devices
 }
 
-// declare your device
+// Devices ... declare your device
 type Devices struct {
-  Temperature  *devices.Temperature
-  WaterQuality *devices.WaterQuality
+	Temperature      *devices.Temperature
+	WaterConsumption *devices.WaterConsumption
+	Wind             *devices.Wind
+	WaterQuality     *devices.WaterQuality
 }
