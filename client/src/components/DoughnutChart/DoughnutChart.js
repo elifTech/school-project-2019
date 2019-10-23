@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Chart from 'chart.js';
 import PropTypes from 'prop-types';
-import setData from '../WaterQualitySensor/HelperChartData';
+import { setData } from '../WaterQualitySensor/HelperChartData';
 
 class DoughnutChart extends PureComponent {
   static propTypes = {
@@ -33,18 +33,32 @@ class DoughnutChart extends PureComponent {
   render() {
     return (
       <div>
-        <canvas height="80h" id="myChart" ref={this.chartRef} />
+        <canvas
+          className="py-2"
+          height="80h"
+          id="myChart"
+          ref={this.chartRef}
+        />
       </div>
     );
   }
 
-  colors = ['#ffceac', '#c5f582', '#70cad1', '#c66d6a', '#8c86b0', '#cf8fc8'];
+  colors = ['#ded58f', '#c5f582', '#70cad1', '#c66d6a', '#8c86b0', '#cf8fc8'];
 
   buildChart = () => {
     const { waterStructure, labels } = this.props;
     const myChartReference = this.chartRef.current;
     this.myDoughnutChart = new Chart(myChartReference, {
       data: setData(waterStructure, labels, this.colors),
+      options: {
+        legend: {
+          labels: {
+            fontSize: 14,
+            padding: 20,
+          },
+          position: 'right',
+        },
+      },
       type: 'doughnut',
     });
   };

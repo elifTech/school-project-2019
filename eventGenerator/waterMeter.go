@@ -1,14 +1,13 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"math/rand"
-	"net/http"
-	"sync"
-	"time"
+  "bytes"
+  "encoding/json"
+  "fmt"
+  "io/ioutil"
+  "math/rand"
+  "net/http"
+  "time"
 )
 
 // type SensorState int
@@ -33,43 +32,12 @@ import (
 // 	}
 // }
 
-// Event ...
-type Event struct {
+// WaterMeterEvent ...
+type WaterMeterEvent struct {
 	Status int
 }
 
-func main() {
-	// ticker
-	ticker := time.NewTicker(30 * time.Second)
-	done := make(chan bool)
-	var wg sync.WaitGroup
-	wg.Add(1)
-
-	go func() {
-		for {
-			select {
-			case <-done:
-				fmt.Printf("Closing now.... \n")
-				ticker.Stop()
-				return
-			case <-ticker.C:
-
-				generatePayload()
-
-			}
-		}
-	}()
-
-	defer func() {
-		fmt.Printf("Successfuly stoped ticker. \n")
-		ticker.Stop()
-		done <- true
-	}()
-	wg.Wait()
-
-}
-
-func generatePayload() {
+func GenerateWaterMeterEvent() {
 
 	if statusCheck() != 1 {
 		fmt.Printf("Device is not available. \n")
@@ -91,7 +59,7 @@ func generatePayload() {
 	payloadJSON, err := json.Marshal(map[string]interface{}{
 		"name":        "Water Mater Main",
 		"consumption": randomConsumtion,
-		"Event": map[string]string{
+		"WaterMeterEvent": map[string]string{
 			"sensor_type": "WaterConsumption",
 		},
 	})
@@ -127,7 +95,7 @@ func statusCheck() int {
 		return -1
 	}
 
-	var event Event
+	var event WaterMeterEvent
 	err = json.Unmarshal(data, &event)
 	if err != nil || event.Status != 1 {
 		fmt.Printf("Event %v \n", event.Status)
