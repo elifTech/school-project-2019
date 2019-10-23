@@ -44,9 +44,7 @@ func FilterTemperatureEvents(w http.ResponseWriter, r *http.Request, _ httproute
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(response)
 
-	router.POST("/temperature/poll", PollTemperature)
-
-	router.GET("/temperature/all", AllTemperature)
+	
 
 }
 

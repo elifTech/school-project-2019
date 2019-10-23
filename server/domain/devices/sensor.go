@@ -78,15 +78,4 @@ func (e *Event) BeforeSave() (err error) {
 	return err
 }
 
-// FindManySensors ...
-func (s *Sensor) FindManySensors() ([]Sensor, error) {
-	var sensors []Sensor
 
-	err := Storage.Find(&sensors).Error
-
-	if err != nil {
-		// returning custom DB error message
-		err = ErrNotFound
-	}
-	return sensors, err
-}
