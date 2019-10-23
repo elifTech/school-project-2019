@@ -47,15 +47,11 @@ func createTemperatureEvent() {
 	for {
 		//moveStep := r1.Intn(3)
 
-		moveStepFloat := rand.NormFloat64()*1 + 0
+		moveStepFloat := rand.NormFloat64()*0.3 + 0
 
 		moveStep := toFixed(moveStepFloat, 0)
 
-		if moveStep > 1 {
-			moveStep = 1
-		} else if moveStep < -1 {
-			moveStep = -1
-		}
+		fmt.Printf("move step float is %v, move step is %v", moveStepFloat, moveStep)
 		//fmt.Println("Max degree > max? %v", degree > max)
 		//fmt.Println("max  %v, degree %v", max, degree)
 		//increase temperature
