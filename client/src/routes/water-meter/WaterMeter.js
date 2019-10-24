@@ -27,12 +27,7 @@ class WaterMeter extends React.Component {
   render() {
     const { isStatusLoading, isLoading, error } = this.props;
     if (error) {
-      return (
-        <div>
-          We&#39;are sorry, something went wrong, try to reboot your system, or
-          contact your adminisrator
-        </div>
-      );
+      return <div className={s.serverError}>Server unavailable</div>;
     }
     if (isLoading) {
       return <Loader />;

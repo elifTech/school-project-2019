@@ -23,7 +23,7 @@ const WaterMeterStatus = ({ name, status, dispatchChangeWaterMeterStatus }) => (
       checked={parseStatus(status)}
       onChange={dispatchChangeWaterMeterStatus}
       onColor="#BCC4D7"
-      onHandleColor="#909cbc"
+      onHandleColor="#3c9ecf"
       handleDiameter={21}
       uncheckedIcon={false}
       checkedIcon={false}

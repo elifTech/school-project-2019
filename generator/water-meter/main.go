@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"net/http"
-	"sync"
 	"time"
 )
 
@@ -20,7 +19,7 @@ import (
 // )
 
 // func (st SensorState) String() {
-// 	select st {
+// 	switch st {
 
 // 	case StateNotFound:
 // 		return "not_found"
@@ -38,38 +37,26 @@ type Event struct {
 	Status int
 }
 
-func main() {
-	// ticker
-	ticker := time.NewTicker(30 * time.Second)
-	done := make(chan bool)
-	var wg sync.WaitGroup
-	wg.Add(1)
+func generate(function func(), seconds int) {
+	ticker := time.NewTicker(time.Duration(seconds) * time.Second)
 
 	go func() {
 		for {
 			select {
-			case <-done:
-				fmt.Printf("Closing now.... \n")
-				ticker.Stop()
-				return
 			case <-ticker.C:
-
-				generatePayload()
-
+				function()
 			}
 		}
 	}()
-
-	defer func() {
-		fmt.Printf("Successfuly stoped ticker. \n")
-		ticker.Stop()
-		done <- true
-	}()
-	wg.Wait()
-
 }
 
-func generatePayload() {
+func main() {
+	generate(generateWaterMeterEvent, 15)
+	generate(generateWaterQualityEvent, 15)
+	http.ListenAndServe(":1234", nil)
+}
+
+func generateWaterMeterEvent() {
 
 	if statusCheck() != 1 {
 		fmt.Printf("Device is not available. \n")
@@ -136,4 +123,44 @@ func statusCheck() int {
 	fmt.Printf("Event %v \n", event.Status)
 	return event.Status
 
+}
+
+type waterQualityEvent struct {
+	Event
+	Name    string  `json:"name"`
+	Quality float64 `json:"quality"`
+	Ca      float64
+	Na      float64
+	Mg      float64
+	K       float64
+}
+
+func generateWaterQualityEvent() {
+
+	payload := waterQualityEvent{
+		Name:    "Quality of water",
+		Quality: normGeneration(2, 6),
+		Ca:      normGeneration(17, 45),
+		Na:      normGeneration(10, 25),
+		Mg:      normGeneration(15, 30),
+		K:       normGeneration(5, 10),
+	}
+	payloadJSON, _ := json.Marshal(payload)
+	req, err := http.Post("http://localhost:8080/water_quality/event", "application/json", bytes.NewBuffer(payloadJSON))
+	if err != nil {
+		fmt.Println("Error creating water quality event ")
+	}
+	defer req.Body.Close()
+
+	response, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		fmt.Printf("Error parsing response: %v \n", err)
+		return
+	}
+
+	fmt.Println("Tick at \n", string(response))
+}
+
+func normGeneration(stdDev float64, mean float64) float64 {
+	return rand.NormFloat64()*stdDev + mean
 }

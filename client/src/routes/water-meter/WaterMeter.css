@@ -1,11 +1,20 @@
 .chart {
   max-width: 100%;
-  margin-left: 50px;
-  margin-right: 50px;
 }
 
 .container {
   height: 100%;
   padding-left: 0;
   overflow-y: hidden;
+}
+
+.serverError {
+  display: flex;
+  justify-content: center;
+  height: 70%;
+  align-content: stretch;
+  align-items: center;
+  text-align: center;
+  font-size: 64px;
+  color: rgba(54, 162, 235, 0.6);
 }

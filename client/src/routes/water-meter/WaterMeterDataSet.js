@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 const breakIntoGroups = (events, period) => {
   let filteredEvents = events;
-  let sortPeriod = 'month';
+  let sortPeriod = '';
   filteredEvents = filteredEvents.filter(
     ({ Created }) =>
       moment(Created).isAfter(moment().startOf(period)) &&
@@ -13,6 +13,8 @@ const breakIntoGroups = (events, period) => {
     sortPeriod = 'hour';
   } else if (period === 'isoWeek' || period === 'month') {
     sortPeriod = 'day';
+  } else if (period === 'year') {
+    sortPeriod = 'month';
   }
 
   return _(filteredEvents)
@@ -32,6 +34,17 @@ const breakIntoGroups = (events, period) => {
     .value();
 };
 
+const getBarColor = groups => {
+  const barColors = ['#f7c19c', '#d17c54', '#84c8d1', '#f27979'];
+  const j = barColors.length;
+  if (groups.length > barColors.length) {
+    for (let i = barColors.length; i < groups.length; i += 1) {
+      barColors.push(barColors[i - j]);
+    }
+  }
+  return barColors;
+};
+
 export default function getWaterMeterDataSet(events, period) {
   const groups = breakIntoGroups(events, period);
   const dataValue = groups.map(({ Consumption }) => Consumption);
@@ -41,7 +54,7 @@ export default function getWaterMeterDataSet(events, period) {
     data: {
       datasets: [
         {
-          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          backgroundColor: getBarColor(groups),
           data: dataValue,
         },
       ],
@@ -63,7 +76,6 @@ export default function getWaterMeterDataSet(events, period) {
         yAxes: [
           {
             barPercentage: 0.8,
-            barThickness: 35,
             maxBarThickness: 55,
             ticks: {
               callback(value) {
