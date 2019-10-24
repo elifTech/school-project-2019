@@ -9,12 +9,12 @@ import (
 )
 
 type WaterQualityEvent struct {
-	Name    string  `json:"name"`
-	Quality float64 `json:"quality"`
-	Ca      float64
-	Na      float64
-	Mg      float64
-	K       float64
+  Name    string  `json:"name"`
+  Quality float64 `json:"quality"`
+  Ca      float64
+  Na      float64
+  Mg      float64
+  K       float64
 }
 
 func GenerateWaterQualityEvent() {

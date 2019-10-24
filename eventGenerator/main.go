@@ -8,7 +8,6 @@ import (
 
 func generate(seconds int, functions ...func()) {
 	ticker := time.NewTicker(time.Duration(seconds) * time.Second)
-
 	go func() {
 		for {
 			select {
