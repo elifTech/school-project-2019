@@ -8,6 +8,7 @@ import {
   WATER_QUALITY_SUCCESS_INFO,
   WATER_QUALITY_FILTER,
   WATER_QUALITY_SUCCESS_STRUCTURE,
+  WATER_QUALITY_SUCCESS_CURRENT,
 } from '../constants';
 
 const getEventsRequest = () => {
@@ -17,9 +18,8 @@ const getEventsRequest = () => {
   };
 };
 
-const getEventsSuccess = (events, currentQuality) => {
+const getEventsSuccess = events => {
   return {
-    currentQuality,
     events,
     isFetching: false,
     type: WATER_QUALITY_SUCCESS_EVENTS,
@@ -43,12 +43,34 @@ export function getEvents() {
       const response = await fetch(
         `http://localhost:8080/water_quality/event?${query}`,
       );
+      const events = await response.json();
+      return dispatch(getEventsSuccess(events));
+    } catch (error) {
+      return dispatch(getEventsFailure(error));
+    }
+  };
+}
+
+const getCurrentQualitySuccess = currentQuality => {
+  return {
+    currentQuality,
+    isFetching: false,
+    type: WATER_QUALITY_SUCCESS_CURRENT,
+  };
+};
+
+export function getCurrentEvent() {
+  return async (dispatch, getState) => {
+    const { waterQuality } = getState();
+    dispatch(getEventsRequest());
+    try {
       const currentResponse = await fetch(
         `http://localhost:8080/water_quality/current`,
       );
-      const events = await response.json();
       const { quality } = await currentResponse.json();
-      return dispatch(getEventsSuccess(events, quality));
+      if (!waterQuality.info.Status)
+        return dispatch(getCurrentQualitySuccess(0));
+      return dispatch(getCurrentQualitySuccess(quality));
     } catch (error) {
       return dispatch(getEventsFailure(error));
     }
