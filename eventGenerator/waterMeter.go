@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"time"
 )
@@ -107,9 +108,9 @@ func StatusCheck() int {
 }
 
 func FloodAler() {
-	accountSid := "AC8ae8ca965a1405ffae8a82cd23580008"
-	authToken := "1e42243a9a632ad5cb78fc4267611f7b"
-	urlStr := "https://api.twilio.com/2010-04-01/Accounts/AC8ae8ca965a1405ffae8a82cd23580008/Messages.json"
+	accountSid := os.Getenv("TWILIO_ACCOUNT_SID")
+	authToken := os.Getenv("TWILIO_AUTH_TOKEN")
+	urlStr := fmt.Sprintf("https://api.twilio.com/2010-04-01/Accounts/%s/Messages.json", accountSid)
 
 	floodAlert := "Emergency alert. You've got flood at your home!"
 
