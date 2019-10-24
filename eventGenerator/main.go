@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/subosito/gotenv"
 )
 
 func generate(seconds int, functions ...func()) {
@@ -21,6 +23,7 @@ func generate(seconds int, functions ...func()) {
 }
 
 func main() {
+	gotenv.Load()
 	generate(5, GenerateWaterQualityEvent, GenerateWaterMeterEvent, GenerateWindEvent)
 	log.Fatal(http.ListenAndServe(":1234", nil))
 }

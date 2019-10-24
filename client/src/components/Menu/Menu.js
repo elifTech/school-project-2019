@@ -104,7 +104,7 @@ class Menu extends React.Component {
     {
       icon: waterMeterIcon,
       path: 'water-meter',
-      text: 'Water Consumption',
+      text: 'Water Cons',
     },
   ];
 }

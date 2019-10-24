@@ -3,7 +3,6 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import Switch from 'react-switch';
 import Alert from 'react-bootstrap/Alert';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
