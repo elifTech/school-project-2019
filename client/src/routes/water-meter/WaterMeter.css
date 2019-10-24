@@ -9,12 +9,19 @@
 }
 
 .serverError {
-  display: flex;
+  position: absolute;
   justify-content: center;
-  height: 70%;
   align-content: stretch;
   align-items: center;
   text-align: center;
   font-size: 64px;
-  color: rgba(54, 162, 235, 0.6);
+  color: rgba(231, 8, 8, 0.952);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(6px);
+  z-index: 100;
 }
