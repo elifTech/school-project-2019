@@ -14,6 +14,7 @@ import FilterButtons from './FilterButtons';
 import DoughnutChart from '../DoughnutChart';
 import TableStructure from './TableStructure';
 import Loader from '../Loader';
+import WaterQualitySwitch from '../WaterQualitySwitch/WaterQualitySwitch';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
@@ -21,13 +22,11 @@ class WaterQualitySensor extends PureComponent {
       .isRequired,
     currentQuality: PropTypes.string,
     dispatchChangeFilter: PropTypes.func.isRequired,
-    dispatchChangeStatus: PropTypes.func.isRequired,
     error: PropTypes.string,
     // isFetching: PropTypes.bool,
     eventsQuality: PropTypes.arrayOf(PropTypes.string),
     filter: PropTypes.string.isRequired,
     resetInterval: PropTypes.func.isRequired,
-    status: PropTypes.number,
     time: PropTypes.arrayOf(PropTypes.string),
     waterStructure: PropTypes.arrayOf(PropTypes.string),
     waterStructureLabels: PropTypes.arrayOf(PropTypes.string),
@@ -37,7 +36,6 @@ class WaterQualitySensor extends PureComponent {
     currentQuality: 0,
     error: null,
     eventsQuality: [],
-    status: 0,
     time: [],
     waterStructure: [],
     waterStructureLabels: [],
@@ -58,25 +56,22 @@ class WaterQualitySensor extends PureComponent {
       // isFetching,
       waterStructure,
       currentQuality,
-      dispatchChangeStatus,
       dispatchChangeFilter,
       waterStructureLabels,
-      status,
     } = this.props;
-    if (error)
-      return (
-        <Col md={10}>
+
+    const alert = (
+      <Container className="ml-0 pl-0">
+        <Col className="pl-0">
           <Alert variant="danger">
             <Alert.Heading>You got an error!</Alert.Heading>
-            <p>
-              Server is unavailable. Please check your Internet connection.{' '}
-            </p>
+            <p>Server is unavailable. Please check your Internet connection.</p>
           </Alert>
         </Col>
-      );
-    if (eventsQuality.length === 0) return <Loader />;
+      </Container>
+    );
 
-    return (
+    const content = (
       <Container className={style.container}>
         <Col className={style.header}>Water Quality sensor</Col>
         <Row className="py-2">
@@ -84,17 +79,7 @@ class WaterQualitySensor extends PureComponent {
             Status
           </Col>
           <Col md={2}>
-            <Switch
-              onChange={dispatchChangeStatus}
-              checked={this.checkStatus(status)}
-              handleDiameter={20}
-              uncheckedIcon={false}
-              checkedIcon={false}
-              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-              height={15}
-              width={40}
-              id="statusSwitch"
-            />
+            <WaterQualitySwitch />
           </Col>
         </Row>
         <Row>
@@ -153,11 +138,18 @@ class WaterQualitySensor extends PureComponent {
         </Row>
       </Container>
     );
-  }
 
-  checkStatus = status => {
-    return status === 0 ? false : status === 1;
-  };
+    if (eventsQuality.length === 0 && !error) return <Loader />;
+    if (eventsQuality.length > 0 && error)
+      return (
+        <div>
+          {alert}
+          {content}
+        </div>
+      );
+    if (error) return alert;
+    return content;
+  }
 }
 
 export default withStyles(style)(WaterQualitySensor);
