@@ -30,6 +30,4 @@ yarn-error.log*
 ./server/go.sum
 **/*.exe
 server/server
-generator/
-!generator/**/*.go
-eventGenerator/eventGenerator
+generator/generator
