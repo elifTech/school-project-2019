@@ -9,7 +9,7 @@ function IconTemperature(props) {
   const numberCold = 20;
   const numberHot = 24;
 
-  if (degree < numberCold) {
+  if (degree <= numberCold) {
     iconFill = '#199ac2';
   } else if (degree > numberCold && degree < numberHot) {
     iconFill = '#2cc93f';
