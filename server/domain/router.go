@@ -6,11 +6,15 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+// NewRouter ...
 func (s *IoTService) NewRouter() *httprouter.Router {
 	router := httprouter.New()
 	// init our router
 	routers.CarbonInit(router)
 	routers.TemperatureInit(router)
+	routers.WaterConsumptionInit(router)
+	routers.WindInit(router)
+	routers.DashboardInit(router)
 	routers.WaterQualityInit(router)
 
 	return router

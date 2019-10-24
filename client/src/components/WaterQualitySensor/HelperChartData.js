@@ -1,4 +1,4 @@
-export default function setData(data, labels, colors = '#82b6f69c') {
+export function setData(data, labels, colors = '#82b6f69c') {
   const chartColor = 'rgba(116,129,150,0.6)';
   return {
     datasets: [
@@ -16,3 +16,10 @@ export default function setData(data, labels, colors = '#82b6f69c') {
     labels,
   };
 }
+export const segmentColors = [
+  'rgba(191,2,8,0.76)',
+  'rgba(247,178,0,0.88)',
+  'rgba(39,176,71,0.8)',
+  'rgba(247,178,0,0.88)',
+  'rgba(191,2,8,0.76)',
+];

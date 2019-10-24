@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { changeFilter, changeStatus } from '../actions/water-quality';
-import WaterQualitySensor from '../components/WaterQualitySensor/WaterQualitySensor';
+import WaterQualitySensor from '../components/WaterQualitySensor';
 import {
   FIXED,
   getFixedQuality,
