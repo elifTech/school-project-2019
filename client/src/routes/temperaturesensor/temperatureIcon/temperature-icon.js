@@ -26,7 +26,7 @@ function IconTemperature(props) {
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
       >
-        <circle fill={iconFill} cx="256.001" cy="255.996" r="255.996" />
+        <circle fill={iconFill} cx="100.001" cy="100.996" r="100.996" />
         {/* <circle fill="#3C3B41;" cx="256.001" cy="255.996" r="255.996" /> */}
         {/* <path
           fill="#171719"
