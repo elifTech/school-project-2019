@@ -3,6 +3,7 @@ import Layout from '../../components/Layout';
 import WaterQualitySensor from '../../containers/WaterQualitySensor';
 import setCurrentTab from '../../actions/menu';
 import {
+  getCurrentEvent,
   getEvents,
   getInfo,
   getWaterStructure,
@@ -15,10 +16,10 @@ export default async function action({ store: { dispatch } }) {
   await dispatch(getInfo());
   await dispatch(getWaterStructure());
 
-  const startEventsInterval = setInterval(
-    () => dispatch(getEvents()),
-    INTERVAL,
-  );
+  const startEventsInterval = setInterval(() => {
+    dispatch(getEvents());
+    dispatch(getCurrentEvent());
+  }, INTERVAL);
   function resetEventsInterval() {
     clearInterval(startEventsInterval);
   }
