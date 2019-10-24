@@ -3,7 +3,6 @@ package routers
 import (
   "encoding/json"
   "errors"
-  // "github.com/jasonlvhit/gocron"
   "github.com/julienschmidt/httprouter"
   "io/ioutil"
   "net/http"
@@ -13,10 +12,6 @@ import (
 func WaterQualityInit(router *httprouter.Router) {
   // our DB instance passed as a local variable
   //db = database
-
-  // cron := gocron.NewScheduler()
-  // cron.Every(30).Seconds().Do(devices.PostCreateEvent)
-  // cron.Start()
 
   router.GET("/water_quality/ping", PingWaterQuality)
 

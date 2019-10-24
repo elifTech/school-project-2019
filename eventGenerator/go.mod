@@ -1,4 +1,4 @@
-module school-project-2019/generator/water-meter
+module school-project-2019/eventGenerator
 
 go 1.12
 
