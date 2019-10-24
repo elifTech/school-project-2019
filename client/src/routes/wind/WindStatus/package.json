@@ -1,0 +1,6 @@
+{
+  "name": "WindStatus",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./WindStatus.js"
+}

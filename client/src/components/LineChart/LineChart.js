@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Chart from 'chart.js';
 import PropTypes from 'prop-types';
-import setData from '../WaterQualitySensor/HelperChartData';
+import { setData } from '../WaterQualitySensor/HelperChartData';
 
 class LineChart extends PureComponent {
   static propTypes = {
@@ -33,7 +33,12 @@ class LineChart extends PureComponent {
   render() {
     return (
       <div>
-        <canvas height="100vh" id="myChart" ref={this.chartRef} />
+        <canvas
+          className="py-2"
+          height="100vh"
+          id="myChart"
+          ref={this.chartRef}
+        />
       </div>
     );
   }
@@ -43,8 +48,10 @@ class LineChart extends PureComponent {
     const myChartReference = this.chartRef.current;
     this.myLineChart = new Chart(myChartReference, {
       data: setData(quality, time),
-      // options: { legend: { display: false } },
       options: {
+        legend: {
+          display: false,
+        },
         scales: {
           xAxes: [
             {

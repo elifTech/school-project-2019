@@ -20,6 +20,7 @@ const (
 
 // ErrNotFound ...
 var ErrNotFound = errors.New("record not found")
+
 // ErrBadStatus ...
 var ErrBadStatus = errors.New("status is not correct")
 

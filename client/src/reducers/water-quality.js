@@ -6,6 +6,7 @@ import {
   WATER_QUALITY_SUCCESS_INFO,
   WATER_QUALITY_FILTER,
   WATER_QUALITY_SUCCESS_STRUCTURE,
+  WATER_QUALITY_SUCCESS_CURRENT,
 } from '../constants';
 
 const initialState = {
@@ -34,7 +35,6 @@ export default (state = initialState, action = {}) => {
     case WATER_QUALITY_SUCCESS_EVENTS:
       return {
         ...state,
-        currentQuality: action.currentQuality,
         error: null,
         events: action.events,
         isFetching: action.isFetching,
@@ -57,6 +57,13 @@ export default (state = initialState, action = {}) => {
         ...state,
         isFetching: action.isFetching,
         waterStructure: action.waterStructure,
+      };
+    case WATER_QUALITY_SUCCESS_CURRENT:
+      return {
+        ...state,
+        currentQuality: action.currentQuality,
+        error: null,
+        isFetching: action.isFetching,
       };
     case WATER_QUALITY_FAIL_EVENTS:
       return {

@@ -3,16 +3,17 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import Switch from 'react-switch';
 import Alert from 'react-bootstrap/Alert';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import classNames from 'classnames';
 import style from './WaterQualitySensor.css';
-import LineChart from '../LineChart/LineChart';
-import GrowSpinner from '../GrowSpinner/GrowSpinner';
+import LineChart from '../LineChart';
 import FilterButtons from './FilterButtons';
-import DoughnutChart from '../DoughnutChart/DoughnutChart';
+import DoughnutChart from '../DoughnutChart';
+import TableStructure from './TableStructure';
+import Loader from '../Loader';
+import WaterQualitySwitch from '../WaterQualitySwitch/WaterQualitySwitch';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
@@ -20,13 +21,11 @@ class WaterQualitySensor extends PureComponent {
       .isRequired,
     currentQuality: PropTypes.string,
     dispatchChangeFilter: PropTypes.func.isRequired,
-    dispatchChangeStatus: PropTypes.func.isRequired,
     error: PropTypes.string,
     // isFetching: PropTypes.bool,
     eventsQuality: PropTypes.arrayOf(PropTypes.string),
     filter: PropTypes.string.isRequired,
     resetInterval: PropTypes.func.isRequired,
-    status: PropTypes.number,
     time: PropTypes.arrayOf(PropTypes.string),
     waterStructure: PropTypes.arrayOf(PropTypes.string),
     waterStructureLabels: PropTypes.arrayOf(PropTypes.string),
@@ -36,7 +35,6 @@ class WaterQualitySensor extends PureComponent {
     currentQuality: 0,
     error: null,
     eventsQuality: [],
-    status: 0,
     time: [],
     waterStructure: [],
     waterStructureLabels: [],
@@ -57,45 +55,35 @@ class WaterQualitySensor extends PureComponent {
       // isFetching,
       waterStructure,
       currentQuality,
-      dispatchChangeStatus,
       dispatchChangeFilter,
       waterStructureLabels,
-      status,
     } = this.props;
-    return eventsQuality.length === 0 ? (
-      <GrowSpinner error={error} />
-    ) : (
-      <Container className={style.container}>
-        <Col md={10} className={style.header}>
-          Water Quality sensor
+
+    const alert = (
+      <Container className="ml-0 pl-0">
+        <Col className="pl-0">
+          <Alert variant="danger">
+            <Alert.Heading>You got an error!</Alert.Heading>
+            <p>Server is unavailable. Please check your Internet connection.</p>
+          </Alert>
         </Col>
-        <Row>
-          <Col className="pl-0">
-            <Alert variant="danger" show={!!error}>
-              {error}
-            </Alert>
-          </Col>
-        </Row>
+      </Container>
+    );
+
+    const content = (
+      <Container className={style.container}>
+        <Col className={style.header}>Water Quality sensor</Col>
         <Row className="py-2">
           <Col md={1} className="px-0">
             Status
           </Col>
-          <Col>
-            <Switch
-              onChange={dispatchChangeStatus}
-              checked={this.checkStatus(status)}
-              handleDiameter={20}
-              uncheckedIcon={false}
-              checkedIcon={false}
-              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-              height={15}
-              width={40}
-              id="statusSwitch"
-            />
+          <Col md={2}>
+            <WaterQualitySwitch />
           </Col>
         </Row>
         <Row>
           <Col md={9} className={style.lineChart}>
+            <p className={style.lineChartHeader}>Changes in water quality</p>
             <LineChart quality={eventsQuality} time={time} />
             <div className={style.filters}>
               {FilterButtons.map(button => {
@@ -114,29 +102,53 @@ class WaterQualitySensor extends PureComponent {
               })}
             </div>
           </Col>
-          <Col className={style.rightContainer}>
-            <div className={style.rightContainerItem}>
-              Current: {currentQuality}
+          <Col
+            md={2}
+            className={classNames(style.rightContainerQuality, 'ml-4')}
+          >
+            <div className={style.rightContainerQualityItem}>
+              <span className={style.criticTitle}>Current</span>
+              <p className={style.criticValue}>{currentQuality}</p>
             </div>
-            <div className={style.rightContainerItem}>Max: {critics.max}</div>
-            <div className={style.rightContainerItem}>Min: {critics.min}</div>
+            <div className={style.rightContainerQualityItem}>
+              <span className={style.criticTitle}>Max</span>
+              <p className={style.criticValue}>{critics.max}</p>
+            </div>
+            <div className={style.rightContainerQualityItem}>
+              <span className={style.criticTitle}>Min</span>
+              <p className={style.criticValue}>{critics.min}</p>
+            </div>
           </Col>
         </Row>
-        <Row>
-          <Col className="my-3">
+        <Row className="mt-4">
+          <Col md={7} className={style.doughnutChart}>
+            <p className={style.doughnutChartHeader}>Structure of water</p>
             <DoughnutChart
               waterStructure={waterStructure}
               labels={waterStructureLabels}
             />
           </Col>
+          <Col
+            md={4}
+            className={classNames(style.rightContainerStructure, 'ml-4')}
+          >
+            <TableStructure />
+          </Col>
         </Row>
       </Container>
     );
-  }
 
-  checkStatus = status => {
-    return status === 0 ? false : status === 1;
-  };
+    if (eventsQuality.length === 0 && !error) return <Loader />;
+    if (eventsQuality.length > 0 && error)
+      return (
+        <div>
+          {alert}
+          {content}
+        </div>
+      );
+    if (error) return alert;
+    return content;
+  }
 }
 
 export default withStyles(style)(WaterQualitySensor);

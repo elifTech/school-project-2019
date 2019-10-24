@@ -1,21 +1,10 @@
 package devices
 
 import (
-  "bytes"
-  "encoding/json"
   "errors"
   "fmt"
-  "math/rand"
-  "net/http"
   "time"
-
-  //"github.com/jinzhu/gorm"
 )
-
-//const (
-//  mean   = 6
-//  stdDev = 2
-//)
 
 type WaterQuality struct {
   Sensor
@@ -170,26 +159,6 @@ func (w *WaterQuality) CreateEvent(payload *WaterQualityEvent) (err error) {
   return err
 }
 
-func PostCreateEvent() {
-  payload := WaterQualityEvent{
-    Name:    "Quality of water",
-    Quality: NormGeneration(2, 6),
-    Ca:      NormGeneration(17, 45),
-    Na:      NormGeneration(10, 25),
-    Mg:      NormGeneration(15, 30),
-    K:       NormGeneration(5, 10),
-  }
-  payloadJson, _ := json.Marshal(payload)
-  _, err := http.Post("http://localhost:8080/water_quality/event", "application/json", bytes.NewReader(payloadJson))
-  if err != nil {
-    err.Error()
-  }
-}
-
-func NormGeneration(stdDev float64, mean float64) float64 {
-  return rand.NormFloat64()*stdDev + mean
-}
-
 func (w *WaterQuality) GetCurrentEvent() (float64, error) {
   event := new(WaterQualityEvent)
   err := Storage.Select("quality").Order("created desc").First(event).Error
@@ -207,27 +176,3 @@ func (w *WaterQuality) GetCritical() (Critic, error) {
   }
   return critic, err
 }
-
-//func (w *WaterQuality) CreateWaterQualityEventRand() {
-//  var event WaterQualityEvent
-//  event.Name = "Quality of water"
-//  event.Quality = Random(minQualityWater, maxQualityWater)
-//
-//  sensor, err := w.Get()
-//  if sensor.Status == StatusOffline {
-//    fmt.Printf("Water quality sensor is offline \n")
-//    return
-//  }
-//
-//  err = w.CreateEvent(&event)
-//  if err != nil {
-//    fmt.Printf("Error: %s \n", err.Error())
-//    return
-//  }
-//  fmt.Printf("New event for water quality sensor is created \n")
-//}
-
-//func Random(min, max float32) float32 {
-//  rand.Seed(time.Now().Unix())
-//  return min + rand.Float32()*(max-min)
-//}
