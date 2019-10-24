@@ -9,7 +9,6 @@ import (
 )
 
 type WaterQualityEvent struct {
-  Event
   Name    string  `json:"name"`
   Quality float64 `json:"quality"`
   Ca      float64
