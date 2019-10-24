@@ -8,6 +8,10 @@ const routes = [
     path: '/login',
   },
   {
+    load: () => import(/* webpackChunkName: 'signup' */ './signup'),
+    path: '/signup',
+  },
+  {
     async action({ next }) {
       // Execute each child route until one of them return the result
       const route = await next();
@@ -45,7 +49,7 @@ const routes = [
 
 // The error page is available by permanent url for development mode
 if (__DEV__) {
-  routes[1].children.unshift({
+  routes[2].children.unshift({
     action: require('./error').default,
     path: '/error',
   });

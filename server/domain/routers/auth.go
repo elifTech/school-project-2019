@@ -39,6 +39,6 @@ func RegisterUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		return
 	}
 
-	var response string = fmt.Sprintf("%f", user.Email)
+	var response string = fmt.Sprintf("%s", user.Email)
 	w.Write([]byte(response))
 }
