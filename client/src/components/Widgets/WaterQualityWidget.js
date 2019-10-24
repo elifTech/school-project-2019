@@ -2,22 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactSpeedometer from 'react-d3-speedometer';
 import { segmentColors } from '../WaterQualitySensor/HelperChartData';
-import style from './WaterQualityWidget.css';
+// import style from './WaterQualityWidget.css';
 
-const inlineStyle = {
-  // background: 'rgba(215,233,226,0.41)',
-  // boxShadow: '0 0 8px 1px rgb(198, 199, 203)',
-  // color: '#626364',
-  // font: 'bold 16px serif',
+const container = {
+  background: 'rgba(239,240,243,.38)',
+  borderRadius: '0.5em',
+  boxShadow: '0 0 8px 1px rgb(198, 199, 203)',
+  height: '17em',
+  padding: '1em',
+  textAlign: 'center',
+  width: '24em',
+};
+
+const sensor = {
   height: '16em',
   width: '22em',
 };
 
+const header = {
+  color: 'rgb(96,97,98)',
+  font: 'bold 20px serif',
+};
+
 function WaterQualityWidget({ value }) {
   return (
-    <div className={style.container}>
-      <p>Water quality</p>
-      <div style={inlineStyle}>
+    <div style={container}>
+      <div style={sensor}>
+        <p style={header}>Water quality</p>
         <ReactSpeedometer
           value={Number(value)}
           segmentColors={segmentColors}
