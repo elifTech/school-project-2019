@@ -42,18 +42,9 @@ type Sensor struct {
 // Event ...
 type Event struct {
 	gorm.Model
-	EventID    uint      `gorm:"primary_key;AUTO_INCREMENT"`
+	EventID    uint      `gorm:"primary_key;AUTO_INCREMENT" json:"eventId"`
 	Created    time.Time `json:"created"`
 	SensorType string    `json:"device_type"`
-}
-
-// BeforeSave ...
-func (e *Event) BeforeSave() (err error) {
-	if e.Created.IsZero() {
-		e.Created = time.Now()
-	}
-
-	return err
 }
 
 // FindManySensors ...
@@ -67,4 +58,12 @@ func (s *Sensor) FindManySensors() ([]Sensor, error) {
 		err = ErrNotFound
 	}
 	return sensors, err
+}
+
+func (e *Event) BeforeSave() (err error) {
+	if e.Created.IsZero() {
+		e.Created = time.Now()
+	}
+
+	return err
 }

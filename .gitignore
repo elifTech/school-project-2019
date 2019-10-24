@@ -29,6 +29,5 @@ yarn-error.log*
 .DS_Store
 generator/**/go.sum
 **/*.exe
-**/*.sum
-server/go.sum
-
+server/server
+generator/generator

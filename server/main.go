@@ -56,13 +56,18 @@ func main() {
 		return
 	}
 
+	// init server
 	err = s.Devices.WaterQuality.CreateSensor()
 	if err != nil {
 		log.Fatal(fmt.Printf("Error creating : %s %v \n", devices.WaterQualitySensor, err))
 		return
 	}
 
-	handler := cors.AllowAll().Handler(router)
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
+	})
+
 	// init server
-	log.Fatal(http.ListenAndServe(":8080", handler))
+	log.Fatal(http.ListenAndServe(":8080", c.Handler(router)))
 }

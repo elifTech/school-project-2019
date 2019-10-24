@@ -20,13 +20,17 @@ const routes = {
       path: '',
     },
     {
+      load: () => import(/* webpackChunkName: 'wind' */ './wind'),
+
+      path: '/wind',
+    },
+    {
       load: () =>
         import(
           /* webpackChunkName: 'water-quality-sensor' */ './water-quality-sensor'
         ),
       path: '/water-quality',
     },
-
     {
       load: () => import(/* webpackChunkName: 'water-meter' */ './water-meter'),
       path: '/water-meter',
