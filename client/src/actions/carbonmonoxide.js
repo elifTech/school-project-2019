@@ -80,3 +80,15 @@ export const setFilter = ({ from, value }) => async dispatch => {
     dispatch(carbonSensorFailure(error.message));
   }
 };
+
+export const getWidgetsData = () => async dispatch => {
+  try {
+    const [{ data: info }, { data: events }] = await Promise.all([
+      axios.get('http://localhost:8080/carbon'),
+      axios.get('http://localhost:8080/sensor/carbon/ping'),
+    ]);
+    dispatch(carbonSensorSuccess({ events, info }));
+  } catch (error) {
+    dispatch(carbonSensorFailure(error.message));
+  }
+};

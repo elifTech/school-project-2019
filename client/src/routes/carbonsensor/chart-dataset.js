@@ -1,12 +1,22 @@
+/* eslint-disable no-magic-numbers */
 import format from 'moment';
 
 export default events => {
+  const sign = events.slice(-1)[0].signal;
   const chartColor = '#96dbfa';
+  let backColor = '#96dbfa';
+  if (sign > 150) {
+    backColor = '#ffa123';
+  }
+  if (sign > 300) {
+    backColor = '#fff';
+  }
   return {
     datasets: [
       {
+        // backgroundColor: backColor,
         borderCapStyle: 'butt',
-        borderColor: chartColor,
+        borderColor: backColor,
         borderDash: [],
         borderDashOffset: 0,
         borderJoinStyle: 'miter',

@@ -9,10 +9,7 @@ function Home() {
       <div className={s.container}>Dashboard</div>
       <div className="row mb-12">
         <div className="col-sm-6">
-          <CarbonWidget /> <CarbonWidget />
-        </div>
-        <div className="col-sm-6">
-          <CarbonWidget /> <CarbonWidget />
+          <CarbonWidget />
         </div>
       </div>
     </div>

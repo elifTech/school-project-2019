@@ -12,6 +12,7 @@ import getChartData from './chart-dataset';
 import Icon from './carbonIcon/carbon-icon';
 import Loader from '../../components/Loader/Loader';
 import { setFilter, changeCarbonStatus } from '../../actions/carbonmonoxide';
+import style from './Carbon.css';
 
 defaults.global.defaultFontFamily = 'Montserrat';
 
@@ -134,7 +135,7 @@ class CarbonMonoxideSensor extends Component {
           <div className="col-sm-12">
             {' '}
             <h3>{info.Name}</h3>
-            <h5>{info.Type}</h5>
+            <h5>{info.Type} (ppm)</h5>
             <span>Port: {this.parseStatus(info.Status)}</span>
             <hr />
           </div>
@@ -142,7 +143,9 @@ class CarbonMonoxideSensor extends Component {
 
         <div className="row mb-9">
           <div className="col-sm-7">
-            <Line data={getChartData(events)} options={options} />
+            <div className={style.lineChart}>
+              <Line data={getChartData(events)} options={options} />
+            </div>
             <div className="col-sm-12">
               <div style={sliderStyle}>
                 <b>
@@ -163,16 +166,16 @@ class CarbonMonoxideSensor extends Component {
           </div>
 
           <div className="col-sm-5">
+            <Icon text={this.text} />
+            {/* <h1>{events.slice(-1)[0].signal}</h1> */}
             <button
               type="button"
-              className="btn btn-dark"
+              className="btn btn-outline-primary"
               checked={this.parseStatus(info.Status)}
               onClick={this.statusOnClick(info.Status)}
             >
               {this.text}
             </button>
-            <Icon text={this.text} />
-            <h1>{events.signal}</h1>
           </div>
         </div>
 
@@ -249,4 +252,4 @@ export default connect(
     isLoading,
   }),
   { dispatchChangeStatus: changeCarbonStatus, dispatchSetFilter: setFilter },
-)(withStyles(sliderStyle)(CarbonMonoxideSensor));
+)(withStyles(sliderStyle, style)(CarbonMonoxideSensor));
