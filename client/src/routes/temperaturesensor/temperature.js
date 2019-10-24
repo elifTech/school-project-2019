@@ -5,9 +5,13 @@ import { connect } from 'react-redux';
 import { Spinner, Alert } from 'react-bootstrap';
 import { Line, defaults } from 'react-chartjs-2';
 import getChartData from './chart-dataset';
+import Icon from './temperatureIcon/temperature-icon';
 import { setFilter, changeTemperatureStatus } from '../../actions/temperature';
 
 defaults.global.defaultFontFamily = 'Montserrat';
+
+const defaultButt = 'btn btn-secondary btn-sm';
+const activeButt = 'btn btn-primary';
 
 const options = {
   defaultSortName: 'EventID',
@@ -67,7 +71,9 @@ class TemperatureSensor extends Component {
   render() {
     const { events, info, isLoading, error } = this.props;
 
-    // const lastEvent = events.pop().Degree;
+    if (events.pop() !== undefined) {
+      this.degree = events.pop().degree;
+    }
 
     if (isLoading) {
       //   return (
@@ -107,7 +113,9 @@ class TemperatureSensor extends Component {
             <div className="col-sm-11">
               <button
                 type="button"
-                className="btn btn-secondary btn-sm"
+                className={
+                  this.selectedButton === 'hours' ? activeButt : defaultButt
+                }
                 name="hours"
                 onClick={this.setFilter('hours', 2)}
               >
@@ -115,15 +123,19 @@ class TemperatureSensor extends Component {
               </button>
               <button
                 type="button"
-                className="btn btn-secondary btn-sm"
+                className={
+                  this.selectedButton === 'days' ? activeButt : defaultButt
+                }
                 name="days"
                 onClick={this.setFilter('days', 1)}
               >
-                Last Day
+                Last Days
               </button>
               <button
                 type="button"
-                className="btn btn-secondary btn-sm"
+                className={
+                  this.selectedButton === 'weeks' ? activeButt : defaultButt
+                }
                 name="weeks"
                 onClick={this.setFilter('weeks', 1)}
               >
@@ -131,7 +143,9 @@ class TemperatureSensor extends Component {
               </button>
               <button
                 type="button"
-                className="btn btn-secondary btn-sm"
+                className={
+                  this.selectedButton === 'months' ? activeButt : defaultButt
+                }
                 name="months"
                 onClick={this.setFilter('months', 1)}
               >
@@ -149,7 +163,13 @@ class TemperatureSensor extends Component {
             >
               {this.text}
             </button>
-            {/* <Icon text={this.text} /> */}
+            <div className="col-sm-8">
+              {' '}
+              {this.degree === undefined
+                ? null
+                : `Current temperature ${this.degree}°C`}
+            </div>
+            {this.degree === undefined ? null : <Icon degree={this.degree} />}
             <h1>{events.degree}</h1>
           </div>
         </div>
@@ -162,6 +182,7 @@ class TemperatureSensor extends Component {
   };
 
   getFilterData = (filter, period) => {
+    this.selectedButton = filter;
     const { dispatchSetFilter } = this.props;
     dispatchSetFilter({
       from: moment().subtract(filter, period),
