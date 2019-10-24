@@ -30,7 +30,7 @@ func (t *Wind) Get() (*Wind, error) {
 	err := Storage.Where(&Sensor{Type: WindSensor}).First(&device).Error
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
 	}
 
 	return device, err
@@ -38,13 +38,13 @@ func (t *Wind) Get() (*Wind, error) {
 
 func (t *Wind) UpdateWindStatus(status SensorState) (SensorState, error) {
 	if status != StatusOnline && status != StatusOffline && status != StatusFailure {
-		return StatusFailure, BAD_STATUS
+		return StatusFailure, ErrBadStatus
 	}
 
 	sensor, err := t.Get()
 	if err != nil {
 		fmt.Printf("Wind Sensor is not created")
-		return StatusFailure, NOT_FOUND
+		return StatusFailure, ErrNotFound
 	}
 
 	sensor.Status = status
@@ -67,7 +67,7 @@ func (t *Wind) FindOneEvent() (*WindEvent, error) {
 	err := Storage.Last(&event).Error
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
 	}
 
 	return event, err

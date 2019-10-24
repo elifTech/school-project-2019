@@ -6,8 +6,10 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// SensorState ...
 type SensorState int
 
+// SensorState ...
 const (
 	StatusOffline SensorState = iota
 	StatusOnline
@@ -16,16 +18,19 @@ const (
 
 // we may use it for some future logic
 // defining sensor types
-//type SensorType string
-//func (st SensorType) String() string {
+// type SensorType string
+// func (st SensorType) String() string {
 //  return string(st)
-//}
-
+// }
+// Sensors ...
 const (
-	TemperatureSensor string = "temperature"
-	WindSensor        string = "wind"
+	TemperatureSensor  string = "temperature"
+	WaterMeter         string = "waterConsumption"
+	WindSensor         string = "wind"
+	WaterQualitySensor string = "waterQuality"
 )
 
+// Sensor ...
 type Sensor struct {
 	gorm.Model
 	SensorID uint `gorm:"primary_key;AUTO_INCREMENT"`
@@ -34,6 +39,7 @@ type Sensor struct {
 	Status   SensorState
 }
 
+// Event ...
 type Event struct {
 	gorm.Model
 	EventID    uint      `gorm:"primary_key;AUTO_INCREMENT" json:"eventId"`
@@ -41,6 +47,7 @@ type Event struct {
 	SensorType string    `json:"device_type"`
 }
 
+// FindManySensors ...
 func (s *Sensor) FindManySensors() ([]Sensor, error) {
 	var sensors []Sensor
 
@@ -48,9 +55,8 @@ func (s *Sensor) FindManySensors() ([]Sensor, error) {
 
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
 	}
-
 	return sensors, err
 }
 

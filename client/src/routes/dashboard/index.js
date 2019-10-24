@@ -6,7 +6,7 @@ import setCurrentTab from '../../actions/menu';
 export default function action({ store: { dispatch } }) {
   dispatch(setCurrentTab('Dashboard'));
   return {
-    chunks: ['home'],
+    chunks: ['dashboard'],
     component: (
       <Layout>
         <Dashboard />

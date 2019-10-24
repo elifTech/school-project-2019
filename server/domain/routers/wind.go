@@ -11,7 +11,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-type Data struct {
+type StatusData struct {
 	Status devices.SensorState
 }
 
@@ -27,7 +27,7 @@ func GetWindSensor(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	wind := devices.Wind{}
 	device, err := wind.Get()
 	// testing custom error response
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, "the device is not found", http.StatusNotFound)
 		return
 	}
@@ -46,16 +46,16 @@ func UpdateWindSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 
 	wind := devices.Wind{}
 	_, err := wind.Get()
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, "the device is not found", http.StatusNotFound)
 		return
 	}
 
-	var data Data
+	var data StatusData
 
 	rBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, devices.BAD_STATUS.Error(), http.StatusInternalServerError)
+		http.Error(w, devices.ErrBadStatus.Error(), http.StatusInternalServerError)
 		return
 	}
 	err = json.Unmarshal(rBytes, &data)
