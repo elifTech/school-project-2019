@@ -11,21 +11,16 @@ import (
 	"time"
 )
 
-type Event struct {
+type TemperatureEvent struct {
 	Degree  float32
 	Name    string
 	Created time.Time
 	Event   map[string]string
 }
 
-type Status struct {
-	Status int
-}
-
-func main() {
-	createTemperatureEvent()
-	http.ListenAndServe(":3003", nil)
-}
+// type Status struct {
+// 	Status int
+// }
 
 func toFixed(num float64, precision int) float64 {
 	output := math.Pow(10, float64(precision))
@@ -36,7 +31,7 @@ func round(num float64) int {
 	return int(num + math.Copysign(0.5, num))
 }
 
-func createTemperatureEvent() {
+func GenerateTemperatureEvent() {
 	s1 := rand.NewSource(time.Now().UnixNano())
 	r1 := rand.New(s1)
 	min := 18
@@ -49,9 +44,7 @@ func createTemperatureEvent() {
 
 		moveStepFloat := rand.NormFloat64()*0.2 + 0
 
-		//moveStep := toFixed(moveStepFloat, 1)
 		moveStep := float32(toFixed(moveStepFloat, 1))
-		//fmt.Printf("move step float is %v, move step is %v", moveStepFloat, moveStep)
 
 		fmt.Printf(" move step is %v", moveStep)
 		if degree > float32(max) {
@@ -86,7 +79,7 @@ func createTemperatureEvent() {
 				sensorStatus = true
 			}
 		}
-		payload := Event{
+		payload := TemperatureEvent{
 			Degree:  degree,
 			Name:    "My house",
 			Created: creationTime,
