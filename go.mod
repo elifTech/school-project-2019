@@ -6,4 +6,5 @@ require (
 	github.com/jasonlvhit/gocron v0.0.0-20191021204008-47e27a9e0dc7 // indirect
 	github.com/jinzhu/gorm v1.9.11
 	github.com/rs/cors v1.7.0
+	github.com/subosito/gotenv v1.2.0 // indirect
 )
