@@ -17,7 +17,7 @@ import style from './Carbon.css';
 defaults.global.defaultFontFamily = 'Montserrat';
 
 const options = {
-  defaultSortName: 'EventID',
+  defaultSortName: 'eventId',
   defaultSortOrder: 'desc',
   display: { maintainAspectRatio: true },
   legend: { display: false },
@@ -133,7 +133,6 @@ class CarbonMonoxideSensor extends Component {
       <div className="container-fluid ">
         <div className="row">
           <div className="col-sm-12">
-            {' '}
             <h3>{info.Name}</h3>
             <h5>{info.Type} (ppm)</h5>
             <span>Port: {this.parseStatus(info.Status)}</span>
@@ -166,7 +165,7 @@ class CarbonMonoxideSensor extends Component {
           </div>
 
           <div className="col-sm-5">
-            <Icon text={this.text} />
+            <Icon text={info.Status} />
             {/* <h1>{events.slice(-1)[0].signal}</h1> */}
             <button
               type="button"
@@ -174,7 +173,7 @@ class CarbonMonoxideSensor extends Component {
               checked={this.parseStatus(info.Status)}
               onClick={this.statusOnClick(info.Status)}
             >
-              {this.text}
+              ON / OFF
             </button>
           </div>
         </div>
@@ -187,7 +186,7 @@ class CarbonMonoxideSensor extends Component {
             hover
             version="4"
           >
-            <TableHeaderColumn dataField="EventID" dataSort isKey>
+            <TableHeaderColumn dataField="eventId" dataSort isKey>
               ID
             </TableHeaderColumn>
             <TableHeaderColumn dataField="name">Device Name</TableHeaderColumn>
@@ -226,10 +225,8 @@ class CarbonMonoxideSensor extends Component {
   parseStatus = status => {
     switch (status) {
       case 0:
-        this.text = 'OFF';
         return 'Open';
       default:
-        this.text = 'ON';
         return 'Close';
     }
   };

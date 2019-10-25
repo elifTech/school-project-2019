@@ -12,8 +12,8 @@ import (
 const (
 	host     = "localhost"
 	port     = "5432"
-	user     = "max"
-	password = "1"
+	user     = "school"
+	password = "eliftech"
 	dbname   = "school"
 )
 

@@ -9,7 +9,7 @@ function IconCarbon(props) {
   const { text } = props;
 
   switch (text) {
-    case 'OFF':
+    case 0:
       id = s.background;
       iconFill = '#3C8000';
       break;
