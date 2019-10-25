@@ -32,10 +32,14 @@ const routes = {
       path: '/water-quality',
     },
     {
+      load: () =>
+        import(/* webpackChunkName: 'carbonsensor' */ './carbonsensor'),
+      path: '/carbonmonoxide',
+    },
+    {
       load: () => import(/* webpackChunkName: 'water-meter' */ './water-meter'),
       path: '/water-meter',
     },
-
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       load: () => import(/* webpackChunkName: 'not-found' */ './not-found'),

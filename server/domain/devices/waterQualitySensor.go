@@ -1,9 +1,9 @@
 package devices
 
 import (
-  "errors"
-  "fmt"
-  "time"
+	"errors"
+	"fmt"
+	"time"
 )
 
 type WaterQuality struct {

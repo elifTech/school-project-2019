@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	//"github.com/jinzhu/gorm"
 	//_ "github.com/jinzhu/gorm/dialects/postgres"
 	"log"
@@ -26,19 +25,26 @@ func main() {
 
 	// init your devices here
 	d := domain.Devices{
-		Temperature:      &devices.Temperature{},
-		WaterConsumption: &devices.WaterConsumption{},
+		Carbon:           &devices.Carbon{},
 		Wind:             &devices.Wind{},
+		Temperature:      &devices.Temperature{},
 		WaterQuality:     &devices.WaterQuality{},
+		WaterConsumption: &devices.WaterConsumption{},
 	}
 
 	s := &domain.IoTService{DB: db, Devices: &d}
 	//storage.Storage = db
 	router := s.NewRouter()
 
-	s.DB.AutoMigrate(devices.TemperatureEvent{}, devices.WindEvent{}, devices.WaterQualityEvent{}, devices.WaterConsumptionEvent{}, devices.Sensor{})
+	s.DB.AutoMigrate(devices.WaterConsumptionEvent{}, devices.WindEvent{}, devices.Carbon{}, devices.TemperatureEvent{}, devices.WaterQualityEvent{}, devices.Sensor{})
 	// prepare device
 	err = s.Devices.Temperature.CreateSensor()
+	if err != nil {
+		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
+		return
+	}
+
+	err = s.Devices.Carbon.CreateSensor()
 	if err != nil {
 		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
 		return

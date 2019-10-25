@@ -13,6 +13,7 @@ import windIcon from '../../assets/wind.svg';
 import qualityIcon from '../../assets/quality.svg';
 import websiteIcon from '../../assets/website.svg';
 import facebookIcon from '../../assets/facebook.svg';
+import carbonIcon from '../../assets/carbon.svg';
 import waterMeterIcon from '../../assets/water-meter.svg';
 
 class Menu extends React.Component {
@@ -100,6 +101,11 @@ class Menu extends React.Component {
       icon: qualityIcon,
       path: 'water-quality',
       text: 'Water Quality',
+    },
+    {
+      icon: carbonIcon,
+      path: 'carbonmonoxide',
+      text: 'Carbon Monoxide',
     },
     {
       icon: waterMeterIcon,
