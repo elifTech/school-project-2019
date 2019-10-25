@@ -11,7 +11,7 @@ export default events => {
       backColor = '#ffa123';
     }
     if (sign > 300) {
-      backColor = '#fff';
+      backColor = '#ff0000';
     }
   }
 

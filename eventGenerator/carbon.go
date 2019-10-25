@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"math"
 	"math/rand"
 	"net/http"
 	"time"
@@ -28,16 +27,10 @@ func GenerateCarbonEvent() {
 
 	s1 := rand.NewSource(time.Now().UnixNano())
 	r1 := rand.New(s1)
-	min := 35.0
-	max := 50.0
-	count := 0
-	signal := int(math.Abs(r1.NormFloat64()*(max-min+1) + min))
+	minValue := 50.0
+	amplitude := 15.0
 	creationTime := time.Now()
-	count = count + 1
-	if count == 36 {
-		max = 999
-		count = 0
-	}
+	signal := int(r1.NormFloat64()*(amplitude*0.3) + minValue)
 	payload := Carbon{
 		Signal:  signal,
 		Name:    "ASPR 650: Kitchen Room",
@@ -65,7 +58,7 @@ func GenerateCarbonEvent() {
 	}
 	fmt.Println("Carbon event was created:", bytes.NewBuffer(payloadJSON))
 	req.Body.Close()
-	max = 50
+	minValue = 50.0
 }
 
 func checkSensorsStatus() error {

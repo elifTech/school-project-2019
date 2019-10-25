@@ -65,6 +65,7 @@ class CarbonMonoxideSensor extends Component {
       Type: PropTypes.string.isRequired,
     }).isRequired,
     isLoading: PropTypes.bool.isRequired,
+    isVisible: PropTypes.bool.isRequired,
     removeInterval: PropTypes.func.isRequired,
   };
 
@@ -105,8 +106,9 @@ class CarbonMonoxideSensor extends Component {
 
   render() {
     const { events, info, isLoading, error } = this.props;
+    let { isVisible } = this.props;
 
-    if (error) {
+    if (error && events.length === 0) {
       return (
         <div className="container-fluid">
           <Alert variant="danger">
@@ -129,8 +131,22 @@ class CarbonMonoxideSensor extends Component {
         </div>
       );
     }
+    if (error && events.length !== 0) {
+      isVisible = true;
+    }
     return (
       <div className="container-fluid ">
+        {isVisible && (
+          <Alert variant="danger" isOpen={false}>
+            <Alert.Heading>
+              Server is not listening{' '}
+              <Spinner animation="border" role="status" />
+            </Alert.Heading>
+
+            <hr />
+            <p className="mb-0">{error}</p>
+          </Alert>
+        )}
         <div className="row">
           <div className="col-sm-12">
             <h3>{info.Name}</h3>
@@ -240,6 +256,7 @@ export default connect(
       error,
       isLoading,
       filterOption: { from, value },
+      visibleAlert,
     },
   }) => ({
     error,
@@ -247,6 +264,7 @@ export default connect(
     filterOption: { from, value },
     info,
     isLoading,
+    visibleAlert,
   }),
   { dispatchChangeStatus: changeCarbonStatus, dispatchSetFilter: setFilter },
 )(withStyles(sliderStyle, style)(CarbonMonoxideSensor));

@@ -16,6 +16,7 @@ const initialState = {
   },
   info: { Name: '', Type: '', status: 1 },
   isLoading: true,
+  isVisible: false,
 };
 
 export default (state = initialState, action) => {
