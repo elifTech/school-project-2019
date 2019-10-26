@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 )
-
+	
 func createNewService1() *domain.IoTService {
 	db, err := devices.Connect()
 	if err != nil {

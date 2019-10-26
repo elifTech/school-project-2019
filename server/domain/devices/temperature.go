@@ -77,8 +77,8 @@ func (t *Temperature) CreateSensor() error {
 	var err error
 	r, err := t.Get()
 	if err == nil {
-    fmt.Printf("Sensor is already created: %v \n", r)
-    return nil
+		fmt.Printf("Sensor is already created: %v \n", r)
+		return nil
 	}
 
 	temperatureSensor := Sensor{
@@ -86,8 +86,8 @@ func (t *Temperature) CreateSensor() error {
 		Type:   TemperatureSensor,
 		Status: StatusOffline,
 	}
-  fmt.Printf("Sensor is created %v \n", temperatureSensor)
-  return Storage.Create(&temperatureSensor).Error
+	fmt.Printf("Sensor is created %v \n", temperatureSensor)
+	return Storage.Create(&temperatureSensor).Error
 }
 
 // CreateEvent ...

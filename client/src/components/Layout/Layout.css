@@ -212,7 +212,8 @@ textarea {
 }
 
 .rightContainer {
+  height: 100vh;
   position: relative;
-  padding-left: 50px !important;
+  padding-left: 50px;
   padding-top: 20px;
 }

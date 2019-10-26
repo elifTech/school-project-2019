@@ -74,7 +74,7 @@ func (wc *WaterConsumption) CreateSensor() error {
 	var err error
 	r, err := wc.Get()
 	if err == nil {
-		fmt.Printf("Not Creating Sensor: %v \n", r)
+		fmt.Printf("Water consumption sensor initialized: %v \n", r)
 		return nil
 	}
 
@@ -90,6 +90,7 @@ func (wc *WaterConsumption) CreateSensor() error {
 
 // CreateEvent ...
 func (wc *WaterConsumption) CreateEvent(payload *WaterConsumptionEvent) (err error) {
+
 	// event should be populate with sensor type
 	if len(payload.SensorType) == 0 {
 		payload.SensorType = WaterMeter
