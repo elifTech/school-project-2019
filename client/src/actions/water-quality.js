@@ -77,9 +77,8 @@ export function getCurrentEvent() {
   };
 }
 
-const getInfoSuccess = (info, critics) => {
+const getInfoSuccess = info => {
   return {
-    critics,
     info,
     isFetching: false,
     type: WATER_QUALITY_SUCCESS_INFO,
@@ -91,12 +90,8 @@ export function getInfo() {
     dispatch(getEventsRequest());
     try {
       const response = await fetch(`http://localhost:8080/water_quality/ping`);
-      const criticsResponse = await fetch(
-        `http://localhost:8080/water_quality/critic`,
-      );
       const { Name, Status } = await response.json();
-      const { max, min } = await criticsResponse.json();
-      return dispatch(getInfoSuccess({ Name, Status }, { max, min }));
+      return dispatch(getInfoSuccess({ Name, Status }));
     } catch (error) {
       return dispatch(getEventsFailure(error));
     }
