@@ -3,7 +3,6 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import Switch from 'react-switch';
 import Alert from 'react-bootstrap/Alert';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
@@ -18,7 +17,7 @@ import WaterQualitySwitch from '../WaterQualitySwitch/WaterQualitySwitch';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
-    critics: PropTypes.shape({ max: PropTypes.string, min: PropTypes.string })
+    critics: PropTypes.shape({ max: PropTypes.number, min: PropTypes.number })
       .isRequired,
     currentQuality: PropTypes.string,
     dispatchChangeFilter: PropTypes.func.isRequired,
@@ -109,15 +108,15 @@ class WaterQualitySensor extends PureComponent {
           >
             <div className={style.rightContainerQualityItem}>
               <span className={style.criticTitle}>Current</span>
-              <p className={style.criticValue}>{currentQuality}</p>
+              <p className={style.criticValue}>{currentQuality} pH</p>
             </div>
             <div className={style.rightContainerQualityItem}>
               <span className={style.criticTitle}>Max</span>
-              <p className={style.criticValue}>{critics.max}</p>
+              <p className={style.criticValue}>{critics.max} pH</p>
             </div>
             <div className={style.rightContainerQualityItem}>
               <span className={style.criticTitle}>Min</span>
-              <p className={style.criticValue}>{critics.min}</p>
+              <p className={style.criticValue}>{critics.min} pH</p>
             </div>
           </Col>
         </Row>

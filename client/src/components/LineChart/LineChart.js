@@ -55,12 +55,16 @@ class LineChart extends PureComponent {
         scales: {
           xAxes: [
             {
-              display: false,
+              display: true,
             },
           ],
           yAxes: [
             {
+              labelString: 'test',
               ticks: {
+                callback(value) {
+                  return `${value} pH`;
+                },
                 max: 12,
               },
             },
