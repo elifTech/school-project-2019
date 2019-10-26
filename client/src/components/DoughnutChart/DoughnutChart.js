@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Chart from 'chart.js';
 import PropTypes from 'prop-types';
 import { setData } from '../WaterQualitySensor/HelperChartData';
+import 'chartjs-plugin-labels';
 
 class DoughnutChart extends PureComponent {
   static propTypes = {
@@ -35,8 +36,8 @@ class DoughnutChart extends PureComponent {
       <div>
         <canvas
           className="py-2"
-          height="80h"
           id="myChart"
+          height="110"
           ref={this.chartRef}
         />
       </div>
@@ -58,8 +59,14 @@ class DoughnutChart extends PureComponent {
           },
           position: 'right',
         },
+        plugins: {
+          labels: {
+            fontSize: 14,
+            render: 'value',
+          },
+        },
       },
-      type: 'doughnut',
+      type: 'pie',
     });
   };
 }

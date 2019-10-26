@@ -122,7 +122,9 @@ class WaterQualitySensor extends PureComponent {
         </Row>
         <Row className="mt-4">
           <Col md={7} className={style.doughnutChart}>
-            <p className={style.doughnutChartHeader}>Structure of water</p>
+            <p className={style.doughnutChartHeader}>
+              Structure of water (mg/L)
+            </p>
             <DoughnutChart
               waterStructure={waterStructure}
               labels={waterStructureLabels}
@@ -135,6 +137,7 @@ class WaterQualitySensor extends PureComponent {
             <TableStructure />
           </Col>
         </Row>
+        <div>test</div>
       </Container>
     );
 
