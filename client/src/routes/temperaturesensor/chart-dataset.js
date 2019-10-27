@@ -1,22 +1,35 @@
-import moment from 'moment';
+/* eslint-disable no-magic-numbers */
+import format from 'moment';
 
 export default events => {
-  const chartColor = '#5b92e5';
+  const chartColor = '#96dbfa';
+  let backColor = '#96dbfa';
+  if (events.length !== 0) {
+    const sign = events.slice(-1)[0].degree;
+
+    if (sign > 150) {
+      backColor = '#ffa123';
+    }
+    if (sign > 300) {
+      backColor = '#ff0000';
+    }
+  }
+
   return {
     datasets: [
       {
-        backgroundColor: 'rgba(175,192,192,0.4)',
+        // backgroundColor: backColor,
         borderCapStyle: 'butt',
-        borderColor: chartColor,
+        borderColor: backColor,
         borderDash: [],
         borderDashOffset: 0,
         borderJoinStyle: 'miter',
         data: events.map(({ degree }) => degree),
         fill: false,
-        label: 'Degree',
-        lineTension: 0.1,
+        label: 'Degree °C',
+        lineTension: 0.25,
         maintainAspectRatio: true,
-        pointBackgroundColor: '#fff',
+        pointBackgroundColor: chartColor,
         pointBorderColor: chartColor,
         pointBorderWidth: 1,
         pointHitRadius: 10,
@@ -28,7 +41,7 @@ export default events => {
       },
     ],
     labels: events.map(({ CreatedAt }) =>
-      moment(CreatedAt).format('DD-MM HH:mm:ss'),
+      format(CreatedAt).format('DD-MM HH:mm:ss'),
     ),
   };
 };

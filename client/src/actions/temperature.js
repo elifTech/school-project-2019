@@ -1,6 +1,5 @@
 /* eslint-disable unicorn/consistent-function-scoping */
 import axios from 'axios';
-
 import {
   TEMPERATURE_SENSOR_DATA_LOADING,
   TEMPERATURE_SENSOR_DATA_SUCCESS,
@@ -28,17 +27,17 @@ const loadFilterData = period => ({
   period,
   type: FILTER_DATA_LOADING,
 });
-
 const temperatureSensorLoading = () => ({
   type: TEMPERATURE_SENSOR_DATA_LOADING,
 });
 
 export const changeTemperatureStatus = status => async dispatch => {
   try {
+    // alert(status);
     const { data } = await axios.put(
       'http://localhost:8080/sensor/temperature',
       {
-        status: status ? 1 : 0,
+        Status: status ? 1 : 0,
       },
     );
     dispatch(updateTemperatureStatus(data));
@@ -47,15 +46,13 @@ export const changeTemperatureStatus = status => async dispatch => {
   }
 };
 
-export const getTemperatureSensorData = () => async (dispatch, getState) => {
+export const getTemperatureSensorsData = () => async (dispatch, getState) => {
   dispatch(temperatureSensorLoading());
-
   const {
     temperatureSensor: {
       filterOption: { from },
     },
   } = getState();
-
   try {
     const [{ data: info }, { data: events }] = await Promise.all([
       axios.get('http://localhost:8080/temperature'),
@@ -82,6 +79,18 @@ export const setFilter = ({ from, value }) => async dispatch => {
       },
     );
     dispatch(temperatureSensorSuccess({ events }));
+  } catch (error) {
+    dispatch(temperatureSensorFailure(error.message));
+  }
+};
+
+export const getWidgetsData = () => async dispatch => {
+  try {
+    const [{ data: info }, { data: events }] = await Promise.all([
+      axios.get('http://localhost:8080/temperature'),
+      axios.get('http://localhost:8080/sensor/temperature/ping'),
+    ]);
+    dispatch(temperatureSensorSuccess({ events, info }));
   } catch (error) {
     dispatch(temperatureSensorFailure(error.message));
   }

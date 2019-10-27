@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -6,7 +7,9 @@ import { Spinner, Alert } from 'react-bootstrap';
 import { Line, defaults } from 'react-chartjs-2';
 import getChartData from './chart-dataset';
 import Icon from './temperatureIcon/temperature-icon';
+import Loader from '../../components/Loader/Loader';
 import { setFilter, changeTemperatureStatus } from '../../actions/temperature';
+import style from './Temperature.css';
 
 defaults.global.defaultFontFamily = 'Montserrat';
 
@@ -14,15 +17,20 @@ const defaultButt = 'btn btn-secondary btn-sm';
 const activeButt = 'btn btn-primary';
 
 const options = {
-  defaultSortName: 'EventID',
+  defaultSortName: 'eventId',
   defaultSortOrder: 'desc',
   display: { maintainAspectRatio: true },
   legend: { display: false },
   scales: {
     xAxes: [
       {
-        display: false,
-        labelString: 'time',
+        display: true,
+        fontSize: 15,
+        scaleLabel: {
+          display: true,
+          fontSize: 18,
+          labelString: 'Time',
+        },
       },
     ],
   },
@@ -51,8 +59,13 @@ class TemperatureSensor extends Component {
       Type: PropTypes.string.isRequired,
     }).isRequired,
     isLoading: PropTypes.bool.isRequired,
+    isVisible: PropTypes.bool.isRequired,
     removeInterval: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    this.selectedButton = 'days';
+  }
 
   componentWillUnmount() {
     const { removeInterval } = this.props;
@@ -70,46 +83,65 @@ class TemperatureSensor extends Component {
 
   render() {
     const { events, info, isLoading, error } = this.props;
+    let { isVisible } = this.props;
 
-    if (events.pop() !== undefined) {
-      this.degree = events.pop().degree;
+    if (events.length !== 0) {
+      this.degree = events.slice(-1)[0].degree;
+    }
+
+    if (error && events.length === 0) {
+      return (
+        <div className="container-fluid">
+          <Alert variant="danger">
+            <Alert.Heading>Failed to load resource!</Alert.Heading>
+            <p>Server is not listening</p>
+            <Spinner animation="border" role="status">
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+            <hr />
+            <p className="mb-0">{error}</p>
+          </Alert>
+        </div>
+      );
     }
 
     if (isLoading) {
-      //   return (
-      //     <div>
-      //       <Loader />
-      //     </div>
-      //   );
+      return (
+        <div>
+          <Loader />
+        </div>
+      );
+    }
+    if (error && events.length !== 0) {
+      isVisible = true;
     }
     return (
       <div className="container-fluid ">
+        {isVisible && (
+          <Alert variant="danger" isOpen={false}>
+            <Alert.Heading>
+              Server is not listening{' '}
+              <Spinner animation="border" role="status" />
+            </Alert.Heading>
+
+            <hr />
+            <p className="mb-0">{error}</p>
+          </Alert>
+        )}
         <div className="row">
           <div className="col-sm-12">
-            {' '}
             <h3>{info.Name}</h3>
-            <h5>{info.Type}</h5>
             <span>Port: {this.parseStatus(info.Status)}</span>
             <hr />
           </div>
         </div>
 
-        {error ? (
-          <div className="container-fluid">
-            <Alert variant="danger">
-              <Alert.Heading>Failed to load resource!</Alert.Heading>
-              <p>Server is not listening</p>
-              <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-              </Spinner>
-              <hr />
-              <p className="mb-0">{error}</p>
-            </Alert>
-          </div>
-        ) : null}
         <div className="row mb-9">
           <div className="col-sm-7">
-            <Line data={getChartData(events)} options={options} />
+            <div className={style.lineChart}>
+              <Line data={getChartData(events)} options={options} />
+            </div>
+
             <div className="col-sm-11">
               <button
                 type="button"
@@ -153,7 +185,6 @@ class TemperatureSensor extends Component {
               </button>
             </div>
           </div>
-
           <div className="col-sm-5">
             <button
               type="button"
@@ -163,21 +194,37 @@ class TemperatureSensor extends Component {
             >
               {this.text}
             </button>
-            <div className="col-sm-8">
-              {' '}
+
+            <Icon />
+            <p>
               {this.degree === undefined
                 ? null
                 : `Current temperature ${this.degree}°C`}
-            </div>
-            {this.degree === undefined ? null : <Icon degree={this.degree} />}
-            <h1>{events.degree}</h1>
+            </p>
           </div>
+
+          {/* <div className="col-sm-5">
+           
+
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              checked={this.parseStatus(info.Status)}
+              onClick={this.statusOnClick(info.Status)}
+            >
+              ON / OFF
+            </button>
+          </div> */}
         </div>
       </div>
     );
   }
 
-  dateFormatter = date => {
+  setFilter = (filter, period) => {
+    return () => this.getFilterData(filter, period);
+  };
+
+  setDateFormat = date => {
     return moment(date).format('YYYY-MM-DD HH:mm:ss');
   };
 
@@ -186,17 +233,13 @@ class TemperatureSensor extends Component {
     const { dispatchSetFilter } = this.props;
     dispatchSetFilter({
       from: moment().subtract(filter, period),
-      value: moment().subtract(2, 'hours'),
+      value: moment().subtract('hours', 2),
     });
   };
 
-  setFilter = (filter, period) => {
-    return () => this.getFilterData(filter, period);
-  };
-
-  statusOnClick = status => {
+  statusOnClick(status) {
     return () => this.handleOnClick(status);
-  };
+  }
 
   parseStatus = status => {
     switch (status) {
@@ -220,6 +263,7 @@ export default connect(
       error,
       isLoading,
       filterOption: { from, value },
+      visibleAlert,
     },
   }) => ({
     error,
@@ -227,9 +271,10 @@ export default connect(
     filterOption: { from, value },
     info,
     isLoading,
+    visibleAlert,
   }),
   {
     dispatchChangeStatus: changeTemperatureStatus,
     dispatchSetFilter: setFilter,
   },
-)(TemperatureSensor);
+)(withStyles(style)(TemperatureSensor));
