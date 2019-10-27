@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
-
+	//"time"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -24,9 +24,9 @@ func TemperatureInit(router *httprouter.Router) {
 
 }
 
-func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-}
+// func enableCors(w *http.ResponseWriter) {
+// 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+// }
 
 //
 func FilterTemperatureEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {

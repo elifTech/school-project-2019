@@ -10,8 +10,14 @@ import Icon from './temperatureIcon/temperature-icon';
 import Loader from '../../components/Loader/Loader';
 import { setFilter, changeTemperatureStatus } from '../../actions/temperature';
 import style from './Temperature.css';
+import TemperatureContainer from './TemperatureContainer/TemperatureContainer';
 
 defaults.global.defaultFontFamily = 'Montserrat';
+
+const buttonsStyle = {
+  marginLeft: '9em',
+  marginTop: '1em',
+};
 
 const defaultButt = 'btn btn-secondary btn-sm';
 const activeButt = 'btn btn-primary';
@@ -128,21 +134,33 @@ class TemperatureSensor extends Component {
             <p className="mb-0">{error}</p>
           </Alert>
         )}
-        <div className="row">
-          <div className="col-sm-12">
+        <div className="row align-items-center">
+          <div className="col-sm-7">
             <h3>{info.Name}</h3>
             <span>Port: {this.parseStatus(info.Status)}</span>
             <hr />
           </div>
+          <div className="col-sm-5">
+            {/* <h4>Click here to ON / OFF sensor</h4> */}
+
+            <button
+              type="button"
+              className={this.startButton}
+              checked={this.parseStatus(info.Status)}
+              onClick={this.statusOnClick(info.Status)}
+            >
+              {this.text}
+            </button>
+          </div>
         </div>
 
-        <div className="row mb-9">
+        <div className="row mb-9 justify-content-center">
           <div className="col-sm-7">
             <div className={style.lineChart}>
               <Line data={getChartData(events)} options={options} />
             </div>
 
-            <div className="col-sm-11">
+            <div className="col-sm-11" style={buttonsStyle}>
               <button
                 type="button"
                 className={
@@ -186,35 +204,36 @@ class TemperatureSensor extends Component {
             </div>
           </div>
           <div className="col-sm-5">
-            <button
-              type="button"
-              className={this.startButton}
-              checked={this.parseStatus(info.Status)}
-              onClick={this.statusOnClick(info.Status)}
-            >
-              {this.text}
-            </button>
-
-            <Icon />
-            <p>
+            <Icon degree={this.degree} />
+            <h1>
               {this.degree === undefined
                 ? null
                 : `Current temperature ${this.degree}°C`}
-            </p>
+            </h1>
+          </div>
+        </div>
+
+        {/* <div className="row justify-content-center">
+          <div className="col sm-4">
+            <div style={style.innerContainer}>
+              <div style={style.header}>MAX temperature</div>
+              <div style={style.sensor}>{this.degree} °C</div>
+            </div>
           </div>
 
-          {/* <div className="col-sm-5">
-           
+        </div> */}
 
-            <button
-              type="button"
-              className="btn btn-outline-primary"
-              checked={this.parseStatus(info.Status)}
-              onClick={this.statusOnClick(info.Status)}
-            >
-              ON / OFF
-            </button>
-          </div> */}
+        <div className="row mb-9">
+          <div className="col-sm-3">
+            <TemperatureContainer type="MAX" degree={this.degree} />
+          </div>
+          <div className="col-sm-3">
+            <TemperatureContainer type="AVERAGE" degree={this.degree} />
+          </div>
+
+          <div className="col-sm-3">
+            <TemperatureContainer type="MIN" degree={this.degree} />
+          </div>
         </div>
       </div>
     );
