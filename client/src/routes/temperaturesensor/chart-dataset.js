@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import format from 'moment';
+import moment from 'moment';
 
 export default events => {
   const chartColor = '#96dbfa';
@@ -41,7 +41,7 @@ export default events => {
       },
     ],
     labels: events.map(({ CreatedAt }) =>
-      format(CreatedAt).format('DD-MM HH:mm:ss'),
+      moment(CreatedAt).format('DD-MM HH:mm:ss'),
     ),
   };
 };

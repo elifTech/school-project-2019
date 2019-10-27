@@ -6,12 +6,12 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 function IconTemperature() {
   return (
     <svg
-      id="Layer_1"
-      enableBackground="new 0 0 512 512"
-      height="512"
-      viewBox="0 0 512 512"
-      width="512"
+      width="275"
+      height="100%"
+      maxheight="134"
+      viewBox="0 0 512.001 512.001"
       xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
     >
       <path
         d="m252.249 291.431v-223.931c0-33.137-26.863-60-60-60s-60 26.863-60 60v223.931c-32.965 20.243-55 56.63-55 98.069 0 63.411 51.589 115 115 115s115-51.589 115-115c0-41.439-22.035-77.826-55-98.069z"
