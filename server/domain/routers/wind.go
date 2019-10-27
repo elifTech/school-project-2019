@@ -18,13 +18,32 @@ type StatusData struct {
 
 func WindInit(router *httprouter.Router) {
 	router.GET("/wind", middlewares.Authorize(GetWindSensor))
+	router.GET("/wind/status", GetWindStatus)
 	router.GET("/wind/events", middlewares.Authorize(FindWindEvents))
-	router.POST("/wind/event", middlewares.Authorize(CreateWindEvent))
-	router.GET("/wind/event/last", middlewares.Authorize(GetLastDate))
+	router.POST("/wind/event", CreateWindEvent)
+	router.GET("/wind/event/last", GetLastDate)
 	router.PUT("/wind", middlewares.Authorize(UpdateWindSensor))
 }
 
 func GetWindSensor(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	wind := devices.Wind{}
+	device, err := wind.Get()
+	// testing custom error response
+	if err == devices.ErrNotFound {
+		http.Error(w, "the device is not found", http.StatusNotFound)
+		return
+	}
+
+	response, err := json.Marshal(device)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+}
+
+func GetWindStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	wind := devices.Wind{}
 	device, err := wind.Get()
 	// testing custom error response

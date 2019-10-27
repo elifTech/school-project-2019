@@ -36,7 +36,7 @@ func main() {
 	//storage.Storage = db
 	router := s.NewRouter()
 
-	s.DB.AutoMigrate(devices.User{}, devices.WaterConsumptionEvent{}, devices.WindEvent{}, devices.Carbon{}, devices.TemperatureEvent{}, devices.WaterQualityEvent{}, devices.Sensor{})
+	s.DB.AutoMigrate(devices.User{}, devices.WaterConsumptionEvent{}, devices.WindEvent{}, devices.CarbonEvent{}, devices.TemperatureEvent{}, devices.WaterQualityEvent{}, devices.Sensor{})
 	// prepare device
 	err = s.Devices.Temperature.CreateSensor()
 	if err != nil {

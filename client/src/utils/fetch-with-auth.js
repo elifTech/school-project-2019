@@ -8,7 +8,7 @@ const authHeader = {
 };
 
 const authorize = response => {
-  if (response.Message) {
+  if (response.Message && process.env.BROWSER) {
     localStorage.removeItem('token');
     history.push('/login');
   }
