@@ -21,14 +21,14 @@ type Carbon struct {
 func GenerateCarbonEvent() {
 	err := checkSensorsStatus()
 	if err != nil {
-		fmt.Printf("Couldn`t get a sensor's status: %v\n", err)
+		fmt.Printf("Sensor doesn't work: %v\n", err)
 		return
 	}
 
 	s1 := rand.NewSource(time.Now().UnixNano())
 	r1 := rand.New(s1)
 	minValue := 50.0
-	amplitude := 15.0
+	amplitude := 35.0
 	creationTime := time.Now()
 	signal := int(r1.NormFloat64()*(amplitude*0.3) + minValue)
 	payload := Carbon{

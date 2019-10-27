@@ -137,7 +137,7 @@ class CarbonMonoxideSensor extends Component {
     return (
       <div className="container-fluid ">
         {isVisible && (
-          <Alert variant="danger" isOpen={false}>
+          <Alert variant="danger">
             <Alert.Heading>
               Server is not listening{' '}
               <Spinner animation="border" role="status" />
@@ -159,10 +159,12 @@ class CarbonMonoxideSensor extends Component {
         <div className="row mb-9">
           <div className="col-sm-7">
             <div className={style.lineChart}>
+              <br />
               <Line data={getChartData(events)} options={options} />
             </div>
             <div className="col-sm-12">
               <div style={sliderStyle}>
+                <br />
                 <b>
                   <Slider
                     dots
@@ -181,8 +183,26 @@ class CarbonMonoxideSensor extends Component {
           </div>
 
           <div className="col-sm-5">
+            <div className={style.poster}>
+              <button type="submit" className="btn btn-outline-info">
+                Tutorial
+              </button>
+              <div className={style.descr}>
+                <b>Carbon Monoxide level (ppm)</b>
+                <li>0 - Normal</li>
+                <li>9 - Max allowable (short term)</li>
+                <li>10-24 - Investigate source</li>
+                <li>25 - Maximum exposure</li>
+                <li>50 - Maximum exposure in workplace</li>
+                <li>200 - dizzy, nausea, fatigue, headache (evacuate)</li>
+                <li>400 - life threatening 3 hrs</li>
+                <li>800 - convulsion, unconcious, death within 2-3 hrs</li>
+                <li>1600 - death within 1-2 hrs</li>
+                <li>6400 - death within 30 min</li>
+                <li>12800 - death within 1-3 min</li>
+              </div>
+            </div>
             <Icon text={info.Status} />
-            {/* <h1>{events.slice(-1)[0].signal}</h1> */}
             <button
               type="button"
               className="btn btn-outline-primary"
