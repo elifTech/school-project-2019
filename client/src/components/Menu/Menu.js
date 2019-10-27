@@ -4,32 +4,28 @@ import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import classNames from 'classnames';
 import Hamburger from 'react-hamburger-menu';
+import Button from 'react-bootstrap/Button';
 import MenuItem from './MenuItem/MenuItem';
+import { signout } from '../../actions/user';
 
 import s from './Menu.css';
 import dashboardIcon from '../../assets/dashboard.svg';
 import temperatureIcon from '../../assets/temp.svg';
 import windIcon from '../../assets/wind.svg';
 import qualityIcon from '../../assets/quality.svg';
-import websiteIcon from '../../assets/website.svg';
-import facebookIcon from '../../assets/facebook.svg';
 
 class Menu extends React.Component {
   static propTypes = {
     currentTab: PropTypes.string.isRequired,
+    signoutUser: PropTypes.func.isRequired,
   };
 
   state = {
     isMenuOpen: false,
   };
 
-  onMenuClick = () => {
-    const { isMenuOpen } = this.state;
-    this.setState({ isMenuOpen: !isMenuOpen });
-  };
-
   render() {
-    const { currentTab } = this.props;
+    const { currentTab, signoutUser } = this.props;
     const { isMenuOpen } = this.state;
     return (
       <div className={s.menu}>
@@ -57,27 +53,23 @@ class Menu extends React.Component {
             />
           ))}
         </div>
-        <div className={s.menuSocial}>
-          <a
-            href="https://google.com"
-            target="_blank"
-            rel="noreferrer noopener"
-            className={s.menuSocialIcon}
+        {process.env.BROWSER && localStorage.getItem('token') && (
+          <Button
+            variant="outline-light"
+            className={s.signout}
+            onClick={signoutUser}
           >
-            <img src={websiteIcon} alt="website" />
-          </a>
-          <a
-            href="https://facebook.com"
-            target="_blank"
-            rel="noreferrer noopener"
-            className={s.menuSocialIcon}
-          >
-            <img src={facebookIcon} alt="facebook" />
-          </a>
-        </div>
+            Sign out
+          </Button>
+        )}
       </div>
     );
   }
+
+  onMenuClick = () => {
+    const { isMenuOpen } = this.state;
+    this.setState({ isMenuOpen: !isMenuOpen });
+  };
 
   menuItems = [
     {
@@ -105,5 +97,5 @@ class Menu extends React.Component {
 
 export default connect(
   ({ menu: { currentTab } }) => ({ currentTab }),
-  null,
+  { signoutUser: signout },
 )(withStyles(s)(Menu));

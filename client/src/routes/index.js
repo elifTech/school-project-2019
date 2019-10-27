@@ -4,8 +4,16 @@ import AuthContainer from '../components/Authorization';
 
 const routes = [
   {
-    load: () => import(/* webpackChunkName: 'login' */ './login'),
-    path: '/login',
+    action({ next }) {
+      return next();
+    },
+    children: [
+      {
+        load: () => import(/* webpackChunkName: 'login' */ './login'),
+        path: '/login',
+      },
+    ],
+    path: '',
   },
   {
     load: () => import(/* webpackChunkName: 'signup' */ './signup'),
@@ -43,7 +51,6 @@ const routes = [
     ],
 
     path: '',
-    protected: true,
   },
 ];
 

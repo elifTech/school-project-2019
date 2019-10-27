@@ -1,25 +1,45 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import { Field, reduxForm } from 'redux-form';
-import s from './user-form.css';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import FieldInput from './FieldInput';
 
-const UserForm = ({ handleSubmit }) => {
+const UserForm = ({ handleSubmit, submitText }) => {
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <Field name="email" component="input" type="text" placeholder="Email" />
+    <Form onSubmit={handleSubmit}>
+      <Form.Group>
+        <Form.Label>Email address</Form.Label>
+        <Field
+          name="email"
+          component={FieldInput}
+          type="email"
+          placeholder="Enter email"
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Password</Form.Label>
         <Field
           name="password"
-          component="input"
+          component={FieldInput}
           type="password"
-          placeholder="Password"
+          placeholder="Enter password"
         />
-        <button type="submit" label="submit">
-          Submit
-        </button>
-      </form>
-    </div>
+      </Form.Group>
+      <Button variant="primary" type="submit">
+        {submitText || 'Submit'}
+      </Button>
+    </Form>
   );
 };
 
-export default withStyles(s)(reduxForm({ form: 'user-form' })(UserForm));
+UserForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  submitText: PropTypes.string.isRequired,
+};
+
+export default withStyles(bootstrap)(
+  reduxForm({ form: 'user-form' })(UserForm),
+);

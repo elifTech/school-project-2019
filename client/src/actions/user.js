@@ -1,17 +1,17 @@
 /* eslint-disable unicorn/consistent-function-scoping */
 import axios from 'axios';
-import { SET_CURRENT_USER, SET_USER_MESSAGE, apiURL } from '../constants';
-
-const setUser = username => ({
-  payload: {
-    message: 'You are loggen in.',
-    username,
-  },
-  type: SET_CURRENT_USER,
-});
+import history from '../history';
+import { SET_USER_MESSAGE, apiURL } from '../constants';
 
 const setUserMessage = message => ({
   message,
+  type: SET_USER_MESSAGE,
+});
+
+const DELAY = 3000;
+
+const resetMessage = () => ({
+  message: '',
   type: SET_USER_MESSAGE,
 });
 
@@ -26,15 +26,16 @@ export const login = ({ email, password }) => async dispatch => {
         password,
       }),
     );
-    console.log(token);
     if (token) {
       localStorage.setItem('token', token);
-      dispatch(setUser(email));
+      dispatch(setUserMessage('You are logged in.'));
     } else {
-      dispatch(setUser(''));
+      dispatch(setUserMessage('Sorry, try again!'));
     }
+    setTimeout(resetMessage(), DELAY);
   } catch (error) {
-    dispatch(setUserMessage(error.message));
+    dispatch(setUserMessage('Invalid email or password.'));
+    setTimeout(() => dispatch(resetMessage()), DELAY);
     console.error(error.message);
   }
 };
@@ -49,12 +50,22 @@ export const signup = ({ email, password }) => async dispatch => {
       }),
     );
     if (response) {
-      dispatch(setUserMessage('User succesfully created!'));
+      dispatch(setUserMessage('Successfully registered!'));
     } else {
       dispatch(setUserMessage(response));
     }
+    setTimeout(() => dispatch(resetMessage()), DELAY);
   } catch (error) {
     dispatch(setUserMessage(error.message));
+    setTimeout(() => dispatch(resetMessage()), DELAY);
     console.error(error.message);
   }
+};
+
+export const signout = () => dispatch => {
+  localStorage.removeItem('token');
+  history.push('/login');
+
+  dispatch(setUserMessage('Signed out!'));
+  setTimeout(() => dispatch(resetMessage()), DELAY);
 };

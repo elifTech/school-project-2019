@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/consistent-function-scoping */
-import axios from 'axios';
 import moment from 'moment';
+import axios from '../utils/fetch-with-auth';
 import {
   WIND_SENSOR_DATA_LOADING,
   WIND_SENSOR_DATA_SUCCESS,
@@ -43,12 +43,10 @@ export const applyFilter = ({ from, value }) => async dispatch => {
   dispatch(loadFilterData({ from, value }));
   try {
     const { data: events } = await axios.get(`${apiURL}/wind/events`, {
-      params: {
-        from,
-        to: moment()
-          .local()
-          .toJSON(),
-      },
+      from,
+      to: moment()
+        .local()
+        .toJSON(),
     });
     dispatch(windSensorSuccess({ events }));
   } catch (error) {
@@ -79,19 +77,27 @@ export const getWindSensorData = () => async (dispatch, getState) => {
   if (!name) dispatch(windSensorLoading());
   const queries = [
     axios.get(`${apiURL}/wind/events`, {
-      params: {
-        from,
-        to: moment()
-          .local()
-          .toJSON(),
-      },
+      from,
+      to: moment()
+        .local()
+        .toJSON(),
     }),
     !name && axios.get(`${apiURL}/wind`),
   ];
 
   try {
     const [{ data: events }, { data: info }] = await Promise.all(queries);
-    dispatch(windSensorSuccess({ events, ...(info && { info }) }));
+    if (Array.isArray(events)) {
+      dispatch(windSensorSuccess({ events, ...(info && { info }) }));
+    } else {
+      dispatch(
+        windSensorFailure(
+          events.Message
+            ? events.Message
+            : 'Something went wrong on the server, please try again later',
+        ),
+      );
+    }
   } catch (error) {
     dispatch(windSensorFailure(error.message));
   }
