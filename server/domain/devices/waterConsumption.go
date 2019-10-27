@@ -25,7 +25,7 @@ func (WaterConsumption) TableName() string {
 }
 
 func init() {
-	fmt.Printf("Initalising %s sensor... \n", WaterMeter)
+	fmt.Printf("Initializing %s sensor... \n", WaterMeter)
 }
 
 // Get ...

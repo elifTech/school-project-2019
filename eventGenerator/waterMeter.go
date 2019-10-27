@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
@@ -13,43 +14,16 @@ import (
 	"time"
 )
 
-// type SensorState int
-
-// const (
-// 	StateNotFound SensorState = iota - 1
-// 	StateDisabled
-// 	StateActive
-// )
-
-// func (st SensorState) String() {
-// 	switch st {
-
-// 	case StateNotFound:
-// 		return "not_found"
-
-// 	case StateDisabled:
-// 		return "disabled"
-
-// 	case StateActive:
-// 		return "online"
-// 	}
-// }
-
-// WaterMeterEvent ...
-type WaterMeterEvent struct {
+// WaterMeterStatus struct for checking device status
+type WaterMeterStatus struct {
 	Status int
 }
 
+// GenerateWaterMeterEvent generate random water consumption event
 func GenerateWaterMeterEvent() {
-
-	// fmt.Printf(" StatusCheck. %v \n", StatusCheck())
-
-	switch StatusCheck() {
-	case 0:
-		fmt.Printf("Device is not available. \n")
-		return
-	case 2:
-		TurnStatusBack()
+	err := statusCheck()
+	if err != nil {
+		fmt.Printf("Water meter status is incorrect: %v\n", err)
 		return
 	}
 
@@ -62,7 +36,6 @@ func GenerateWaterMeterEvent() {
 
 	// new source for random seed number generator
 	randomConsumtion := float32(rand.Intn(max-min+1)+min) / 10
-	// creationTime := time.Now()
 
 	// preparing payload
 	payloadJSON, err := json.Marshal(map[string]interface{}{
@@ -77,7 +50,7 @@ func GenerateWaterMeterEvent() {
 		fmt.Println("Could not convert to JSON")
 	}
 
-	fmt.Println("Random valie is ", randomConsumtion)
+	fmt.Println("Water meter random valie is ", randomConsumtion)
 
 	req, err := http.Post("http://localhost:8080/waterconsumption/poll", "application/json", bytes.NewBuffer(payloadJSON))
 	if err != nil {
@@ -91,23 +64,38 @@ func GenerateWaterMeterEvent() {
 		return
 	}
 
-	fmt.Println("Tick at \n", string(response))
+	fmt.Println("Water meter event created ", string(response))
 }
 
-func StatusCheck() int {
-	res, _ := http.Get("http://localhost:8080/waterconsumption")
+func statusCheck() error {
+	res, err := http.Get("http://localhost:8080/waterconsumption")
+	if err != nil {
+		return err
+	}
 
-	data, _ := ioutil.ReadAll(res.Body)
+	data, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
 
-	var event WaterMeterEvent
-	_ = json.Unmarshal(data, &event)
+	var event WaterMeterStatus
+	err = json.Unmarshal(data, &event)
+	if err != nil {
+		return err
+	}
 
-	fmt.Printf("Event %v \n", event.Status)
-	return event.Status
+	if event.Status == 0 {
+		return errors.New("Water Meter Sensor is offline ")
+	} else if event.Status == 2 {
+		floodAler()
+		turnStatusBack()
+		return errors.New("Flood sensor alert! ")
 
+	}
+	return nil
 }
 
-func FloodAler() {
+func floodAler() {
 	accountSid := os.Getenv("TWILIO_ACCOUNT_SID")
 	authToken := os.Getenv("TWILIO_AUTH_TOKEN")
 	urlStr := fmt.Sprintf("https://api.twilio.com/2010-04-01/Accounts/%s/Messages.json", accountSid)
@@ -115,8 +103,8 @@ func FloodAler() {
 	floodAlert := "Emergency alert. You've got flood at your home!"
 
 	msgData := url.Values{}
-	msgData.Set("To", "+380632431866")
-	msgData.Set("From", "+13343800573")
+	msgData.Set("To", os.Getenv("TWILIO_NUMBER_TO"))
+	msgData.Set("From", os.Getenv("TWILIO_NUMBER_FROM"))
 	msgData.Set("Body", floodAlert)
 	msgDataReader := *strings.NewReader(msgData.Encode())
 
@@ -140,21 +128,28 @@ func FloodAler() {
 
 }
 
-func TurnStatusBack() {
+func turnStatusBack() {
 
-	payloadJSON, err := json.Marshal("1")
-	reqs, err := http.NewRequest(http.MethodPut, "http://localhost:8080/waterconsumption", strings.NewReader(string(payloadJSON)))
+	client := &http.Client{}
+
+	statusBack := WaterMeterStatus{
+		Status: 1,
+	}
+
+	payloadJSON, err := json.Marshal(statusBack)
+
+	request, err := http.NewRequest(http.MethodPut, "http://localhost:8080/waterconsumption", bytes.NewBuffer(payloadJSON))
 	if err != nil {
 		fmt.Println("Error creating water meter event ")
 	}
-	defer reqs.Body.Close()
+	defer request.Body.Close()
 
-	response, err := ioutil.ReadAll(reqs.Body)
+	response, err := client.Do(request)
 	if err != nil {
 		fmt.Printf("Error parsing response: %v \n", err)
 		return
 	}
 
-	fmt.Println("Alert, status was changed back \n", string(response))
+	fmt.Println("Alert, status was changed back \n", response.Status)
 
 }
