@@ -25,15 +25,8 @@ class WaterMeter extends React.Component {
   }
 
   render() {
-    const { isStatusLoading, isLoading, error } = this.props;
-    if (error) {
-      return (
-        <div>
-          We&#39;are sorry, something went wrong, try to reboot your system, or
-          contact your adminisrator
-        </div>
-      );
-    }
+    const { isStatusLoading, isLoading } = this.props;
+
     if (isLoading) {
       return <Loader />;
     }
@@ -41,6 +34,9 @@ class WaterMeter extends React.Component {
       <Container fluid className={s.chart}>
         {isStatusLoading && <Loader />}
         <Row className={s.container}>
+          <div style={this.getError()} className={s.serverError}>
+            Server unavailable
+          </div>
           <Col md={8}>
             <WaterMeterChart />
           </Col>
@@ -50,6 +46,15 @@ class WaterMeter extends React.Component {
         </Row>
       </Container>
     );
+  }
+
+  getError() {
+    let getDisplay = { display: 'none' };
+    const { error } = this.props;
+    if (error) {
+      getDisplay = { display: 'flex' };
+    }
+    return getDisplay;
   }
 }
 

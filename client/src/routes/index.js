@@ -39,10 +39,14 @@ const routes = {
       path: '/temperaturesensor',
     },
     {
+      load: () =>
+        import(/* webpackChunkName: 'carbonsensor' */ './carbonsensor'),
+      path: '/carbonsensor',
+    },
+    {
       load: () => import(/* webpackChunkName: 'water-meter' */ './water-meter'),
       path: '/water-meter',
     },
-
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       load: () => import(/* webpackChunkName: 'not-found' */ './not-found'),

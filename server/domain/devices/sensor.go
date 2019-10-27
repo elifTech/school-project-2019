@@ -24,10 +24,8 @@ const (
 // }
 // Sensors ...
 const (
-	TemperatureSensor string = "temperature"
-
-	//Sensors type with parameters
-
+	CarbonSensor       string = "Carbon Monoxide"
+	TemperatureSensor  string = "temperature"
 	WaterMeter         string = "waterConsumption"
 	WindSensor         string = "wind"
 	WaterQualitySensor string = "waterQuality"

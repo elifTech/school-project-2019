@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	//"strconv"
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
@@ -12,16 +13,16 @@ import (
 )
 
 //Initialisation all routers
-func TemperatureInit(router *httprouter.Router) {
+func CarbonInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
 
-	router.GET("/sensor/temperature/ping", PingTemperature)
-	router.GET("/temperature", GetTemperatureStatus)
-	router.GET("/temperature/filter/events", FilterTemperatureEvents)
-	router.PUT("/sensor/temperature", UpdateTemperatureSensor)
-	router.POST("/sensor/temperature/poll", PollTemperature)
-
+	router.GET("/sensor/carbon/ping", PingCarbon)
+	router.GET("/carbon", GetCarbonStatus)
+	router.GET("/carbon/filter/events", FilterCarbonEvents)
+	router.PUT("/sensor/carbon", UpdateCarbonSensor)
+	router.POST("/sensor/carbon/poll", PollCarbon)
+	
 }
 
 func enableCors(w *http.ResponseWriter) {
@@ -29,17 +30,17 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 //
-func FilterTemperatureEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func FilterCarbonEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	keys := r.URL.Query()
 	from := keys.Get("from")
-	temperature := devices.Temperature{}
-	temperatureEvent, err := temperature.EventFilter(from)
+	carbon := devices.Carbon{}
+	carbonEvent, err := carbon.EventFilter(from)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	response, err := json.Marshal(temperatureEvent)
+	response, err := json.Marshal(carbonEvent)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -50,10 +51,10 @@ func FilterTemperatureEvents(w http.ResponseWriter, r *http.Request, _ httproute
 }
 
 //
-func PingTemperature(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func PingCarbon(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
-	temperature := devices.Temperature{}
-	device, err := temperature.Get()
+	carbon := devices.Carbon{}
+	device, err := carbon.Get()
 	// testing custom error response
 	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
@@ -73,9 +74,9 @@ func PingTemperature(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 }
 
 //
-func GetTemperatureStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	temperature := devices.Temperature{}
-	device, err := temperature.GetStatus()
+func GetCarbonStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	carbon := devices.Carbon{}
+	device, err := carbon.GetStatus()
 	// testing custom error response
 	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
@@ -83,7 +84,7 @@ func GetTemperatureStatus(w http.ResponseWriter, r *http.Request, ps httprouter.
 	}
 
 	response, err := json.Marshal(device)
-
+	
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -94,26 +95,26 @@ func GetTemperatureStatus(w http.ResponseWriter, r *http.Request, ps httprouter.
 }
 
 // Function for Update sensor status on front side
-func UpdateTemperatureSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func UpdateCarbonSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	//defer r.Body.Close()
-	temperature := devices.Temperature{}
-	device, err := temperature.GetStatus()
+	carbon := devices.Carbon{}
+	device, err := carbon.GetStatus()
 	// testing custom error response
 	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
 		return
 	}
-
+	
 	r.ParseForm()
 	//status, convErr := strconv.Atoi(r.Form.Get("status"))
-	errStatus := json.NewDecoder(r.Body).Decode(&temperature)
-
-	fmt.Println(temperature.Status)
-	if errStatus != nil || temperature.Status != 0 && temperature.Status != 1 {
+	errStatus := json.NewDecoder(r.Body).Decode(&carbon)
+	
+	fmt.Println(carbon.Status)
+	if errStatus != nil || carbon.Status != 0 && carbon.Status != 1 {
 		http.Error(w, errors.New("Status is not correct").Error(), http.StatusBadRequest)
 		return
 	}
-	err = device.UpdateTemperatureSensorStatus(devices.SensorState(temperature.Status))
+	err = device.UpdateCarbonSensorStatus(devices.SensorState(carbon.Status))
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -124,7 +125,7 @@ func UpdateTemperatureSensor(w http.ResponseWriter, r *http.Request, _ httproute
 }
 
 // test payload {"name": "dat", "degree": 20.123}
-func PollTemperature(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func PollCarbon(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	payload, err := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
 
@@ -133,15 +134,15 @@ func PollTemperature(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 		return
 	}
 
-	var event devices.TemperatureEvent
+	var event devices.CarbonEvent
 	err = json.Unmarshal(payload, &event)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	temperature := devices.Temperature{}
-	err = temperature.CreateEvent(&event)
+	carbon := devices.Carbon{}
+	err = carbon.CreateEvent(&event)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

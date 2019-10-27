@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import WaterMeterStatus from '../WaterMeterStatus';
+import WaterMeterIndicator from '../WaterMeterIndicator';
+// import FloodSensor from '../FloodSensor';
+
 import s from './RightPanel.css';
 
 class RightPanel extends React.PureComponent {
@@ -15,7 +18,10 @@ class RightPanel extends React.PureComponent {
     return (
       <div>
         <WaterMeterStatus name={name} />
-        <div className={s.info}>Some useful info</div>
+        <div className={s.info}>
+          <WaterMeterIndicator />
+        </div>
+        <div>{/* <FloodSensor /> */}</div>
       </div>
     );
   }
