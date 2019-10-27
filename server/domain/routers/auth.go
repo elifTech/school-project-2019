@@ -11,6 +11,11 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+type Credentials struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 func AuthInit(router *httprouter.Router) {
 	router.POST("/authenticate", middlewares.Authenticate)
 	router.POST("/register", RegisterUser)
@@ -33,7 +38,6 @@ func RegisterUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	}
 
 	err = user.Create(user)
-	fmt.Println("user", user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return

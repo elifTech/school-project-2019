@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/consistent-function-scoping */
 import moment from 'moment';
-import axios from '../utils/fetch-with-auth';
+import apiClient from '../utils/fetch-with-auth';
 import {
   WIND_SENSOR_DATA_LOADING,
   WIND_SENSOR_DATA_SUCCESS,
@@ -42,7 +42,7 @@ const loadFilterData = period => ({
 export const applyFilter = ({ from, value }) => async dispatch => {
   dispatch(loadFilterData({ from, value }));
   try {
-    const { data: events } = await axios.get(`${apiURL}/wind/events`, {
+    const { data: events } = await apiClient.get(`${apiURL}/wind/events`, {
       from,
       to: moment()
         .local()
@@ -57,7 +57,7 @@ export const applyFilter = ({ from, value }) => async dispatch => {
 export const changeWindStatus = status => async dispatch => {
   dispatch(loadWindStatus());
   try {
-    const { data } = await axios.put(`${apiURL}/wind`, {
+    const { data } = await apiClient.put(`${apiURL}/wind`, {
       status: status ? 1 : 0,
     });
     const delay = 1000;
@@ -76,13 +76,13 @@ export const getWindSensorData = () => async (dispatch, getState) => {
   } = getState();
   if (!name) dispatch(windSensorLoading());
   const queries = [
-    axios.get(`${apiURL}/wind/events`, {
+    apiClient.get(`${apiURL}/wind/events`, {
       from,
       to: moment()
         .local()
         .toJSON(),
     }),
-    !name && axios.get(`${apiURL}/wind`),
+    !name && apiClient.get(`${apiURL}/wind`),
   ];
 
   try {

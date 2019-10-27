@@ -9,4 +9,5 @@ require (
 	github.com/julienschmidt/httprouter v1.2.0
 	github.com/rs/cors v1.7.0
 	github.com/subosito/gotenv v1.2.0 // indirect
+	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
 )
