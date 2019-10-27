@@ -1,11 +1,13 @@
 package domain
 
 import (
+	"school-project-2019/server/domain/devices"
+
 	"github.com/jinzhu/gorm"
 	"github.com/julienschmidt/httprouter"
-	"school-project-2019/server/domain/devices"
 )
 
+// IoTService ...
 type IoTService struct {
 	DB     *gorm.DB
 	Router *httprouter.Router
@@ -13,8 +15,11 @@ type IoTService struct {
 	Devices *Devices
 }
 
-// declare your device
+// Devices ... declare your device
 type Devices struct {
-	Temperature *devices.Temperature
-	Wind *devices.Wind
+	Carbon       	 *devices.Carbon
+	Temperature      *devices.Temperature
+	WaterConsumption *devices.WaterConsumption
+	Wind             *devices.Wind
+	WaterQuality     *devices.WaterQuality
 }

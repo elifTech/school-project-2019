@@ -13,6 +13,8 @@ import dashboardIcon from '../../assets/dashboard.svg';
 import temperatureIcon from '../../assets/temp.svg';
 import windIcon from '../../assets/wind.svg';
 import qualityIcon from '../../assets/quality.svg';
+import carbonIcon from '../../assets/carbon.svg';
+import waterMeterIcon from '../../assets/water-meter.svg';
 
 class Menu extends React.Component {
   static propTypes = {
@@ -89,8 +91,18 @@ class Menu extends React.Component {
     },
     {
       icon: qualityIcon,
-      path: 'waterquality',
+      path: 'water-quality',
       text: 'Water Quality',
+    },
+    {
+      icon: carbonIcon,
+      path: 'carbonmonoxide',
+      text: 'Carbon Monoxide',
+    },
+    {
+      icon: waterMeterIcon,
+      path: 'water-meter',
+      text: 'Water Cons',
     },
   ];
 }

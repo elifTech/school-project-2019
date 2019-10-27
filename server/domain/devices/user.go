@@ -15,10 +15,6 @@ func (User) TableName() string {
 func (t *User) Get(email string, password string) (*User, error) {
 	user := new(User)
 	err := Storage.Where(&User{Email: email, Password: password}).First(&user).Error
-	if err != nil {
-		// returning custom DB error message
-		err = NOT_FOUND
-	}
 
 	return user, err
 }

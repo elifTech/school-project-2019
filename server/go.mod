@@ -8,4 +8,5 @@ require (
 	github.com/jinzhu/gorm v1.9.10
 	github.com/julienschmidt/httprouter v1.2.0
 	github.com/rs/cors v1.7.0
+	github.com/subosito/gotenv v1.2.0 // indirect
 )

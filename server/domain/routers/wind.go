@@ -7,11 +7,12 @@ import (
 	"net/http"
 	"school-project-2019/server/domain/devices"
 	"school-project-2019/server/domain/middlewares"
+	"time"
 
 	"github.com/julienschmidt/httprouter"
 )
 
-type Data struct {
+type StatusData struct {
 	Status devices.SensorState
 }
 
@@ -27,7 +28,7 @@ func GetWindSensor(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	wind := devices.Wind{}
 	device, err := wind.Get()
 	// testing custom error response
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, "the device is not found", http.StatusNotFound)
 		return
 	}
@@ -46,16 +47,16 @@ func UpdateWindSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 
 	wind := devices.Wind{}
 	_, err := wind.Get()
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, "the device is not found", http.StatusNotFound)
 		return
 	}
 
-	var data Data
+	var data StatusData
 
 	rBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, devices.BAD_STATUS.Error(), http.StatusInternalServerError)
+		http.Error(w, devices.ErrBadStatus.Error(), http.StatusInternalServerError)
 		return
 	}
 	err = json.Unmarshal(rBytes, &data)
@@ -82,8 +83,16 @@ func UpdateWindSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 
 func FindWindEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	keys := r.URL.Query()
-	from := keys.Get("from")
-	to := keys.Get("to")
+	from, err := time.Parse(time.RFC3339, keys.Get("from"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	to, err := time.Parse(time.RFC3339, keys.Get("to"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
 	wind := devices.Wind{}
 	windEvents, err := wind.FindManyEvents(from, to)

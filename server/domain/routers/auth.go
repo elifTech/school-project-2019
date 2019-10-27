@@ -22,7 +22,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	user := new(devices.User)
 	rBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, devices.BAD_STATUS.Error(), http.StatusInternalServerError)
+		http.Error(w, "Wrong user credentials", http.StatusInternalServerError)
 		return
 	}
 

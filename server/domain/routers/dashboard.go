@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"school-project-2019/server/domain/devices"
+
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -15,7 +16,7 @@ func GetAllSensors(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	sensor := devices.Sensor{}
 	sensors, err := sensor.FindManySensors()
 	// testing custom error response
-	if err == devices.NOT_FOUND {
+	if err == devices.ErrNotFound {
 		http.Error(w, "no sensors in the database", http.StatusNotFound)
 		return
 	}

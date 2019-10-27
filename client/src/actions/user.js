@@ -32,7 +32,7 @@ export const login = ({ email, password }) => async dispatch => {
     } else {
       dispatch(setUserMessage('Sorry, try again!'));
     }
-    setTimeout(resetMessage(), DELAY);
+    setTimeout(() => dispatch(resetMessage()), DELAY);
   } catch (error) {
     dispatch(setUserMessage('Invalid email or password.'));
     setTimeout(() => dispatch(resetMessage()), DELAY);

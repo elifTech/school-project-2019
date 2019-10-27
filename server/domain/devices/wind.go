@@ -2,6 +2,7 @@ package devices
 
 import (
 	"fmt"
+	"time"
 )
 
 type Wind struct {
@@ -29,7 +30,7 @@ func (t *Wind) Get() (*Wind, error) {
 	err := Storage.Where(&Sensor{Type: WindSensor}).First(&device).Error
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
 	}
 
 	return device, err
@@ -37,20 +38,20 @@ func (t *Wind) Get() (*Wind, error) {
 
 func (t *Wind) UpdateWindStatus(status SensorState) (SensorState, error) {
 	if status != StatusOnline && status != StatusOffline && status != StatusFailure {
-		return StatusFailure, BAD_STATUS
+		return StatusFailure, ErrBadStatus
 	}
 
 	sensor, err := t.Get()
 	if err != nil {
 		fmt.Printf("Wind Sensor is not created")
-		return StatusFailure, NOT_FOUND
+		return StatusFailure, ErrNotFound
 	}
 
 	sensor.Status = status
 	return status, Storage.Save(&sensor).Error
 }
 
-func (t *Wind) FindManyEvents(from string, to string) (*[]WindEvent, error) {
+func (t *Wind) FindManyEvents(from time.Time, to time.Time) (*[]WindEvent, error) {
 	var events []WindEvent
 
 	var err error
@@ -66,7 +67,7 @@ func (t *Wind) FindOneEvent() (*WindEvent, error) {
 	err := Storage.Last(&event).Error
 	if err != nil {
 		// returning custom DB error message
-		err = NOT_FOUND
+		err = ErrNotFound
 	}
 
 	return event, err

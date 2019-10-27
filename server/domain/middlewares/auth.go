@@ -56,7 +56,6 @@ func Authorize(next httprouter.Handle) httprouter.Handle {
 		}
 
 		bearerToken := strings.Split(bearerHeader, ":")
-		fmt.Println(bearerToken)
 		if len(bearerToken) != 2 {
 			json.NewEncoder(w).Encode(Exception{Message: "Invalid Authorization token"})
 			return

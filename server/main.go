@@ -2,10 +2,6 @@ package main
 
 import (
 	"fmt"
-
-	//"school-project-2019/server/domain/devices"
-
-	//"fmt"
 	//"github.com/jinzhu/gorm"
 	//_ "github.com/jinzhu/gorm/dialects/postgres"
 	"log"
@@ -29,17 +25,32 @@ func main() {
 
 	// init your devices here
 	d := domain.Devices{
-		Temperature: &devices.Temperature{},
-		Wind:        &devices.Wind{},
+		Carbon:           &devices.Carbon{},
+		Wind:             &devices.Wind{},
+		Temperature:      &devices.Temperature{},
+		WaterQuality:     &devices.WaterQuality{},
+		WaterConsumption: &devices.WaterConsumption{},
 	}
 
 	s := &domain.IoTService{DB: db, Devices: &d}
 	//storage.Storage = db
 	router := s.NewRouter()
 
-	s.DB.AutoMigrate(devices.User{}, devices.WindEvent{}, devices.TemperatureEvent{}, devices.Sensor{})
+	s.DB.AutoMigrate(devices.User{}, devices.WaterConsumptionEvent{}, devices.WindEvent{}, devices.Carbon{}, devices.TemperatureEvent{}, devices.WaterQualityEvent{}, devices.Sensor{})
 	// prepare device
 	err = s.Devices.Temperature.CreateSensor()
+	if err != nil {
+		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
+		return
+	}
+
+	err = s.Devices.Carbon.CreateSensor()
+	if err != nil {
+		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
+		return
+	}
+
+	err = s.Devices.WaterConsumption.CreateSensor()
 	if err != nil {
 		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
 		return
@@ -48,6 +59,13 @@ func main() {
 	err = s.Devices.Wind.CreateSensor()
 	if err != nil {
 		log.Fatal(fmt.Printf("Error creating device: %v \n", err))
+		return
+	}
+
+	// init server
+	err = s.Devices.WaterQuality.CreateSensor()
+	if err != nil {
+		log.Fatal(fmt.Printf("Error creating : %s %v \n", devices.WaterQualitySensor, err))
 		return
 	}
 

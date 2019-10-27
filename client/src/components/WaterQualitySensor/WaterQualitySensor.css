@@ -1,0 +1,82 @@
+.container {
+  margin: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  font-size: large;
+}
+
+.lineChartHeader {
+  margin: 0;
+  padding: 2%;
+  font: bold 16px serif;
+}
+
+.lineChart {
+  margin: 0;
+  background-color: rgba(239, 240, 243, 0.38);
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 0 10px 10px;
+}
+
+.filterBtn {
+  margin-right: 0;
+}
+
+.filterBtn:focus {
+  outline: 0 !important;
+  border: none;
+}
+
+.filterBtnActive {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.rightContainerQuality {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.rightContainerQualityItem {
+  padding: 20px;
+  background-color: rgba(239, 240, 243, 0.38);
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+}
+
+.criticTitle {
+  color: #818283;
+}
+
+.criticValue {
+  padding-top: 5px;
+  font: 25px serif;
+}
+
+.doughnutChart {
+  margin: 0;
+  background-color: rgba(239, 240, 243, 0.38);
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+}
+
+.doughnutChartHeader {
+  margin: 0;
+  padding: 2%;
+  font: bold 16px serif;
+}
+
+.rightContainerStructure {
+  font: 17px serif;
+  padding: 0;
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+}
