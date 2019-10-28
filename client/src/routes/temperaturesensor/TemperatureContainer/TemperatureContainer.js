@@ -37,7 +37,7 @@ function TemperatureContainer(props) {
 }
 
 TemperatureContainer.propTypes = {
-  degree: PropTypes.string.isRequired,
+  degree: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
 };
 

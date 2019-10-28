@@ -41,7 +41,7 @@ const routes = {
     {
       load: () =>
         import(/* webpackChunkName: 'carbonsensor' */ './carbonsensor'),
-      path: '/carbonsensor',
+      path: '/carbonmonoxide',
     },
     {
       load: () => import(/* webpackChunkName: 'water-meter' */ './water-meter'),

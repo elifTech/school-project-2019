@@ -25,7 +25,7 @@ function IconTemperature(props) {
 }
 
 IconTemperature.propTypes = {
-  degree: PropTypes.string.isRequired,
+  degree: PropTypes.number.isRequired,
 };
 
 export default withStyles(s)(IconTemperature);

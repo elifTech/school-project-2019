@@ -15,14 +15,17 @@ import TemperatureContainer from './TemperatureContainer/TemperatureContainer';
 defaults.global.defaultFontFamily = 'Montserrat';
 
 const buttonsStyle = {
-  // height: '150px',
-  marginLeft: '9em',
+  marginLeft: '5.5em',
   marginTop: '1em',
-  // width: '200px',
 };
 
-const defaultButt = 'btn btn-secondary btn-sm';
-const activeButt = 'btn btn-primary';
+const xAxeStyle = {
+  font: '20px serif',
+  paddingLeft: '17em',
+};
+
+const defaultButt = 'btn btn-secondary btn-lg';
+const activeButt = 'btn btn-primary btn-lg';
 
 const options = {
   defaultSortName: 'eventId',
@@ -32,12 +35,17 @@ const options = {
   scales: {
     xAxes: [
       {
-        display: true,
-        fontSize: 15,
+        display: false,
+      },
+    ],
+    yAxes: [
+      {
         scaleLabel: {
           display: true,
-          fontSize: 18,
-          labelString: 'Time',
+          fontColor: 'black',
+          fontFamily: 'serif',
+          fontSize: 19,
+          labelString: 'Degree',
         },
       },
     ],
@@ -148,7 +156,7 @@ class TemperatureSensor extends Component {
             <p className="mb-0">{error}</p>
           </Alert>
         )}
-        <div className="row align-items-center">
+        <div className="row">
           <div className="col-sm-7">
             <h3>{info.Name}</h3>
             <span>Port: {this.parseStatus(info.Status)}</span>
@@ -172,6 +180,7 @@ class TemperatureSensor extends Component {
           <div className="col-sm-7">
             <div className={style.lineChart}>
               <Line data={getChartData(events)} options={options} />
+              <p style={xAxeStyle}>Time</p>
             </div>
 
             <div className="col-sm-11" style={buttonsStyle}>
@@ -229,14 +238,15 @@ class TemperatureSensor extends Component {
 
         <div className="row mb-9">
           <div className="col-sm-3">
-            <TemperatureContainer type="MAX" degree={this.max} />
+            <TemperatureContainer type="MIN" degree={this.min} />
           </div>
+
           <div className="col-sm-3">
             <TemperatureContainer type="AVERAGE" degree={this.average} />
           </div>
 
           <div className="col-sm-3">
-            <TemperatureContainer type="MIN" degree={this.min} />
+            <TemperatureContainer type="MAX" degree={this.max} />
           </div>
         </div>
       </div>
@@ -268,11 +278,11 @@ class TemperatureSensor extends Component {
     switch (status) {
       case 0:
         this.text = 'ON';
-        this.startButton = 'btn btn-success';
+        this.startButton = 'btn btn-success btn-lg';
         return 'Open';
       default:
         this.text = 'OFF';
-        this.startButton = 'btn btn-danger';
+        this.startButton = 'btn btn-danger btn-lg';
         return 'Close';
     }
   };

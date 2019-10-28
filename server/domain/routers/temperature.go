@@ -34,7 +34,7 @@ func TemperatureInit(router *httprouter.Router) {
 func FilterTemperatureEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	keys := r.URL.Query()
 	from := keys.Get("from")
-	from = from[1 : len(from)-1] // deleting double quates
+	from = from[1 : len(from)-1] // deleting extra double quates
 	tFrom, err := time.Parse(
 		time.RFC3339,
 		from)
