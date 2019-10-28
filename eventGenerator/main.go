@@ -27,4 +27,5 @@ func main() {
 	generate(5, GenerateWaterQualityEvent, GenerateWindEvent, GenerateCarbonEvent)
 	generate(60, GenerateWaterMeterEvent)
 	log.Fatal(http.ListenAndServe(":1234", nil))
+
 }
