@@ -34,7 +34,6 @@ class WaterMeterChart extends React.Component {
       lastSync = this.parseLastSync(events[0].Created);
     }
 
-    // console.log('asdlf', this.getHorizontalBarStyle());
     return (
       <div className={s.container}>
         <div className={s.buttonWraper}>
@@ -84,9 +83,17 @@ class WaterMeterChart extends React.Component {
         </div>
         <div className={s.chartContainer}>
           <div className={s.header}>
-            <h3 className={s.heading}>Water consumption</h3>
+            <h3 className={s.heading}>
+              Water consumption, <span>liters</span>
+            </h3>
             <span className={s.lastsync}>{lastSync}</span>
           </div>
+          <div className={s.info}>
+            <p>
+              1000 liters = 1 m<sup>3</sup>
+            </p>
+          </div>
+
           <div className={s.chartWraper} style={this.getHorizontalBarStyle()}>
             {dataset && (
               <HorizontalBar data={dataset.data} options={dataset.options} />

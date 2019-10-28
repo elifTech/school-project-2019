@@ -6,20 +6,20 @@ import (
 	//"github.com/jinzhu/gorm"
 )
 
-// WaterConsumption ...
+// WaterConsumption creates structure for water meter device
 type WaterConsumption struct {
 	Sensor
 	Events []WaterConsumptionEvent `gorm:"foreignkey:SensorType;association_foreignkey:Type"`
 }
 
-// WaterConsumptionEvent ...
+// WaterConsumptionEvent implements events for water meter device
 type WaterConsumptionEvent struct {
 	Event
 	Name        string `json:"name"`
 	Consumption float32
 }
 
-// TableName ...
+// TableName initializes sensors
 func (WaterConsumption) TableName() string {
 	return "sensors"
 }
@@ -28,7 +28,7 @@ func init() {
 	fmt.Printf("Initializing %s sensor... \n", WaterMeter)
 }
 
-// Get ...
+// Get finds first water meter device
 func (wc *WaterConsumption) Get() (*WaterConsumption, error) {
 	device := new(WaterConsumption)
 	err := Storage.Where(&Sensor{Type: WaterMeter}).First(&device).Error
@@ -40,7 +40,7 @@ func (wc *WaterConsumption) Get() (*WaterConsumption, error) {
 	return device, err
 }
 
-// GetAll ...
+// GetAll finds all water meter events
 func (wc *WaterConsumption) GetAll() (*[]WaterConsumptionEvent, error) {
 	events := new([]WaterConsumptionEvent)
 	err := Storage.Table("water_consumption_events").Where("sensor_type = ?", WaterMeter).Find(&events).Error
@@ -52,7 +52,7 @@ func (wc *WaterConsumption) GetAll() (*[]WaterConsumptionEvent, error) {
 	return events, err
 }
 
-// FindOneEvent ...
+// FindOneEvent finds first water meter event
 func (wc *WaterConsumption) FindOneEvent(query WaterConsumptionEvent) (*WaterConsumptionEvent, error) {
 	event := new(WaterConsumptionEvent)
 
@@ -88,7 +88,7 @@ func (wc *WaterConsumption) CreateSensor() error {
 	return Storage.Create(&waterMeter).Error
 }
 
-// CreateEvent ...
+// CreateEvent creates water meter event with relevant payload
 func (wc *WaterConsumption) CreateEvent(payload *WaterConsumptionEvent) (err error) {
 
 	// event should be populate with sensor type
@@ -99,14 +99,14 @@ func (wc *WaterConsumption) CreateEvent(payload *WaterConsumptionEvent) (err err
 	return Storage.Create(&payload).Error
 }
 
-// QueryWaterConsumptionEvents ...
+// QueryWaterConsumptionEvents struct for water meter querying
 type QueryWaterConsumptionEvents struct {
 	EventID     uint
 	Created     time.Time
 	Consumption float32
 }
 
-// QueryEvents - find events by date and group ...
+// QueryEvents finds events by date and groups them
 func (wc *WaterConsumption) QueryEvents(from string, to string) (*[]QueryWaterConsumptionEvents, error) {
 	var events []QueryWaterConsumptionEvents
 	var err error
@@ -122,7 +122,7 @@ func (wc *WaterConsumption) QueryEvents(from string, to string) (*[]QueryWaterCo
 	return &events, err
 }
 
-// UpdateWaterMeterStatus ...
+// UpdateWaterMeterStatus changes water meter status
 func (wc *WaterConsumption) UpdateWaterMeterStatus(status SensorState) (SensorState, error) {
 	if status != StatusOnline && status != StatusOffline && status != StatusFailure {
 		return StatusFailure, ErrBadStatus

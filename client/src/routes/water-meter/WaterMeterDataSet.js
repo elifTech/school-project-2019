@@ -35,7 +35,7 @@ const breakIntoGroups = (events, period) => {
 };
 
 const getBarColor = groups => {
-  const barColors = ['#f7c19c', '#d17c54', '#84c8d1', '#f27979'];
+  const barColors = ['#3c9ecf', '#3f496f'];
   const j = barColors.length;
   if (groups.length > barColors.length) {
     for (let i = barColors.length; i < groups.length; i += 1) {
@@ -70,17 +70,24 @@ export default function getWaterMeterDataSet(events, period) {
             position: 'top',
             ticks: {
               beginAtZero: true,
+              fontSize: 18,
             },
           },
         ],
         yAxes: [
           {
             barPercentage: 0.8,
-            maxBarThickness: 55,
+            maxBarThickness: 50,
             ticks: {
               callback(value) {
-                return moment(value).format('MMM D, HH:mm');
+                if (period === 'day') {
+                  return moment(value).format('MMM D, HH:mm');
+                }
+                if (period === 'isoWeek' || period === 'month')
+                  return moment(value).format('MMMM D');
+                return moment(value).format('MMMM');
               },
+              fontSize: 18,
             },
           },
         ],

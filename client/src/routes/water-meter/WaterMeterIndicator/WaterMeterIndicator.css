@@ -1,13 +1,58 @@
 .container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
-  align-content: flex-start;
-  align-items: flex-start;
+  align-content: center;
+  align-items: center;
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+  border-radius: 10px;
 }
 
-.wraper {
+.info {
+  order: 0;
+  flex: 0 1 auto;
+  align-self: auto;
+}
+
+.info h3 {
+  text-align: center;
+  color: #555e81;
+  font-size: 24px;
+}
+
+.metricsWraper {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 42px;
+  text-align: center;
+  background-color: #fff;
+  box-sizing: border-box;
+  color: #3f496f;
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+}
+
+.metricsWraper h3 {
+  font-size: 18px;
+  color: #3f496f;
+  text-align: center;
+}
+
+.metricsWraper h2 {
+  box-sizing: border-box;
+  font-size: 18px;
+  color: #707796;
+  text-align: center;
+}
+
+.statusColoronline {
+  color: #3c9ecf;
+}
+
+.indicatorWraper {
   order: 0;
   flex: 0 1 auto;
   align-self: auto;
@@ -16,9 +61,10 @@
 .waves {
   display: flex;
   justify-content: center;
-  width: 25vh;
-  height: 25vh;
+  width: 15vh;
+  height: 15vh;
   border: 2px solid rgba(72, 90, 110, 0.342);
+  background-color: #fff;
   border-radius: 50%;
   margin: 30px;
   box-shadow: 0 0 8px 1px rgb(198, 199, 203);

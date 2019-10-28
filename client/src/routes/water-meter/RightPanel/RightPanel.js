@@ -16,9 +16,9 @@ class RightPanel extends React.PureComponent {
   render() {
     const { name } = this.props;
     return (
-      <div>
+      <div className={s.container}>
         <WaterMeterStatus name={name} />
-        <div className={s.info}>
+        <div>
           <WaterMeterIndicator />
         </div>
         <div>{/* <FloodSensor /> */}</div>

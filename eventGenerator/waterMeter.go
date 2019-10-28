@@ -50,7 +50,7 @@ func GenerateWaterMeterEvent() {
 		fmt.Println("Could not convert to JSON")
 	}
 
-	fmt.Println("Water meter random valie is ", randomConsumtion)
+	fmt.Println("Water meter random value is ", randomConsumtion)
 
 	req, err := http.Post("http://localhost:8080/waterconsumption/poll", "application/json", bytes.NewBuffer(payloadJSON))
 	if err != nil {
@@ -87,7 +87,7 @@ func statusCheck() error {
 	if event.Status == 0 {
 		return errors.New("Water Meter Sensor is offline ")
 	} else if event.Status == 2 {
-		floodAler()
+		floodAlert()
 		turnStatusBack()
 		return errors.New("Flood sensor alert! ")
 
@@ -95,17 +95,17 @@ func statusCheck() error {
 	return nil
 }
 
-func floodAler() {
+func floodAlert() {
 	accountSid := os.Getenv("TWILIO_ACCOUNT_SID")
 	authToken := os.Getenv("TWILIO_AUTH_TOKEN")
 	urlStr := fmt.Sprintf("https://api.twilio.com/2010-04-01/Accounts/%s/Messages.json", accountSid)
 
-	floodAlert := "Emergency alert. You've got flood at your home!"
+	floodAlertMessage := "Emergency alert. You've got flood at your home!"
 
 	msgData := url.Values{}
 	msgData.Set("To", os.Getenv("TWILIO_NUMBER_TO"))
 	msgData.Set("From", os.Getenv("TWILIO_NUMBER_FROM"))
-	msgData.Set("Body", floodAlert)
+	msgData.Set("Body", floodAlertMessage)
 	msgDataReader := *strings.NewReader(msgData.Encode())
 
 	client := &http.Client{}
