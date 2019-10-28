@@ -15,8 +15,10 @@ import TemperatureContainer from './TemperatureContainer/TemperatureContainer';
 defaults.global.defaultFontFamily = 'Montserrat';
 
 const buttonsStyle = {
+  // height: '150px',
   marginLeft: '9em',
   marginTop: '1em',
+  // width: '200px',
 };
 
 const defaultButt = 'btn btn-secondary btn-sm';
@@ -93,6 +95,18 @@ class TemperatureSensor extends Component {
 
     if (events.length !== 0) {
       this.degree = events.slice(-1)[0].degree;
+      const degreeArray = [];
+      /* eslint-disable no-restricted-syntax */
+
+      for (const element of events) {
+        degreeArray.push(element.degree);
+      }
+
+      this.min = Math.min(...degreeArray);
+      this.max = Math.max(...degreeArray);
+      this.average = (
+        degreeArray.reduce((a, b) => a + b, 0) / degreeArray.length
+      ).toFixed(1);
     }
 
     if (error && events.length === 0) {
@@ -213,26 +227,16 @@ class TemperatureSensor extends Component {
           </div>
         </div>
 
-        {/* <div className="row justify-content-center">
-          <div className="col sm-4">
-            <div style={style.innerContainer}>
-              <div style={style.header}>MAX temperature</div>
-              <div style={style.sensor}>{this.degree} °C</div>
-            </div>
-          </div>
-
-        </div> */}
-
         <div className="row mb-9">
           <div className="col-sm-3">
-            <TemperatureContainer type="MAX" degree={this.degree} />
+            <TemperatureContainer type="MAX" degree={this.max} />
           </div>
           <div className="col-sm-3">
-            <TemperatureContainer type="AVERAGE" degree={this.degree} />
+            <TemperatureContainer type="AVERAGE" degree={this.average} />
           </div>
 
           <div className="col-sm-3">
-            <TemperatureContainer type="MIN" degree={this.degree} />
+            <TemperatureContainer type="MIN" degree={this.min} />
           </div>
         </div>
       </div>

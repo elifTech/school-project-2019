@@ -10,17 +10,19 @@ const innerContainer = {
   height: '5em',
   marginTop: '2em',
   padding: '1em',
-  textAlign: 'center',
 };
 
 const sensor = {
+  font: 'bold 20px serif',
   height: '5em',
+  paddingLeft: '5.5em',
   width: '22em',
 };
 
 const header = {
   color: 'rgb(96,97,98)',
   font: 'bold 20px serif',
+  textAlign: 'center',
 };
 
 function TemperatureContainer(props) {

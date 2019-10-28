@@ -32,12 +32,13 @@ func round(num float64) int {
 }
 
 func GenerateTemperatureEvent() {
-	s1 := rand.NewSource(time.Now().UnixNano())
-	r1 := rand.New(s1)
+	// s1 := rand.NewSource(time.Now().UnixNano())
+	// r1 := rand.New(s1)
 	min := 18
 	max := 28
 
-	var degree float32 = float32(r1.Intn(max-min+1) + min)
+	// var degree float32 = float32(r1.Intn(max-min+1) + min)
+	degree := float32(rand.NormFloat64()*3 + 22)
 
 	for {
 		//moveStep := r1.Intn(3)
@@ -58,7 +59,6 @@ func GenerateTemperatureEvent() {
 		degree = float32(toFixed(float64(degree), 1))
 
 		creationTime := time.Now()
-		fmt.Println(moveStep)
 
 		sensorStatus := false
 		time.Sleep(4 * time.Second)

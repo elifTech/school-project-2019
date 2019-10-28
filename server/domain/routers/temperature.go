@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
+	"time"
+
 	//"time"
 	"github.com/julienschmidt/httprouter"
 )
@@ -32,8 +34,20 @@ func TemperatureInit(router *httprouter.Router) {
 func FilterTemperatureEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	keys := r.URL.Query()
 	from := keys.Get("from")
+	from = from[1 : len(from)-1] // deleting double quates
+	tFrom, err := time.Parse(
+		time.RFC3339,
+		from)
+
+	fmt.Printf("tFrom %v, from %v", from, tFrom)
+	if err != nil {
+		fmt.Printf("Error parsing time: %v \n", tFrom)
+		return
+	}
+
 	temperature := devices.Temperature{}
-	temperatureEvent, err := temperature.EventFilter(from)
+	temperatureEvent, err := temperature.EventFilter(tFrom.Format("2006-01-02T15:04:05.999999-07:00"))
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
