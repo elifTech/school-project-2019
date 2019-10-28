@@ -2,6 +2,8 @@ package middlewares
 
 import (
 	"context"
+	"crypto/sha1"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -38,6 +40,7 @@ func Authenticate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 
+	user.Password = GenerateHash([]byte(user.Password))
 	if !valid(&user) {
 		http.Error(w, "invalid user credentials", http.StatusForbidden)
 		return
@@ -96,9 +99,14 @@ const (
 	secret = "Som35eCre7TokEn!"
 )
 
+func GenerateHash(pwd []byte) string {
+	hasher := sha1.New()
+	hasher.Write(pwd)
+	return base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+}
+
 func valid(user *devices.User) bool {
-	var dbUser devices.User
-	_, err := dbUser.Get(user.Email, user.Password)
+	_, err := user.Get()
 	if err != nil {
 		return false
 	}
@@ -118,8 +126,6 @@ func signedTokenString(user devices.User) string {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS384, claims)
-
-	fmt.Printf("user %v \n", user)
 
 	tokenStr, err := token.SignedString([]byte(secret))
 	if err != nil {

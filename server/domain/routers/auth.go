@@ -36,7 +36,8 @@ func RegisterUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		return
 	}
 
-	err = user.Create(user)
+	user.Password = middlewares.GenerateHash([]byte(user.Password))
+	err = user.Create()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
