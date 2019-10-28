@@ -14,6 +14,7 @@ import DoughnutChart from '../DoughnutChart';
 import TableStructure from './TableStructure';
 import Loader from '../Loader';
 import WaterQualitySwitch from '../WaterQualitySwitch/WaterQualitySwitch';
+import WaterQualityBarChart from '../WaterQualityBarChart/WaterQualityBarChart';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
@@ -82,8 +83,8 @@ class WaterQualitySensor extends PureComponent {
           </Col>
         </Row>
         <Row>
-          <Col md={9} className={style.lineChart}>
-            <p className={style.lineChartHeader}>Changes in water quality</p>
+          <Col md={9} className={style.chartContainer}>
+            <p className={style.chartHeader}>Changes in water quality</p>
             <LineChart quality={eventsQuality} time={time} />
             <div className={style.filters}>
               {FilterButtons.map(button => {
@@ -120,12 +121,10 @@ class WaterQualitySensor extends PureComponent {
             </div>
           </Col>
         </Row>
-        <Row className="mt-4">
-          <Col md={7} className={style.doughnutChart}>
-            <p className={style.doughnutChartHeader}>
-              Structure of water (mg/L)
-            </p>
-            <DoughnutChart
+        <Row className="my-4">
+          <Col md={7} className={style.chartContainer}>
+            <p className={style.chartHeader}>Structure of water (mg/L)</p>
+            <WaterQualityBarChart
               waterStructure={waterStructure}
               labels={waterStructureLabels}
             />
@@ -137,7 +136,14 @@ class WaterQualitySensor extends PureComponent {
             <TableStructure />
           </Col>
         </Row>
-        <div>test</div>
+        {/* <Row> */}
+        {/*  <Col md={7} className={style.chartContainer}> */}
+        {/*    <DoughnutChart */}
+        {/*      waterStructure={waterStructure} */}
+        {/*      labels={waterStructureLabels} */}
+        {/*    /> */}
+        {/*  </Col> */}
+        {/* </Row> */}
       </Container>
     );
 

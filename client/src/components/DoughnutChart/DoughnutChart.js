@@ -24,13 +24,6 @@ class DoughnutChart extends PureComponent {
     this.buildChart();
   }
 
-  // componentDidUpdate() {
-  //   const { waterStructure, labels } = this.props;
-  //   this.myDoughnutChart.data.labels = labels;
-  //   this.myDoughnutChart.data.datasets[0].data = waterStructure;
-  //   this.myDoughnutChart.update();
-  // }
-
   render() {
     return (
       <div>
@@ -44,13 +37,13 @@ class DoughnutChart extends PureComponent {
     );
   }
 
-  colors = ['#ded58f', '#c5f582', '#70cad1', '#c66d6a', '#8c86b0', '#cf8fc8'];
+  colors = ['#eac879', '#f58671', '#70cad1', '#a2d76e'];
 
   buildChart = () => {
     const { waterStructure, labels } = this.props;
     const myChartReference = this.chartRef.current;
     this.myDoughnutChart = new Chart(myChartReference, {
-      data: setData(waterStructure, labels, this.colors),
+      data: setData(waterStructure, labels, false, this.colors),
       options: {
         legend: {
           labels: {

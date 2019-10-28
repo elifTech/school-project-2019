@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table';
 
 function TableStructure() {
   return (
-    <Table striped hover className="mb-0" r>
+    <Table striped hover className="mb-0">
       <thead>
         <tr>
           <th>Component</th>
