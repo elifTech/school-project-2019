@@ -1,9 +1,8 @@
 package routers
 
 import (
-	"fmt"
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
 	"school-project-2019/server/domain/middlewares"
@@ -43,6 +42,6 @@ func RegisterUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		return
 	}
 
-	var response string = fmt.Sprintf("%s", user.Email)
-	w.Write([]byte(response))
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("Successfully registered!"))
 }

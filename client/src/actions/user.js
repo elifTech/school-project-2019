@@ -42,23 +42,20 @@ export const login = ({ email, password }) => async dispatch => {
 
 export const signup = ({ email, password }) => async dispatch => {
   try {
-    const { data: response } = await axios.post(
+    const response = await axios.post(
       `${apiURL}/register`,
       JSON.stringify({
         email,
         password,
       }),
     );
-    if (response) {
-      dispatch(setUserMessage('Successfully registered!'));
-    } else {
-      dispatch(setUserMessage(response));
-    }
+    dispatch(setUserMessage(response.data));
     setTimeout(() => dispatch(resetMessage()), DELAY);
+    return response;
   } catch (error) {
     dispatch(setUserMessage(error.message));
     setTimeout(() => dispatch(resetMessage()), DELAY);
-    console.error(error.message);
+    return error;
   }
 };
 

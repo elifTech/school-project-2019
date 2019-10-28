@@ -3,6 +3,7 @@ package devices
 import (
 	"crypto/sha1"
 	"encoding/base64"
+	"errors"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
@@ -34,7 +35,14 @@ func (t *User) Get(email string, password string) (*User, error) {
 }
 
 func (t *User) Create(user *User) error {
-	var hash string = generateHash([]byte(user.Password))
-	t.Password = hash
+	var hashedPWD string = generateHash([]byte(user.Password))
+	t.Password = hashedPWD
+
+	var userFromDB User
+	err := Storage.Where(&User{Email: user.Email}).Find(&userFromDB).Error
+	if err == nil {
+		return errors.New("User already exists")
+	}
+
 	return Storage.Create(&user).Error
 }
