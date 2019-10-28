@@ -4,7 +4,7 @@ const iconNormal = (
   <svg
     width="275"
     height="100%"
-    maxheight="134"
+    // maxheight="160"
     viewBox="0 0 512.001 512.001"
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"

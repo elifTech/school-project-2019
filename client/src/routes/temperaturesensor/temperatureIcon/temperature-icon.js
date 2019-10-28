@@ -6,6 +6,11 @@ import iconHot from './Icons/hot';
 import iconCold from './Icons/cold';
 import iconNorm from './Icons/normal';
 
+// let marginLeft = '7em';
+let styleIcon = {
+  marginLeft: '7em',
+};
+
 function IconTemperature(props) {
   const { degree } = props;
   let currentIcon;
@@ -15,13 +20,22 @@ function IconTemperature(props) {
 
   if (degree <= coldTemperature) {
     currentIcon = iconCold;
+    styleIcon = {
+      marginLeft: '6em',
+    };
   } else if (degree >= hotTemperature) {
     currentIcon = iconHot;
+    styleIcon = {
+      marginLeft: '6.5em',
+    };
   } else {
     currentIcon = iconNorm;
+    styleIcon = {
+      marginLeft: '7em',
+    };
   }
 
-  return <div className={s.aligning}>{currentIcon}</div>;
+  return <div style={styleIcon}>{currentIcon}</div>;
 }
 
 IconTemperature.propTypes = {
