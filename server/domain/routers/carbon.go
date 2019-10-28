@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
 	//"strconv"
 	"io/ioutil"
 	"net/http"
@@ -22,7 +23,7 @@ func CarbonInit(router *httprouter.Router) {
 	router.GET("/carbon/filter/events", FilterCarbonEvents)
 	router.PUT("/sensor/carbon", UpdateCarbonSensor)
 	router.POST("/sensor/carbon/poll", PollCarbon)
-	
+
 }
 
 func enableCors(w *http.ResponseWriter) {
@@ -84,7 +85,7 @@ func GetCarbonStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 	}
 
 	response, err := json.Marshal(device)
-	
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -104,11 +105,11 @@ func UpdateCarbonSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Par
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
 		return
 	}
-	
+
 	r.ParseForm()
 	//status, convErr := strconv.Atoi(r.Form.Get("status"))
 	errStatus := json.NewDecoder(r.Body).Decode(&carbon)
-	
+
 	fmt.Println(carbon.Status)
 	if errStatus != nil || carbon.Status != 0 && carbon.Status != 1 {
 		http.Error(w, errors.New("Status is not correct").Error(), http.StatusBadRequest)

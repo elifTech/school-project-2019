@@ -2,15 +2,14 @@
 import format from 'moment';
 
 export default events => {
-  const chartColor = '#96dbfa';
   let backColor = '#96dbfa';
   if (events.length !== 0) {
     const sign = events.slice(-1)[0].signal;
 
-    if (sign > 150) {
-      backColor = '#ffa123';
+    if (sign > 50) {
+      backColor = '#ffE000';
     }
-    if (sign > 300) {
+    if (sign > 200) {
       backColor = '#ff0000';
     }
   }
@@ -18,22 +17,22 @@ export default events => {
   return {
     datasets: [
       {
-        // backgroundColor: backColor,
         borderCapStyle: 'butt',
         borderColor: backColor,
         borderDash: [],
         borderDashOffset: 0,
         borderJoinStyle: 'miter',
+        currency: 'ppm',
         data: events.map(({ signal }) => signal),
         fill: false,
-        label: 'Signal',
+        label: 'ppm',
         lineTension: 0.25,
         maintainAspectRatio: true,
-        pointBackgroundColor: chartColor,
-        pointBorderColor: chartColor,
+        pointBackgroundColor: backColor,
+        pointBorderColor: backColor,
         pointBorderWidth: 1,
         pointHitRadius: 10,
-        pointHoverBackgroundColor: chartColor,
+        pointHoverBackgroundColor: backColor,
         pointHoverBorderColor: 'rgba(220,220,220,1)',
         pointHoverBorderWidth: 2,
         pointHoverRadius: 5,
