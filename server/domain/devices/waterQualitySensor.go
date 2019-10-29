@@ -73,8 +73,8 @@ func (w *WaterQuality) GetPeriodEvents(period string) ([]PeriodEvent, error) {
 	err := Storage.Table("water_quality_events").
 		Select("date_trunc(?, created) as period, avg(quality) as quality", period).
 		Group("period").
-		Order("period").
-		Limit(50).
+		Order("period desc").
+		Limit(30).
 		Scan(&events).Error
 	if err != nil {
 		err = ErrNotFound

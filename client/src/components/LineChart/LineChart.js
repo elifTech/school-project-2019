@@ -49,6 +49,9 @@ class LineChart extends PureComponent {
     this.myLineChart = new Chart(myChartReference, {
       data: setData(quality, time),
       options: {
+        animation: {
+          easing: 'easeOutSine',
+        },
         legend: {
           display: false,
         },
@@ -56,6 +59,10 @@ class LineChart extends PureComponent {
           xAxes: [
             {
               display: true,
+              // scaleLabel: {
+              //   display: true,
+              //   labelString: 'time',
+              // },
             },
           ],
           yAxes: [

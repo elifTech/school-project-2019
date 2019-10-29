@@ -1,10 +1,10 @@
 export default [
-  // {
-  //   id: 0,
-  //   label: 'Online',
-  //   query: '',
-  //   value: 'second',
-  // },
+  {
+    id: 0,
+    label: 'Online',
+    query: '',
+    value: 'second',
+  },
   {
     id: 1,
     label: 'Per hour',
