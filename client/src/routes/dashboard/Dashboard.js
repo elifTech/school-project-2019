@@ -19,8 +19,14 @@ class Dashboard extends PureComponent {
     return (
       <div className={s.root}>
         <div className={s.container}>Dashboard</div>
-        <WaterQualityWidget />
-        <CarbonWidget />
+        <div className="row mb-12">
+          <div className="col-sm-4">
+            <WaterQualityWidget />
+          </div>
+          <div className="col-sm-4">
+            <CarbonWidget />
+          </div>
+        </div>
       </div>
     );
   }

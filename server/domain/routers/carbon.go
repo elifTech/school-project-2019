@@ -110,7 +110,6 @@ func UpdateCarbonSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Par
 	//status, convErr := strconv.Atoi(r.Form.Get("status"))
 	errStatus := json.NewDecoder(r.Body).Decode(&carbon)
 
-	fmt.Println(carbon.Status)
 	if errStatus != nil || carbon.Status != 0 && carbon.Status != 1 {
 		http.Error(w, errors.New("Status is not correct").Error(), http.StatusBadRequest)
 		return
@@ -121,7 +120,7 @@ func UpdateCarbonSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Par
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println("Status was changed!")
+	fmt.Println("Carbon status was changed!", carbon.Status)
 	w.WriteHeader(http.StatusOK)
 }
 
