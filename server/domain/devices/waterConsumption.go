@@ -112,7 +112,7 @@ func (wc *WaterConsumption) QueryEvents(from string, to string) (*[]QueryWaterCo
 	var err error
 	query := Storage.Table("water_consumption_events").Where("created BETWEEN ? AND ?", from, to)
 	query = query.Select("date_trunc('hour', created) as created, sum(consumption) as consumption, max(event_id) as event_id")
-	err = query.Group("date_trunc('hour', created)").Order("event_id desc").Find(&events).Error
+	err = query.Group("date_trunc('hour', created)").Order("event_id").Find(&events).Error
 
 	if err != nil {
 		// returning custom DB error message

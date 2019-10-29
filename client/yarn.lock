@@ -6626,7 +6626,7 @@ object.values@^1.1.0:
     function-bind "^1.1.1"
     has "^1.0.3"
 
-odometer@^0.4.8:
+odometer@0.4.8, odometer@^0.4.8:
   version "0.4.8"
   resolved "https://registry.yarnpkg.com/odometer/-/odometer-0.4.8.tgz#2f6703bf4c6b384c278236d04d4bc8171abe4374"
   integrity sha1-L2cDv0xrOEwngjbQTUvIFxq+Q3Q=
