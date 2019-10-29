@@ -2,16 +2,17 @@ import React, { PureComponent } from 'react';
 import Chart from 'chart.js';
 import PropTypes from 'prop-types';
 import { setData } from '../WaterQualitySensor/HelperChartData';
+import 'chartjs-plugin-labels';
 
-class LineChart extends PureComponent {
+class DoughnutChart extends PureComponent {
   static propTypes = {
-    quality: PropTypes.arrayOf(PropTypes.string),
-    time: PropTypes.arrayOf(PropTypes.string),
+    labels: PropTypes.arrayOf(PropTypes.string),
+    waterStructure: PropTypes.arrayOf(PropTypes.string),
   };
 
   static defaultProps = {
-    quality: [],
-    time: [],
+    labels: [],
+    waterStructure: [],
   };
 
   constructor(props) {
@@ -23,34 +24,38 @@ class LineChart extends PureComponent {
     this.buildChart();
   }
 
-  componentDidUpdate() {
-    const { quality, time } = this.props;
-    this.myLineChart.data.labels = time;
-    this.myLineChart.data.datasets[0].data = quality;
-    this.myLineChart.update();
-  }
-
   render() {
     return (
       <div>
         <canvas
           className="py-2"
-          height="100vh"
           id="myChart"
+          height="110"
           ref={this.chartRef}
         />
       </div>
     );
   }
 
+  color = '#e2d479';
+
   buildChart = () => {
-    const { quality, time } = this.props;
+    const { waterStructure, labels } = this.props;
     const myChartReference = this.chartRef.current;
-    this.myLineChart = new Chart(myChartReference, {
-      data: setData(quality, time),
+    this.myDoughnutChart = new Chart(myChartReference, {
+      data: setData(waterStructure, labels, true, this.color),
       options: {
         legend: {
-          display: false,
+          display: true,
+          labels: {
+            fontSize: 14,
+          },
+        },
+        plugins: {
+          labels: {
+            fontSize: 12,
+            render: 'value',
+          },
         },
         scales: {
           xAxes: [
@@ -62,17 +67,17 @@ class LineChart extends PureComponent {
             {
               ticks: {
                 callback(value) {
-                  return `${value} pH`;
+                  return `${value} mg/L`;
                 },
-                max: 12,
+                max: 120,
               },
             },
           ],
         },
       },
-      type: 'line',
+      type: 'bar',
     });
   };
 }
 
-export default React.memo(LineChart);
+export default React.memo(DoughnutChart);

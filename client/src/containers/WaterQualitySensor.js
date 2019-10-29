@@ -7,12 +7,14 @@ import {
   getEventsTime,
   getFixedStructure,
   getStructureLabels,
+  getMax,
+  getMin,
 } from '../selectors/water-quality-selectors';
 
 const mapStateToProps = state => ({
   critics: {
-    max: state.waterQuality.critics.max.toFixed(FIXED),
-    min: state.waterQuality.critics.min.toFixed(FIXED),
+    max: getMax(state),
+    min: getMin(state),
   },
   currentQuality: state.waterQuality.currentQuality.toFixed(FIXED),
   error: state.waterQuality.error,

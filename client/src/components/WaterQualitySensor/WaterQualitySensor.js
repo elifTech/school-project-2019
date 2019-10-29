@@ -14,10 +14,11 @@ import DoughnutChart from '../DoughnutChart';
 import TableStructure from './TableStructure';
 import Loader from '../Loader';
 import WaterQualitySwitch from '../WaterQualitySwitch/WaterQualitySwitch';
+import WaterQualityBarChart from '../WaterQualityBarChart/WaterQualityBarChart';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
-    critics: PropTypes.shape({ max: PropTypes.string, min: PropTypes.string })
+    critics: PropTypes.shape({ max: PropTypes.number, min: PropTypes.number })
       .isRequired,
     currentQuality: PropTypes.string,
     dispatchChangeFilter: PropTypes.func.isRequired,
@@ -82,8 +83,8 @@ class WaterQualitySensor extends PureComponent {
           </Col>
         </Row>
         <Row>
-          <Col md={9} className={style.lineChart}>
-            <p className={style.lineChartHeader}>Changes in water quality</p>
+          <Col md={9} className={style.chartContainer}>
+            <p className={style.chartHeader}>Changes in water quality</p>
             <LineChart quality={eventsQuality} time={time} />
             <div className={style.filters}>
               {FilterButtons.map(button => {
@@ -108,22 +109,22 @@ class WaterQualitySensor extends PureComponent {
           >
             <div className={style.rightContainerQualityItem}>
               <span className={style.criticTitle}>Current</span>
-              <p className={style.criticValue}>{currentQuality}</p>
+              <p className={style.criticValue}>{currentQuality} pH</p>
             </div>
             <div className={style.rightContainerQualityItem}>
               <span className={style.criticTitle}>Max</span>
-              <p className={style.criticValue}>{critics.max}</p>
+              <p className={style.criticValue}>{critics.max} pH</p>
             </div>
             <div className={style.rightContainerQualityItem}>
               <span className={style.criticTitle}>Min</span>
-              <p className={style.criticValue}>{critics.min}</p>
+              <p className={style.criticValue}>{critics.min} pH</p>
             </div>
           </Col>
         </Row>
-        <Row className="mt-4">
-          <Col md={7} className={style.doughnutChart}>
-            <p className={style.doughnutChartHeader}>Structure of water</p>
-            <DoughnutChart
+        <Row className="my-4">
+          <Col md={7} className={style.chartContainer}>
+            <p className={style.chartHeader}>Structure of water (mg/L)</p>
+            <WaterQualityBarChart
               waterStructure={waterStructure}
               labels={waterStructureLabels}
             />
@@ -135,6 +136,14 @@ class WaterQualitySensor extends PureComponent {
             <TableStructure />
           </Col>
         </Row>
+        {/* <Row> */}
+        {/*  <Col md={7} className={style.chartContainer}> */}
+        {/*    <DoughnutChart */}
+        {/*      waterStructure={waterStructure} */}
+        {/*      labels={waterStructureLabels} */}
+        {/*    /> */}
+        {/*  </Col> */}
+        {/* </Row> */}
       </Container>
     );
 
