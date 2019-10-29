@@ -1,0 +1,75 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.metricsWraper {
+  min-width: 75%;
+  margin: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 42px;
+  text-align: center;
+  background-color: #fff;
+  box-sizing: border-box;
+  color: #3f496f;
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+}
+
+.metricsWraper h2 {
+  box-sizing: border-box;
+  font-size: 18px;
+  color: #707796;
+  text-align: center;
+}
+
+.metricsWraper h3 {
+  font-size: 18px;
+  color: #3f496f;
+  text-align: center;
+}
+
+.header {
+  color: #3f496f;
+  font-size: 22px;
+}
+
+.indicator {
+  height: 35px;
+  width: 35px;
+  margin: 30px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 5px rgb(185, 185, 185);
+}
+
+.indicatorOK {
+  border: solid 1px #40885c;
+  background: radial-gradient(#40dd7c, #1c8645);
+}
+
+.indicatorOff {
+  border: solid 1px #686868;
+  background: radial-gradient(#b6b6b6, #616161);
+}
+
+.indicatorAlert {
+  border: solid 1px #662525;
+  background: radial-gradient(#d33a3a, #8d1f1f);
+}
+
+.statusColorOk {
+  color: #65c289;
+}
+
+.statusColorAlert {
+  color: #cf5e5e;
+}
