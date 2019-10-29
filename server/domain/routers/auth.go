@@ -16,7 +16,7 @@ type Credentials struct {
 }
 
 func AuthInit(router *httprouter.Router) {
-	router.POST("/authenticate", middlewares.Authenticate)
+	router.POST("/api/authenticate", middlewares.Authenticate)
 	router.POST("/register", RegisterUser)
 }
 

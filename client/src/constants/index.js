@@ -45,4 +45,4 @@ export const WIND_SENSOR_DATA_FAILURE = 'WIND_SENSOR_DATA_FAILURE';
 export const WIND_SENSOR_STATUS_UPDATE = 'WIND_SENSOR_STATUS_UPDATE';
 export const WIND_SENSOR_STATUS_LOADING = 'WIND_SENSOR_STATUS_LOADING';
 
-export const apiURL = 'http://localhost:8080';
+export const apiURL = 'http://localhost:8080/api';

@@ -17,17 +17,15 @@ const resetMessage = () => ({
 
 export const login = ({ email, password }) => async dispatch => {
   try {
-    const {
-      data: { Token: token },
-    } = await axios.post(
+    const StatusOK = 200;
+    const response = await axios.post(
       `${apiURL}/authenticate`,
       JSON.stringify({
         email,
         password,
       }),
     );
-    if (token) {
-      localStorage.setItem('token', token);
+    if (response.status === StatusOK) {
       dispatch(setUserMessage('You are logged in.'));
     } else {
       dispatch(setUserMessage('Sorry, try again!'));
@@ -60,7 +58,6 @@ export const signup = ({ email, password }) => async dispatch => {
 };
 
 export const signout = () => dispatch => {
-  localStorage.removeItem('token');
   history.push('/login');
 
   dispatch(setUserMessage('Signed out!'));

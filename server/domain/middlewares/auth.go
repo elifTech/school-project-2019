@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 	"time"
 
 	"school-project-2019/server/domain/devices"
@@ -46,25 +45,33 @@ func Authenticate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(JwtToken{Token: signedTokenString(user)})
+	expirationTime := time.Now().Add(15 * time.Minute)
+	http.SetCookie(w, &http.Cookie{
+		Name:     "user_token",
+		Path:     "/",
+		Domain:   "app.esc.com",
+		MaxAge:   50000,
+		Value:    signedTokenString(user, expirationTime),
+		Expires:  expirationTime,
+	})
 }
 
 func Authorize(next httprouter.Handle) httprouter.Handle {
 	return httprouter.Handle(func(w http.ResponseWriter, req *http.Request, params httprouter.Params) {
-		bearerHeader := req.Header.Get("Authorization")
-		// handle if we have the token
-		if len(bearerHeader) == 0 {
-			json.NewEncoder(w).Encode(Exception{Message: "An Authorization header is required"})
+		c, err := req.Cookie("token")
+		if err != nil {
+			if err == http.ErrNoCookie {
+				w.WriteHeader(http.StatusUnauthorized)
+				return
+			}
+			// For any other type of error, return a bad request status
+			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		bearerToken := strings.Split(bearerHeader, ":")
-		if len(bearerToken) != 2 {
-			json.NewEncoder(w).Encode(Exception{Message: "Invalid Authorization token"})
-			return
-		}
+		tokenStr := c.Value
 
-		token, err := parseBearer(bearerToken[1])
+		token, err := parseBearer(tokenStr)
 		if err != nil {
 			json.NewEncoder(w).Encode(Exception{Message: err.Error()})
 			return
@@ -115,8 +122,7 @@ func valid(user *devices.User) bool {
 }
 
 // sign token
-func signedTokenString(user devices.User) string {
-	expirationTime := time.Now().Add(15 * time.Minute)
+func signedTokenString(user devices.User, expirationTime time.Time) string {
 	claims := &Claims{
 		Username: user.Email,
 		Password: user.Password,
