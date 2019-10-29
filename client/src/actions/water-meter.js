@@ -118,3 +118,21 @@ export function getWaterMeterEvents() {
     }
   };
 }
+
+export function alertWaterMeterStatus() {
+  return async dispatch => {
+    dispatch(loadWaterMeterStatus());
+    try {
+      const { data } = await axios.put(
+        `http://localhost:8080/waterconsumption`,
+        {
+          status: 2,
+        },
+      );
+      const delay = 1000;
+      setTimeout(() => dispatch(updateWaterMeterStatus(data)), delay);
+    } catch (error) {
+      dispatch(waterMeterEventsFailure(error.message));
+    }
+  };
+}
