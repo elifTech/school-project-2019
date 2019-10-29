@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { HorizontalBar } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import classNames from 'classnames';
 import { applyFilter } from '../../../actions/water-meter';
 import s from './WaterMeterChart.css';
@@ -94,23 +94,12 @@ class WaterMeterChart extends React.Component {
             </p>
           </div>
 
-          <div className={s.chartWraper} style={this.getHorizontalBarStyle()}>
-            {dataset && (
-              <HorizontalBar data={dataset.data} options={dataset.options} />
-            )}
+          <div className={s.chartWraper}>
+            {dataset && <Bar data={dataset.data} options={dataset.options} />}
           </div>
         </div>
       </div>
     );
-  }
-
-  getHorizontalBarStyle() {
-    const { events, filter } = this.props;
-    const dataset = getWaterMeterDataSet(events, filter);
-    const amountOfBars = dataset.data.labels.length;
-    const oneBarHeight = dataset.options.scales.yAxes[0].maxBarThickness;
-    const chartHeight = oneBarHeight * amountOfBars;
-    return { height: chartHeight };
   }
 
   getFilterData = period => {

@@ -23,19 +23,22 @@ function WaterMeterIndicator({ status }) {
       waterStatus = 'Online';
       break;
     default:
+      waterMeterIndicatorStyle = '#848a8c';
+      waterStatus = 'Alert!';
+      animate = 0;
   }
 
   return (
     <div className={s.container}>
       <div className={s.metricsWraper}>
-        <h3>Metric for selected period</h3>
+        <h3>Metrics for selected period</h3>
         <WaterMeterMetrics /> <h2>liters</h2>
       </div>
       <div className={s.indicatorWraper}>
         <div className={s.waves}>
           <svg
             width="100%"
-            height="200px"
+            height="100%"
             fill="none"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +65,7 @@ function WaterMeterIndicator({ status }) {
                 repeatCount={animate}
                 fill="url(#grad1)"
                 attributeName="d"
-                dur="15s"
+                dur="10s"
                 attributeType="XML"
                 values="
             M0 77 
@@ -112,10 +115,10 @@ function WaterMeterIndicator({ status }) {
       </div>
       <div className={s.info}>
         <h3>
-          Water meter status:{' '}
+          Status:{' '}
           <span
             className={classNames({
-              [s.statusColoronline]: status === 1,
+              [s.statusColorOnline]: status === 1,
             })}
           >
             {waterStatus}

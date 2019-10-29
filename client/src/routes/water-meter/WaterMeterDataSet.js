@@ -67,15 +67,6 @@ export default function getWaterMeterDataSet(events, period) {
       scales: {
         xAxes: [
           {
-            position: 'top',
-            ticks: {
-              beginAtZero: true,
-              fontSize: 18,
-            },
-          },
-        ],
-        yAxes: [
-          {
             barPercentage: 0.8,
             maxBarThickness: 50,
             ticks: {
@@ -87,6 +78,15 @@ export default function getWaterMeterDataSet(events, period) {
                   return moment(value).format('MMMM D');
                 return moment(value).format('MMMM');
               },
+              fontSize: 18,
+            },
+          },
+        ],
+        yAxes: [
+          {
+            position: 'top',
+            ticks: {
+              beginAtZero: true,
               fontSize: 18,
             },
           },

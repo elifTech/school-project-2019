@@ -1,0 +1,77 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.header {
+  color: #3f496f;
+  font-size: 22px;
+}
+
+.indicator {
+  height: 35px;
+  width: 35px;
+  margin: 30px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 5px rgb(185, 185, 185);
+}
+
+.indicatorOK {
+  border: solid 1px #40885c;
+  background: radial-gradient(#40dd7c, #1c8645);
+}
+
+.indicatorOff {
+  border: solid 1px #686868;
+  background: radial-gradient(#b6b6b6, #616161);
+}
+
+.indicatorAlert {
+  border: solid 1px #662525;
+  background: radial-gradient(#d33a3a, #8d1f1f);
+}
+
+h3 {
+  color: #555e81;
+  font-size: 24px;
+}
+
+.floodButton {
+  display: block;
+  min-width: 100px;
+  height: 40px;
+  margin: 20px;
+  background-color: #fff;
+  font-size: 16px;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  box-shadow: -2px 5px 15px rgba(63, 73, 111, 0.39);
+  transition: all 0.3s ease;
+}
+
+.floodButton:focus {
+  outline: none;
+}
+
+.floodButton:hover {
+  background-color: #3f496f;
+  color: #fff;
+  box-shadow: -2px 5px 15px rgba(63, 73, 111, 0.39);
+}
+
+.statusColorOk {
+  color: #65c289;
+}
+
+.statusColorAlert {
+  color: #cf5e5e;
+}

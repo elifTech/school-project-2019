@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import WaterMeterStatus from '../WaterMeterStatus';
 import WaterMeterIndicator from '../WaterMeterIndicator';
-// import FloodSensor from '../FloodSensor';
+import FloodSensor from '../FloodSensor';
 
 import s from './RightPanel.css';
 
@@ -21,7 +21,7 @@ class RightPanel extends React.PureComponent {
         <div>
           <WaterMeterIndicator />
         </div>
-        <div>{/* <FloodSensor /> */}</div>
+        <div>{<FloodSensor />}</div>
       </div>
     );
   }
