@@ -5,6 +5,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { Spinner, Alert } from 'react-bootstrap';
 import { Line, defaults } from 'react-chartjs-2';
+import classNames from 'classnames';
 import getChartData from './chart-dataset';
 import Icon from './temperatureIcon/temperature-icon';
 import Loader from '../../components/Loader/Loader';
@@ -88,8 +89,8 @@ class TemperatureSensor extends Component {
     removeInterval();
   }
 
-  handleOnClick = status => {
-    const { dispatchChangeStatus } = this.props;
+  handleOnClick = () => {
+    const { dispatchChangeStatus, info: { Status: status } = {} } = this.props;
     if (status === 1) {
       dispatchChangeStatus(false);
     } else {
@@ -101,22 +102,22 @@ class TemperatureSensor extends Component {
     const { events, info, isLoading, error } = this.props;
     let { isVisible } = this.props;
 
+    const text = info.Status ? 'ON' : 'OFF';
+
+    let degree;
+    let created;
+    let min;
+    let max;
+    let average;
     if (events.length !== 0) {
-      this.degree = events.slice(-1)[0].degree;
-      this.created = moment(events.slice(-1)[0].created).format(
-        'DD-MM HH:mm:ss',
-      );
+      degree = events.slice(-1)[0].degree;
+      created = moment(events.slice(-1)[0].created).format('DD-MM HH:mm:ss');
 
-      const degreeArray = [];
-      /* eslint-disable no-restricted-syntax */
+      const degreeArray = events.map(event => event.degree);
 
-      for (const element of events) {
-        degreeArray.push(element.degree);
-      }
-
-      this.min = Math.min(...degreeArray);
-      this.max = Math.max(...degreeArray);
-      this.average = (
+      min = Math.min(...degreeArray);
+      max = Math.max(...degreeArray);
+      average = (
         degreeArray.reduce((a, b) => a + b, 0) / degreeArray.length
       ).toFixed(1);
     }
@@ -162,20 +163,21 @@ class TemperatureSensor extends Component {
         )}
         <div className="row">
           <div className="col-sm-7">
-            <h3>{info.Name}</h3>
-            <span>Port: {this.parseStatus(info.Status)}</span>
+            <h2>{info.Name}</h2>
+            <h3>Port: {this.getPortStatusText()}</h3>
             <hr />
           </div>
           <div className="col-sm-5">
-            {/* <h4>Click here to ON / OFF sensor</h4> */}
-
             <button
               type="button"
-              className={this.startButton}
-              checked={this.parseStatus(info.Status)}
-              onClick={this.statusOnClick(info.Status)}
+              className={classNames('btn', 'btn-lg', {
+                'btn-danger': !info.Status,
+                'btn-success': info.Status,
+              })}
+              checked={!info.Status}
+              onClick={this.handleOnClick}
             >
-              {this.text}
+              {text}
             </button>
           </div>
         </div>
@@ -233,28 +235,28 @@ class TemperatureSensor extends Component {
             </div>
           </div>
           <div className="col-sm-5">
-            <Icon degree={this.degree} />
+            <Icon degree={degree} />
             {info.Status ? (
               <h1>
-                Last temperature was {this.degree}°C <br /> At {this.created}
+                Last temperature was {degree}°C <br /> At {created}
               </h1>
             ) : (
-              <h1>Current temperature {this.degree}°C</h1>
+              <h1>Current temperature {degree}°C</h1>
             )}
           </div>
         </div>
 
         <div className="row mb-9">
           <div className="col-sm-3">
-            <TemperatureContainer type="MIN" degree={this.min} />
+            <TemperatureContainer type="MIN" degree={min} />
           </div>
 
           <div className="col-sm-3">
-            <TemperatureContainer type="AVERAGE" degree={this.average} />
+            <TemperatureContainer type="AVERAGE" degree={average} />
           </div>
 
           <div className="col-sm-3">
-            <TemperatureContainer type="MAX" degree={this.max} />
+            <TemperatureContainer type="MAX" degree={max} />
           </div>
         </div>
       </div>
@@ -278,22 +280,13 @@ class TemperatureSensor extends Component {
     });
   };
 
-  statusOnClick(status) {
-    return () => this.handleOnClick(status);
-  }
-
-  parseStatus = status => {
-    switch (status) {
-      case 0:
-        this.text = 'ON';
-        this.startButton = 'btn btn-success btn-lg';
-        return 'Open';
-      default:
-        this.text = 'OFF';
-        this.startButton = 'btn btn-danger btn-lg';
-        return 'Close';
+  getPortStatusText() {
+    const { info: { Status: status } = {} } = this.props;
+    if (status) {
+      return 'Close';
     }
-  };
+    return 'Open';
+  }
 }
 
 export default connect(

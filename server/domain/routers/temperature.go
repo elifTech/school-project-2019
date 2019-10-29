@@ -26,10 +26,6 @@ func TemperatureInit(router *httprouter.Router) {
 
 }
 
-// func enableCors(w *http.ResponseWriter) {
-// 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-// }
-
 //
 func FilterTemperatureEvents(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	keys := r.URL.Query()
@@ -75,10 +71,7 @@ func PingTemperature(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 	}
 
 	response, err := json.Marshal(device)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
-		return
-	}
+
 	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(response)
