@@ -60,7 +60,7 @@ func (s *Sensor) FindManySensors() ([]Sensor, error) {
 	}
 	return sensors, err
 }
-
+// BeforeSave sets current time if Created field is empty
 func (e *Event) BeforeSave() (err error) {
 	if e.Created.IsZero() {
 		e.Created = time.Now()

@@ -1,24 +1,30 @@
 export default [
+  // {
+  //   id: 0,
+  //   label: 'Online',
+  //   query: '',
+  //   value: 'second',
+  // },
   {
-    id: 0,
+    id: 1,
     label: 'Per hour',
     query: '',
     value: 'hour',
   },
   {
-    id: 1,
+    id: 2,
     label: 'Per day',
     query: '',
     value: 'day',
   },
   {
-    id: 2,
+    id: 3,
     label: 'Per week',
     query: '',
     value: 'week',
   },
   {
-    id: 3,
+    id: 4,
     label: 'Per moth',
     query: '',
     value: 'month',

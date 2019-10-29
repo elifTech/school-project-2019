@@ -6,6 +6,7 @@
   flex-direction: column;       /* Rotate Axis */
   box-shadow: 0 0 8px 2px rgb(198, 199, 203);
   background: rgba(239, 240, 243, 0.38);
+  height: 100%;
 }
 
 .cardHeader {
@@ -23,7 +24,7 @@
   justify-content: center;    /* Group Children in Center */
   align-items: center;        /* Group Children in Center (+axis) */
   padding: 15px 0;            /* Add padding to the top/bottom */
-  height: 15em;
+  height: 16em;
 }
 
 .mainDescription {

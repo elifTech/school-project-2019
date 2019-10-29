@@ -59,7 +59,7 @@ class Widget extends Component {
     });
     return (
       <div className={style.card}>
-        <div className={style.cardHeader}>{info.Name}</div>
+        <div className={style.cardHeader}>{info.Type}</div>
         {error && events.length !== 0 && (
           <Alert variant="danger">
             {error}
@@ -67,7 +67,7 @@ class Widget extends Component {
           </Alert>
         )}
         <div className={style.cardMain}>
-          {info.Type} ({this.parseStatus(info.Status)})
+          {info.Name} ({this.parseStatus(info.Status)})
           <Switch
             onChange={this.statusOnClick(info.Status)}
             checked={this.checkStatus(info.Status)}

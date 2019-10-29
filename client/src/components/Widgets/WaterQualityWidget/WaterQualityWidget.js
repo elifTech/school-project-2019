@@ -63,6 +63,8 @@ function WaterQualityWidget({ value, error }) {
           needleHeightRatio={0.7}
           needleTransitionDuration={2000}
           needleTransition="easeLinear"
+          currentValueText="#{value} pH"
+          currentValuePlaceholderStyle={'#{value}'}
         />
       </div>
     </div>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import WaterMeterStatus from '../WaterMeterStatus';
 import WaterMeterIndicator from '../WaterMeterIndicator';
-// import FloodSensor from '../FloodSensor';
+import FloodSensor from '../FloodSensor';
 
 import s from './RightPanel.css';
 
@@ -16,12 +16,12 @@ class RightPanel extends React.PureComponent {
   render() {
     const { name } = this.props;
     return (
-      <div>
+      <div className={s.container}>
         <WaterMeterStatus name={name} />
-        <div className={s.info}>
+        <div>
           <WaterMeterIndicator />
         </div>
-        <div>{/* <FloodSensor /> */}</div>
+        <div>{<FloodSensor />}</div>
       </div>
     );
   }
