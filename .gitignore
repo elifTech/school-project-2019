@@ -40,3 +40,4 @@ generator/generator
 eventGenerator/eventGenerator
 eventGenerator/values
 eventGenerator/.env
+server/.env

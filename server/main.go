@@ -8,12 +8,14 @@ import (
 	"net/http"
 	"school-project-2019/server/domain"
 	"school-project-2019/server/domain/devices"
-
 	"github.com/rs/cors"
+	"github.com/subosito/gotenv"
 	//"school-project-2019/server/storage"
 )
 
 func main() {
+	gotenv.Load()
+
 	// init DB
 	db, err := devices.Connect()
 	if err != nil {
@@ -36,7 +38,7 @@ func main() {
 	//storage.Storage = db
 	router := s.NewRouter()
 
-	s.DB.AutoMigrate(devices.WaterConsumptionEvent{}, devices.WindEvent{}, devices.Carbon{}, devices.TemperatureEvent{}, devices.WaterQualityEvent{}, devices.Sensor{})
+	s.DB.AutoMigrate(devices.CarbonEvent{}, devices.WaterConsumptionEvent{}, devices.WindEvent{}, devices.TemperatureEvent{}, devices.WaterQualityEvent{}, devices.Sensor{})
 	// prepare device
 	err = s.Devices.Temperature.CreateSensor()
 	if err != nil {

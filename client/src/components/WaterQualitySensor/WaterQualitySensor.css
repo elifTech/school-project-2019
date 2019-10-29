@@ -8,13 +8,13 @@
   font-size: large;
 }
 
-.lineChartHeader {
+.chartHeader {
   margin: 0;
   padding: 2%;
   font: bold 16px serif;
 }
 
-.lineChart {
+.chartContainer {
   margin: 0;
   background-color: rgba(239, 240, 243, 0.38);
   box-shadow: 0 0 8px 1px rgb(198, 199, 203);
@@ -61,18 +61,6 @@
 .criticValue {
   padding-top: 5px;
   font: 25px serif;
-}
-
-.doughnutChart {
-  margin: 0;
-  background-color: rgba(239, 240, 243, 0.38);
-  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
-}
-
-.doughnutChartHeader {
-  margin: 0;
-  padding: 2%;
-  font: bold 16px serif;
 }
 
 .rightContainerStructure {

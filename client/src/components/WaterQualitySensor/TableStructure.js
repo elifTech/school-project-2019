@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table';
 
 function TableStructure() {
   return (
-    <Table striped bordered hover>
+    <Table striped hover className="mb-0">
       <thead>
         <tr>
           <th>Component</th>
@@ -13,19 +13,19 @@ function TableStructure() {
       <tbody>
         <tr>
           <td>Calcium</td>
-          <td>No more than 100</td>
+          <td>No more than 100 mg/L</td>
         </tr>
         <tr>
           <td>Potassium</td>
-          <td>No more than 20</td>
+          <td>No more than 20 mg/L</td>
         </tr>
         <tr>
           <td>Magnesium</td>
-          <td>No more than 80</td>
+          <td>No more than 80 mg/L</td>
         </tr>
         <tr>
           <td>Sodium</td>
-          <td>No more than 50</td>
+          <td>No more than 50 mg/L</td>
         </tr>
       </tbody>
     </Table>

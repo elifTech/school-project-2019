@@ -15,7 +15,7 @@ import (
 	"time"
 )
 	
-func createNewService1() *domain.IoTService {
+func createNewService() *domain.IoTService {
 	db, err := devices.Connect()
 	if err != nil {
 		log.Fatal(fmt.Printf("Error connecting: %v \n", err))
