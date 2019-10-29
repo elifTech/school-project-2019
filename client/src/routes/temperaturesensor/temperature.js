@@ -103,6 +103,10 @@ class TemperatureSensor extends Component {
 
     if (events.length !== 0) {
       this.degree = events.slice(-1)[0].degree;
+      this.created = moment(events.slice(-1)[0].created).format(
+        'DD-MM HH:mm:ss',
+      );
+
       const degreeArray = [];
       /* eslint-disable no-restricted-syntax */
 
@@ -228,11 +232,13 @@ class TemperatureSensor extends Component {
           </div>
           <div className="col-sm-5">
             <Icon degree={this.degree} />
-            <h1>
-              {this.degree === undefined
-                ? null
-                : `Current temperature ${this.degree}°C`}
-            </h1>
+            {info.Status ? (
+              <h1>
+                Last temperature was {this.degree}°C <br /> At {this.created}
+              </h1>
+            ) : (
+              <h1>Current temperature {this.degree}°C</h1>
+            )}
           </div>
         </div>
 
