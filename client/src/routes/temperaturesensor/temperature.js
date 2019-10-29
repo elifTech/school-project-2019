@@ -25,9 +25,6 @@ const xAxeStyle = {
   paddingLeft: '17em',
 };
 
-const defaultButton = 'btn btn-secondary btn-lg';
-const activeButton = 'btn btn-primary btn-lg';
-
 const options = {
   defaultSortName: 'eventId',
   defaultSortOrder: 'desc',
@@ -46,7 +43,7 @@ const options = {
           fontColor: 'black',
           fontFamily: 'serif',
           fontSize: 19,
-          labelString: 'Degree',
+          labelString: 'Degree °C',
         },
       },
     ],
@@ -54,6 +51,10 @@ const options = {
 };
 
 class TemperatureSensor extends Component {
+  state = {
+    selectedPeriod: 'days',
+  };
+
   static propTypes = {
     dispatchChangeStatus: PropTypes.func.isRequired,
     dispatchSetFilter: PropTypes.func.isRequired,
@@ -80,10 +81,6 @@ class TemperatureSensor extends Component {
     removeInterval: PropTypes.func.isRequired,
   };
 
-  componentDidMount() {
-    this.selectedButton = 'days';
-  }
-
   componentWillUnmount() {
     const { removeInterval } = this.props;
     removeInterval();
@@ -101,6 +98,7 @@ class TemperatureSensor extends Component {
   render() {
     const { events, info, isLoading, error } = this.props;
     let { isVisible } = this.props;
+    const { selectedPeriod } = this.state;
 
     const text = info.Status ? 'ON' : 'OFF';
 
@@ -189,12 +187,16 @@ class TemperatureSensor extends Component {
               <p style={xAxeStyle}>Time</p>
             </div>
 
+            {/* const defaultButton = 'btn btn-secondary btn-lg';
+const activeButton = 'btn btn-primary btn-lg'; */}
+
             <div className="col-sm-11" style={buttonsStyle}>
               <button
                 type="button"
-                className={
-                  this.selectedButton === 'hours' ? activeButton : defaultButton
-                }
+                className={classNames('btn', 'btn-lg', {
+                  'btn-primary': selectedPeriod === 'hours',
+                  'btn-secondary': selectedPeriod !== 'hours',
+                })}
                 name="hours"
                 onClick={this.setFilter('hours', 2)}
               >
@@ -202,9 +204,10 @@ class TemperatureSensor extends Component {
               </button>
               <button
                 type="button"
-                className={
-                  this.selectedButton === 'days' ? activeButton : defaultButton
-                }
+                className={classNames('btn', 'btn-lg', {
+                  'btn-primary': selectedPeriod === 'days',
+                  'btn-secondary': selectedPeriod !== 'days',
+                })}
                 name="days"
                 onClick={this.setFilter('days', 1)}
               >
@@ -212,9 +215,10 @@ class TemperatureSensor extends Component {
               </button>
               <button
                 type="button"
-                className={
-                  this.selectedButton === 'weeks' ? activeButton : defaultButton
-                }
+                className={classNames('btn', 'btn-lg', {
+                  'btn-primary': selectedPeriod === 'weeks',
+                  'btn-secondary': selectedPeriod !== 'weeks',
+                })}
                 name="weeks"
                 onClick={this.setFilter('weeks', 1)}
               >
@@ -222,11 +226,10 @@ class TemperatureSensor extends Component {
               </button>
               <button
                 type="button"
-                className={
-                  this.selectedButton === 'months'
-                    ? activeButton
-                    : defaultButton
-                }
+                className={classNames('btn', 'btn-lg', {
+                  'btn-primary': selectedPeriod === 'months',
+                  'btn-secondary': selectedPeriod !== 'months',
+                })}
                 name="months"
                 onClick={this.setFilter('months', 1)}
               >
@@ -271,12 +274,14 @@ class TemperatureSensor extends Component {
     return moment(date).format('YYYY-MM-DD HH:mm:ss');
   };
 
-  getFilterData = (filter, period) => {
-    this.selectedButton = filter;
+  getFilterData = async (filter, period) => {
     const { dispatchSetFilter } = this.props;
-    dispatchSetFilter({
+    await dispatchSetFilter({
       from: moment().subtract(filter, period),
       value: moment().subtract('hours', 2),
+    });
+    this.setState({
+      selectedPeriod: filter,
     });
   };
 
