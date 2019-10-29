@@ -24,8 +24,8 @@ const xAxeStyle = {
   paddingLeft: '17em',
 };
 
-const defaultButt = 'btn btn-secondary btn-lg';
-const activeButt = 'btn btn-primary btn-lg';
+const defaultButton = 'btn btn-secondary btn-lg';
+const activeButton = 'btn btn-primary btn-lg';
 
 const options = {
   defaultSortName: 'eventId',
@@ -191,7 +191,7 @@ class TemperatureSensor extends Component {
               <button
                 type="button"
                 className={
-                  this.selectedButton === 'hours' ? activeButt : defaultButt
+                  this.selectedButton === 'hours' ? activeButton : defaultButton
                 }
                 name="hours"
                 onClick={this.setFilter('hours', 2)}
@@ -201,7 +201,7 @@ class TemperatureSensor extends Component {
               <button
                 type="button"
                 className={
-                  this.selectedButton === 'days' ? activeButt : defaultButt
+                  this.selectedButton === 'days' ? activeButton : defaultButton
                 }
                 name="days"
                 onClick={this.setFilter('days', 1)}
@@ -211,7 +211,7 @@ class TemperatureSensor extends Component {
               <button
                 type="button"
                 className={
-                  this.selectedButton === 'weeks' ? activeButt : defaultButt
+                  this.selectedButton === 'weeks' ? activeButton : defaultButton
                 }
                 name="weeks"
                 onClick={this.setFilter('weeks', 1)}
@@ -221,7 +221,9 @@ class TemperatureSensor extends Component {
               <button
                 type="button"
                 className={
-                  this.selectedButton === 'months' ? activeButt : defaultButt
+                  this.selectedButton === 'months'
+                    ? activeButton
+                    : defaultButton
                 }
                 name="months"
                 onClick={this.setFilter('months', 1)}
