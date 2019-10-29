@@ -26,9 +26,9 @@ func init() {
 	fmt.Printf("Initalising %s sensor... \n", CarbonSensor)
 }
 
-func (t *Carbon) GetSensor() ([]CarbonEvent, error) {
-	var device []CarbonEvent
-	err := Storage.Where(&Sensor{Type: WindSensor}).First(&device).Error
+func (t *Carbon) GetSensor() (*Carbon, error) {
+	device := new(Carbon)
+	err := Storage.Where(&Sensor{Type: CarbonSensor}).First(&device).Error
 	if err != nil {
 		// returning custom DB error message
 		err = ErrNotFound
@@ -64,7 +64,7 @@ func (t *Carbon) EventFilter(from string) ([]CarbonEvent, error) {
 	var err error
 
 	err = Storage.Where("created_at > ?", from).Order("created_at").Find(&events).Error
-	fmt.Println(events)
+	// fmt.Println(events)
 	if err != nil {
 		// returning custom DB error message
 		err = ErrNotFound
