@@ -8,12 +8,14 @@ import (
 	"net/http"
 	"school-project-2019/server/domain"
 	"school-project-2019/server/domain/devices"
-
 	"github.com/rs/cors"
+	"github.com/subosito/gotenv"
 	//"school-project-2019/server/storage"
 )
 
 func main() {
+	gotenv.Load()
+
 	// init DB
 	db, err := devices.Connect()
 	if err != nil {

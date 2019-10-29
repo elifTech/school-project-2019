@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { HorizontalBar } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import classNames from 'classnames';
 import { applyFilter } from '../../../actions/water-meter';
 import s from './WaterMeterChart.css';
@@ -34,7 +34,6 @@ class WaterMeterChart extends React.Component {
       lastSync = this.parseLastSync(events[0].Created);
     }
 
-    // console.log('asdlf', this.getHorizontalBarStyle());
     return (
       <div className={s.container}>
         <div className={s.buttonWraper}>
@@ -84,26 +83,23 @@ class WaterMeterChart extends React.Component {
         </div>
         <div className={s.chartContainer}>
           <div className={s.header}>
-            <h3 className={s.heading}>Water consumption</h3>
+            <h3 className={s.heading}>
+              Water consumption, <span>liters</span>
+            </h3>
             <span className={s.lastsync}>{lastSync}</span>
           </div>
-          <div className={s.chartWraper} style={this.getHorizontalBarStyle()}>
-            {dataset && (
-              <HorizontalBar data={dataset.data} options={dataset.options} />
-            )}
+          <div className={s.info}>
+            <p>
+              1000 liters = 1 m<sup>3</sup>
+            </p>
+          </div>
+
+          <div className={s.chartWraper}>
+            {dataset && <Bar data={dataset.data} options={dataset.options} />}
           </div>
         </div>
       </div>
     );
-  }
-
-  getHorizontalBarStyle() {
-    const { events, filter } = this.props;
-    const dataset = getWaterMeterDataSet(events, filter);
-    const amountOfBars = dataset.data.labels.length;
-    const oneBarHeight = dataset.options.scales.yAxes[0].maxBarThickness;
-    const chartHeight = oneBarHeight * amountOfBars;
-    return { height: chartHeight };
   }
 
   getFilterData = period => {

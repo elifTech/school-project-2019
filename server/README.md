@@ -23,3 +23,11 @@ Create user and schema for the work
 `GRANT ALL PRIVILEGES ON DATABASE school TO school;`
 
 `\q`
+
+Implement gotenv
+
+Create .env file in server root directory
+
+Set relevant key values(see .env.example)
+
+For additional info look at github.com/subosito/gotenv
