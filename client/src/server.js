@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import StyleContext from 'isomorphic-style-loader/StyleContext';
 import nodeFetch from 'node-fetch';
 import React from 'react';
+import isomorphicCookie from 'isomorphic-cookie';
 import ReactDOM from 'react-dom/server';
 import { Provider as ReduxProvider } from 'react-redux';
 import PrettyError from 'pretty-error';
@@ -83,6 +84,7 @@ app.get('*', async (request, response, next) => {
       // You can access redux through react-redux connect
       store,
       storeSubscription: null,
+      token: isomorphicCookie.load('user_token', request),
     };
 
     const route = await router.resolve(context);
