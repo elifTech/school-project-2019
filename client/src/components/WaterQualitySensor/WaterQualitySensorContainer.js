@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { changeFilter, changeStatus } from '../actions/water-quality';
-import WaterQualitySensor from '../components/WaterQualitySensor';
+import { changeFilter, changeStatus } from '../../actions/water-quality';
+import WaterQualitySensor from './WaterQualitySensor';
 import {
   FIXED,
   getFixedQuality,
@@ -9,7 +9,7 @@ import {
   getStructureLabels,
   getMax,
   getMin,
-} from '../selectors/water-quality-selectors';
+} from '../../selectors/water-quality-selectors';
 
 const mapStateToProps = state => ({
   critics: {
@@ -20,8 +20,8 @@ const mapStateToProps = state => ({
   error: state.waterQuality.error,
   eventsQuality: getFixedQuality(state),
   filter: state.waterQuality.filter,
+  isDataLoaded: state.waterQuality.isDataLoaded,
   status: state.waterQuality.info.Status,
-  // isFetching: state.waterQuality.isFetching,
   time: getEventsTime(state),
   waterStructure: getFixedStructure(state),
   waterStructureLabels: getStructureLabels(state),

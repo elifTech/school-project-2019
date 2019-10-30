@@ -24,6 +24,7 @@ class WaterQualitySensor extends PureComponent {
     error: PropTypes.string,
     eventsQuality: PropTypes.arrayOf(PropTypes.string),
     filter: PropTypes.string.isRequired,
+    isDataLoaded: PropTypes.bool.isRequired,
     resetInterval: PropTypes.func.isRequired,
     time: PropTypes.arrayOf(PropTypes.string),
     waterStructure: PropTypes.arrayOf(PropTypes.string),
@@ -55,6 +56,7 @@ class WaterQualitySensor extends PureComponent {
       currentQuality,
       dispatchChangeFilter,
       waterStructureLabels,
+      isDataLoaded,
     } = this.props;
 
     const alert = (
@@ -136,7 +138,7 @@ class WaterQualitySensor extends PureComponent {
       </Container>
     );
 
-    if (eventsQuality.length === 0 && !error) return <Loader />;
+    if (!isDataLoaded && !error) return <Loader />;
     if (eventsQuality.length > 0 && error)
       return (
         <div>

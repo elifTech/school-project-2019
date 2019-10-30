@@ -36,12 +36,18 @@ export const getFixedQuality = createSelector(
 
 export const getMax = createSelector(
   [getEvents],
-  events => Math.max(...events.map(({ quality }) => quality.toFixed(FIXED))),
+  events => {
+    if (events.length === 0) return 0;
+    return Math.max(...events.map(({ quality }) => quality.toFixed(FIXED)));
+  },
 );
 
 export const getMin = createSelector(
   [getEvents],
-  events => Math.min(...events.map(({ quality }) => quality.toFixed(FIXED))),
+  events => {
+    if (events.length === 0) return 0;
+    return Math.min(...events.map(({ quality }) => quality.toFixed(FIXED)));
+  },
 );
 export const getEventsTime = createSelector(
   [getEvents],

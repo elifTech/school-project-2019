@@ -7,19 +7,17 @@ import (
   "io/ioutil"
   "net/http"
   "school-project-2019/server/domain/devices"
+  "school-project-2019/server/domain/middlewares"
 )
 
 func WaterQualityInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
 
-  router.GET("/water_quality/ping", PingWaterQuality)
-
-	router.PUT("/water_quality/status", ChangeWaterQualityStatus)
-
+  router.GET("/water_quality/ping", middlewares.Authorize(PingWaterQuality))
+	router.PUT("/water_quality/status", middlewares.Authorize(ChangeWaterQualityStatus))
 	router.POST("/water_quality/event", CreateWaterQualityEvent)
-
-	router.GET("/water_quality/event", GetPeriodEvents)
+	router.GET("/water_quality/event", middlewares.Authorize(GetPeriodEvents))
 	router.GET("/water_quality/current", GetCurrent)
 	router.GET("/water_quality/critic", GetCritic)
 	router.GET("/water_quality/structure", GetWaterStructure)
@@ -158,6 +156,13 @@ func CreateWaterQualityEvent(w http.ResponseWriter, r *http.Request, _ httproute
 func GetCurrent(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	var waterQuality devices.WaterQuality
 
+  _, err := waterQuality.FindOneEvent()
+
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusNoContent)
+    return
+  }
+
 	current, err := waterQuality.GetCurrentEvent()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -194,6 +199,13 @@ func GetCritic(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 func GetWaterStructure(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	var waterQuality devices.WaterQuality
+
+  _, err := waterQuality.FindOneEvent()
+
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusNoContent)
+    return
+  }
 
 	waterStructure, err := waterQuality.GetWaterStructure()
 	if err != nil {
