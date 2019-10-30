@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import s from './Dashboard.css';
 import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget/WaterQualityWidget';
+import WindWidget from '../../components/Widgets/Wind';
 import CarbonWidget from '../carbonsensor/CarbonWidget/carbon-widget';
 
 class Dashboard extends PureComponent {
@@ -29,6 +30,9 @@ class Dashboard extends PureComponent {
             </Col>
             <Col>
               <CarbonWidget />
+            </Col>
+            <Col>
+              <WindWidget />
             </Col>
           </Row>
         </Container>

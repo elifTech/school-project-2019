@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
+	"school-project-2019/server/domain/middlewares"
 	"time"
 
 	"github.com/julienschmidt/httprouter"
@@ -16,14 +17,33 @@ type StatusData struct {
 }
 
 func WindInit(router *httprouter.Router) {
-	router.GET("/wind", GetWindSensor)
-	router.GET("/wind/events", FindWindEvents)
+	router.GET("/wind", middlewares.Authorize(GetWindSensor))
+	router.GET("/wind/status", GetWindStatus)
+	router.GET("/wind/events", middlewares.Authorize(FindWindEvents))
 	router.POST("/wind/event", CreateWindEvent)
 	router.GET("/wind/event/last", GetLastDate)
-	router.PUT("/wind", UpdateWindSensor)
+	router.PUT("/wind", middlewares.Authorize(UpdateWindSensor))
 }
 
 func GetWindSensor(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	wind := devices.Wind{}
+	device, err := wind.Get()
+	// testing custom error response
+	if err == devices.ErrNotFound {
+		http.Error(w, "the device is not found", http.StatusNotFound)
+		return
+	}
+
+	response, err := json.Marshal(device)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+}
+
+func GetWindStatus(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	wind := devices.Wind{}
 	device, err := wind.Get()
 	// testing custom error response
@@ -77,7 +97,6 @@ func UpdateWindSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(response)
 }
 
