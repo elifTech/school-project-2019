@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
+	"school-project-2019/server/domain/middlewares"
 	"time"
 
 	"github.com/julienschmidt/httprouter"
@@ -22,15 +23,15 @@ func WaterConsumptionInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
 
-	router.GET("/waterconsumption", GetWaterConsumptionSensor)
+	router.GET("/waterconsumption", middlewares.Authorize(GetWaterConsumptionSensor))
 
-	router.PUT("/waterconsumption", UpdateWaterConsumption)
+	router.PUT("/waterconsumption", middlewares.Authorize(UpdateWaterConsumption))
 
 	router.POST("/waterconsumption/poll", PollWaterConsumption)
 
-	router.GET("/waterconsumption/all", AllWaterConsumption)
+	router.GET("/waterconsumption/all", middlewares.Authorize(AllWaterConsumption))
 
-	router.GET("/waterconsumption/events", QueryWaterConsumption)
+	router.GET("/waterconsumption/events", middlewares.Authorize(QueryWaterConsumption))
 }
 
 // GetWaterConsumptionSensor finds first water meter device

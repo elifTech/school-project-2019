@@ -23,6 +23,7 @@
     "core-js": "~3.2.1",
     "express": "~4.17.1",
     "history": "~4.7.0",
+    "isomorphic-cookie": "^1.2.4",
     "isomorphic-style-loader": "~5.1.0",
     "lodash": "~4.17.15",
     "moment": "~2.24.0",

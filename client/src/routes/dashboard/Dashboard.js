@@ -2,11 +2,13 @@ import React, { PureComponent } from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Row, Col } from 'react-bootstrap';
+import Link from '../../components/Link';
 import s from './Dashboard.css';
+import CarbonWidget from '../carbonsensor/CarbonWidget/CarbonWidget';
+import Widget from '../../components/Widgets/Widget';
 import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget/WaterQualityWidget';
-import CarbonWidget from '../carbonsensor/CarbonWidget/carbon-widget';
+import WindWidget from '../../components/Widgets/Wind';
 import WaterConsumptionWidget from '../water-consumption/WaterConsumptionWidget';
 
 class Dashboard extends PureComponent {
@@ -22,17 +24,38 @@ class Dashboard extends PureComponent {
   render() {
     return (
       <div className={s.root}>
-        <div className={s.container}>Dashboard</div>
+        <div className={s.container}>Smart House Dashboard</div>
         <Container>
           <Row>
             <Col>
-              <WaterQualityWidget />
+              <Link to="/temperature">
+                <Widget />
+              </Link>
             </Col>
             <Col>
-              <CarbonWidget />
+              <Link to="/wind">
+                <WindWidget />
+              </Link>
             </Col>
             <Col>
-              <WaterConsumptionWidget />
+              <Link to="/water-quality">
+                <WaterQualityWidget />
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/carbonmonoxide">
+                <CarbonWidget />
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/water-consumption">
+                <WaterConsumptionWidget />
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/comingsoon">
+                <Widget />
+              </Link>
             </Col>
           </Row>
         </Container>

@@ -1,5 +1,5 @@
-import axios from 'axios';
 import moment from 'moment';
+import apiClient from '../utils/fetch-with-auth';
 import {
   REQUEST_WATERCONSUMPTION_EVENTS,
   GOT_WATERCONSUMPTION_EVENTS,
@@ -53,15 +53,13 @@ export function setBoundaries({ from, value }) {
   return async dispatch => {
     dispatch(loadFilterData({ from, value }));
     try {
-      const { data: events } = await axios.get(
+      const { data: events } = await apiClient.get(
         `http://localhost:8080/waterconsumption/events`,
         {
-          params: {
-            from,
-            to: moment()
-              .local()
-              .toJSON(),
-          },
+          from,
+          to: moment()
+            .local()
+            .toJSON(),
         },
       );
       dispatch(fetchWaterConsumptionEventsSuccess({ events }));
@@ -75,7 +73,7 @@ export function changeWaterConsumptionStatus(status) {
   return async dispatch => {
     dispatch(fetchWaterConsumptionStatus());
     try {
-      const { data } = await axios.put(
+      const { data } = await apiClient.put(
         `http://localhost:8080/waterconsumption`,
         {
           status: status ? 1 : 0,
@@ -99,15 +97,13 @@ export function getWaterConsumptionEvents() {
     } = getState();
     if (!name) dispatch(getWaterConsumptionEventsRequest());
     const queries = [
-      axios.get(`http://localhost:8080/waterconsumption/events`, {
-        params: {
-          from,
-          to: moment()
-            .local()
-            .toJSON(),
-        },
+      apiClient.get(`http://localhost:8080/waterconsumption/events`, {
+        from,
+        to: moment()
+          .local()
+          .toJSON(),
       }),
-      !name && axios.get(`http://localhost:8080/waterconsumption`),
+      !name && apiClient.get(`http://localhost:8080/waterconsumption`),
     ];
 
     try {
@@ -125,7 +121,7 @@ export function alertWaterConsumptionStatus() {
   return async dispatch => {
     dispatch(fetchWaterConsumptionStatus());
     try {
-      const { data } = await axios.put(
+      const { data } = await apiClient.put(
         `http://localhost:8080/waterconsumption`,
         {
           status: 2,
@@ -148,8 +144,8 @@ export function getAllWaterConsumptionEvents() {
     } = getState();
     if (!name) dispatch(getWaterConsumptionEventsRequest());
     const queries = [
-      axios.get(`http://localhost:8080/waterconsumption/all`),
-      !name && axios.get(`http://localhost:8080/waterconsumption`),
+      apiClient.get(`http://localhost:8080/waterconsumption/all`),
+      !name && apiClient.get(`http://localhost:8080/waterconsumption`),
     ];
 
     try {

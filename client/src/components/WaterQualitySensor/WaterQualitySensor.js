@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import style from './WaterQualitySensor.css';
 import LineChart from '../LineChart';
 import FilterButtons from './FilterButtons';
-import DoughnutChart from '../DoughnutChart';
+// import DoughnutChart from '../DoughnutChart';
 import TableStructure from './TableStructure';
 import Loader from '../Loader';
 import WaterQualitySwitch from '../WaterQualitySwitch/WaterQualitySwitch';

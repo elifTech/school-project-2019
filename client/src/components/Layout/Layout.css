@@ -202,19 +202,19 @@ textarea {
 }
 
 .container {
-  width: 100vw;
   padding: 0;
 }
 
 .containerRow {
-  width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   overflow-x: hidden;
 }
 
 .rightContainer {
-  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
   position: relative;
   padding-left: 50px;
   padding-top: 20px;
+  overflow-x: hidden;
 }

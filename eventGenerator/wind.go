@@ -45,6 +45,9 @@ func GenerateWindEvent() {
 		return
 	}
 	var windPower float64 = math.Round(normPower(mean)*10) / 10
+	if windPower < 1 {
+		windPower = 20.0
+	}
 	var beaufortValue uint8 = uint8(math.Round(windPower / 10))
 	if beaufortValue == 0 {
 		beaufortValue = 1
@@ -94,7 +97,7 @@ func getLastSpeed() (float64, error) {
 }
 
 func checkForStatus() error {
-	res, err := http.Get("http://localhost:8080/wind")
+	res, err := http.Get("http://localhost:8080/wind/status")
 	if err != nil {
 		return err
 	}
@@ -132,5 +135,5 @@ func randMean(lastSpeed float64) float64 {
 	if lastSpeed == 0 {
 		lastSpeed = 20
 	}
-	return rand.NormFloat64()/10 + lastSpeed
+	return rand.NormFloat64()*10 + lastSpeed
 }
