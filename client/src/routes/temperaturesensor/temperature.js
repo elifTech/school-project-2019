@@ -21,7 +21,7 @@ const buttonsStyle = {
 };
 
 const startButtonStyle = {
-  marginLeft: '1.5em',
+  marginLeft: '18em',
 };
 
 const textStyle = {
@@ -31,6 +31,14 @@ const textStyle = {
 const xAxeStyle = {
   font: '20px monserrat',
   paddingLeft: '14.5em',
+};
+
+const stausOfflineStyle = {
+  color: 'red',
+};
+
+const StatusOnlineStyle = {
+  color: 'green',
 };
 
 const options = {
@@ -169,25 +177,30 @@ class TemperatureSensor extends Component {
         )}
         <div className="row">
           <div className="col-sm-7">
-            <h3>Port: {info.Status ? 'Close' : 'Open'}</h3>
+            <h2>
+              <b>Temperature Sensor </b>
+            </h2>
+            <h2>
+              Status:{' '}
+              <b style={info.Status ? stausOfflineStyle : StatusOnlineStyle}>
+                {info.Status ? 'Offline' : 'Online'}
+              </b>
+            </h2>
             <hr />
           </div>
           <div className="col-sm-5">
-            <h2>
-              <b>Temperature Sensor</b>
-              <button
-                style={startButtonStyle}
-                type="button"
-                className={classNames('btn', 'btn-lg', {
-                  'btn-danger': !info.Status,
-                  'btn-success': info.Status,
-                })}
-                checked={!info.Status}
-                onClick={this.handleOnClick}
-              >
-                {text}
-              </button>
-            </h2>
+            <button
+              style={startButtonStyle}
+              type="button"
+              className={classNames('btn', 'btn-lg', {
+                'btn-danger': !info.Status,
+                'btn-success': info.Status,
+              })}
+              checked={!info.Status}
+              onClick={this.handleOnClick}
+            >
+              {text}
+            </button>
           </div>
         </div>
 
@@ -250,10 +263,10 @@ class TemperatureSensor extends Component {
             {degree !== undefined ? (
               info.Status ? (
                 <h3 style={textStyle}>
-                  Last temperature was {degree}°C <br /> At {created}
+                  Last temperature was {degree} °C <br /> At {created}
                 </h3>
               ) : (
-                <h3 style={textStyle}>Current temperature {degree}°C</h3>
+                <h3 style={textStyle}>Current temperature {degree} °C</h3>
               )
             ) : (
               <h3 style={textStyle}>
