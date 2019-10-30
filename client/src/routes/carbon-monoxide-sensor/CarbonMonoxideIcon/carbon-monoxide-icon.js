@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
-import s from './carbon-icon.css';
+import s from './carbon-monoxide-icon.css';
 
-function IconCarbon(props) {
+function IconCarbonMonoxide(props) {
   let iconFill;
   let id;
   const { text } = props;
@@ -80,8 +80,8 @@ function IconCarbon(props) {
   );
 }
 
-IconCarbon.propTypes = {
-  text: PropTypes.string.isRequired,
+IconCarbonMonoxide.propTypes = {
+  text: PropTypes.number.isRequired,
 };
 
-export default withStyles(s)(IconCarbon);
+export default withStyles(s)(IconCarbonMonoxide);

@@ -24,12 +24,12 @@
 
 .Low {
   font: bold;
-  color: #48a512;
+  color: #399703;
 }
 
 .Considerable {
   font: bold;
-  color: #ffa600;
+  color: #ffa60069;
 }
 
 .High {
@@ -38,7 +38,11 @@
 }
 
 .signal {
-  font-size: 32px;
+  font-size: 36px;
   text-align: center;
-  padding: 20px 0 20px;
+  padding: 40px 0 0;
+  background: url('https://my.marshall.com/Content/Images/Icons/spinner_blue.gif');
+  background-size: 40px;
+  background-repeat: no-repeat;
+  background-position-x: center;
 }

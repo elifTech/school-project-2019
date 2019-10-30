@@ -50,7 +50,9 @@ const routes = [
       },
       {
         load: () =>
-          import(/* webpackChunkName: 'carbonsensor' */ './carbonsensor'),
+          import(
+            /* webpackChunkName: 'carbonsensor' */ './carbon-monoxide-sensor'
+          ),
         path: '/carbonmonoxide',
       },
       {

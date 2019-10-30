@@ -7,7 +7,7 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 import Switch from 'react-switch';
 import { Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import style from './CarbonWidget.css';
+import style from './CarbonMonoxideWidget.css';
 import {
   getCarbonSensorsData,
   changeCarbonStatus,
@@ -20,7 +20,6 @@ class Widget extends Component {
     error: PropTypes.string.isRequired,
     events: PropTypes.arrayOf(
       PropTypes.shape({
-        Created: PropTypes.string.isRequired,
         CreatedAt: PropTypes.string.isRequired,
         EventID: PropTypes.number.isRequired,
         ID: PropTypes.number.isRequired,
@@ -51,7 +50,7 @@ class Widget extends Component {
     let sign = 0;
     let value = 'Low';
     let dangStyle = style.Low;
-    if (events.length !== 0) {
+    if (events.length > 1) {
       sign = events.slice(-1)[0].signal;
       if (sign > 150) {
         value = 'High';
@@ -94,14 +93,18 @@ class Widget extends Component {
             </Col>
           </Row>
           <div className={style.sensor}>
-            {info.Status === 1 && events.length !== 0 && (
+            {info.Status === 1 && events.length > 1 && (
               <span>
                 Last sync:
                 {format(events.slice(-1)[0].CreatedAt).format('DD-MM HH:mm:ss')}
               </span>
             )}
-            <div className={style.signal}>{sign}</div>
-            <div className={dangStyle}>Dangerous level: {value} </div>
+            <div className={style.signal}>
+              <b>{sign}</b>
+            </div>
+            <div className={dangStyle}>
+              Dangerous level: <b>{value}</b>
+            </div>
           </div>
         </div>
       </div>
@@ -119,7 +122,7 @@ class Widget extends Component {
 
 Widget.whyDidYouRender = true;
 export default connect(
-  ({ carbonSensor: { info, events, error } }) => ({
+  ({ carbonMonoxideSensor: { info, events, error } }) => ({
     error,
     events,
     info,

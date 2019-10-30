@@ -9,7 +9,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import sliderStyle from 'rc-slider/assets/index.css';
 import Slider from 'rc-slider';
 import getChartData from './chart-dataset';
-import Icon from './carbonIcon/carbon-icon';
+import CarbonIcon from './CarbonMonoxideIcon/carbon-monoxide-icon';
 import Loader from '../../components/Loader/Loader';
 import {
   setBoundaries,
@@ -52,9 +52,7 @@ class CarbonMonoxideSensor extends Component {
     error: PropTypes.string.isRequired,
     events: PropTypes.arrayOf(
       PropTypes.shape({
-        Created: PropTypes.string.isRequired,
         CreatedAt: PropTypes.string.isRequired,
-        EventID: PropTypes.number.isRequired,
         ID: PropTypes.number.isRequired,
         UpdatedAt: PropTypes.string.isRequired,
         device_type: PropTypes.string.isRequired,
@@ -68,7 +66,6 @@ class CarbonMonoxideSensor extends Component {
       Type: PropTypes.string.isRequired,
     }).isRequired,
     isLoading: PropTypes.bool.isRequired,
-    isVisible: PropTypes.bool.isRequired,
     removeInterval: PropTypes.func.isRequired,
   };
 
@@ -89,27 +86,27 @@ class CarbonMonoxideSensor extends Component {
   handleOnSliderChange = value => {
     switch (value) {
       case 1:
-        this.getFilterData('days', 1);
+        this.getFilterData(1, 'days');
         break;
       case 2:
-        this.getFilterData('weeks', 1);
+        this.getFilterData(1, 'weeks');
         break;
       // eslint-disable-next-line no-magic-numbers
       case 3:
-        this.getFilterData('months', 1);
+        this.getFilterData(1, 'months');
         break;
       // eslint-disable-next-line no-magic-numbers
       case 4:
-        this.getFilterData('years', 2);
+        this.getFilterData(2, 'years');
         break;
       default:
-        this.getFilterData('hours', 1);
+        this.getFilterData(1, 'hours');
     }
   };
 
   render() {
     const { events, info, isLoading, error } = this.props;
-    let { isVisible } = this.props;
+    let isVisible;
 
     if (error && events.length === 0) {
       return (
@@ -205,7 +202,7 @@ class CarbonMonoxideSensor extends Component {
                 <li>12800 - death within 1-3 min</li>
               </div>
             </div>
-            <Icon text={info.Status} />
+            <CarbonIcon text={info.Status} />
             <button
               type="button"
               className="btn btn-outline-primary"
@@ -253,7 +250,7 @@ class CarbonMonoxideSensor extends Component {
     const { dispatchSetFilter } = this.props;
     dispatchSetFilter({
       from: moment().subtract(filter, period),
-      value: moment().subtract('hours', 2),
+      value: moment().subtract(2, 'hours'),
     });
   };
 
@@ -264,7 +261,7 @@ class CarbonMonoxideSensor extends Component {
 
 export default connect(
   ({
-    carbonSensor: {
+    carbonMonoxideSensor: {
       info,
       events,
       error,

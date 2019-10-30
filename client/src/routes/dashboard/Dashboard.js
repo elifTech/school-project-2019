@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import { Row, Col } from 'react-bootstrap';
 import Link from '../../components/Link';
 import s from './Dashboard.css';
-import CarbonWidget from '../carbonsensor/CarbonWidget/CarbonWidget';
+import CarbonMonoxideWidget from '../carbon-monoxide-sensor/CarbonMonoxideWidget/CarbonMonoxideWidget';
 import Widget from '../../components/Widgets/Widget';
 import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget/WaterQualityWidget';
 import WindWidget from '../../components/Widgets/Wind';
@@ -43,7 +43,7 @@ class Dashboard extends PureComponent {
             </Col>
             <Col>
               <Link to="/carbonmonoxide">
-                <CarbonWidget />
+                <CarbonMonoxideWidget />
               </Link>
             </Col>
             <Col>
