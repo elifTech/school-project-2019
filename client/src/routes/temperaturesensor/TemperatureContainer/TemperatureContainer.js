@@ -28,19 +28,10 @@ const header = {
 function TemperatureContainer(props) {
   const { degree, type } = props;
 
-  if (degree !== undefined) {
-    return (
-      <div style={innerContainer}>
-        <div style={header}>{type} temperature</div>
-        <div style={sensor}>{degree} °C</div>
-      </div>
-    );
-  }
-
   return (
     <div style={innerContainer}>
       <div style={header}>{type} temperature</div>
-      <div style={sensor}>?</div>
+      <div style={sensor}>{degree === undefined ? `?` : `${degree} °C`}</div>
     </div>
   );
 }

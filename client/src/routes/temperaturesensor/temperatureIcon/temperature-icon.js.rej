@@ -1,3 +1,0 @@
-diff a/client/src/routes/temperaturesensor/temperatureIcon/temperature-icon.js b/client/src/routes/temperaturesensor/temperatureIcon/temperature-icon.js	(rejected hunks)
-@@ -9 +8,0 @@ import iconNorm from './Icons/normal.svg';
--console.log(`cold ${iconCold}`);

@@ -91,10 +91,6 @@ func GetTemperatureStatus(w http.ResponseWriter, r *http.Request, ps httprouter.
 
 	response, err := json.Marshal(device)
 
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
-		return
-	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(response)

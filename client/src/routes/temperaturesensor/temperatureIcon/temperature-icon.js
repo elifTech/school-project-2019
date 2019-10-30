@@ -48,7 +48,7 @@ function IconTemperature(props) {
 
   return (
     <h1 style={styleForUndefined}>
-      Please, turn on your sensor to see relevant logs
+      Please, turn on your sensor to see relevant temperature
     </h1>
   );
 }
