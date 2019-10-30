@@ -51,10 +51,6 @@ const options = {
 };
 
 class TemperatureSensor extends Component {
-  state = {
-    selectedPeriod: 'days',
-  };
-
   static propTypes = {
     dispatchChangeStatus: PropTypes.func.isRequired,
     dispatchSetFilter: PropTypes.func.isRequired,
@@ -79,6 +75,10 @@ class TemperatureSensor extends Component {
     isLoading: PropTypes.bool.isRequired,
     isVisible: PropTypes.bool.isRequired,
     removeInterval: PropTypes.func.isRequired,
+  };
+
+  state = {
+    selectedPeriod: 'days',
   };
 
   componentWillUnmount() {
@@ -162,7 +162,7 @@ class TemperatureSensor extends Component {
         <div className="row">
           <div className="col-sm-7">
             <h2>{info.Name}</h2>
-            <h3>Port: {this.getPortStatusText()}</h3>
+            <h3>Port: {info.Status ? 'Close' : 'Open'}</h3>
             <hr />
           </div>
           <div className="col-sm-5">
@@ -283,14 +283,6 @@ class TemperatureSensor extends Component {
       selectedPeriod: filter,
     });
   };
-
-  getPortStatusText() {
-    const { info: { Status: status } = {} } = this.props;
-    if (status) {
-      return 'Close';
-    }
-    return 'Open';
-  }
 }
 
 export default connect(
