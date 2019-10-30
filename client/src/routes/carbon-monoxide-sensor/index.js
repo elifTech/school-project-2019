@@ -1,5 +1,5 @@
 import React from 'react';
-import CarbonSensor from './Carbon';
+import CarbonMonoxideSensor from './CarbonMonoxide';
 import Layout from '../../components/Layout';
 import setCurrentTab from '../../actions/menu';
 import { getCarbonSensorsData } from '../../actions/carbonmonoxide';
@@ -20,7 +20,7 @@ export default function action({ store: { dispatch } }) {
     chunks: ['carbonsensor'],
     component: (
       <Layout>
-        <CarbonSensor removeInterval={clearDelay} />
+        <CarbonMonoxideSensor removeInterval={clearDelay} />
       </Layout>
     ),
     title: 'Carbon Monoxide Sensor',

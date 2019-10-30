@@ -9,13 +9,13 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import sliderStyle from 'rc-slider/assets/index.css';
 import Slider from 'rc-slider';
 import getChartData from './chart-dataset';
-import CarbonIcon from './CarbonMonoxideIcon/carbon-monoxide-icon';
+import CarbonMonoxideIcon from './CarbonMonoxideIcon/carbon-monoxide-icon';
 import Loader from '../../components/Loader/Loader';
 import {
   setBoundaries,
   changeCarbonStatus,
 } from '../../actions/carbonmonoxide';
-import style from './Carbon.css';
+import style from './CarbonMonoxide.css';
 
 defaults.global.defaultFontFamily = 'Montserrat';
 
@@ -202,7 +202,7 @@ class CarbonMonoxideSensor extends Component {
                 <li>12800 - death within 1-3 min</li>
               </div>
             </div>
-            <CarbonIcon text={info.Status} />
+            <CarbonMonoxideIcon text={info.Status} />
             <button
               type="button"
               className="btn btn-outline-primary"
