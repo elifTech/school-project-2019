@@ -3,7 +3,12 @@ const MAXK = 20;
 const MAXMG = 80;
 const MAXNA = 50;
 
-export function setData(data, labels, isCompare = false, colors = '#82b6f69c') {
+export default function setData(
+  data,
+  labels,
+  isCompare = false,
+  colors = '#82b6f69c',
+) {
   const chartColor = 'rgba(116,129,150,0.6)';
 
   const defaultDataset = {
@@ -36,10 +41,3 @@ export function setData(data, labels, isCompare = false, colors = '#82b6f69c') {
     labels,
   };
 }
-export const segmentColors = [
-  'rgba(191,2,8,0.76)',
-  'rgba(247,178,0,0.88)',
-  'rgba(39,176,71,0.8)',
-  'rgba(247,178,0,0.88)',
-  'rgba(191,2,8,0.76)',
-];

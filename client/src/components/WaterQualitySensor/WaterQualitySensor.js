@@ -10,11 +10,10 @@ import classNames from 'classnames';
 import style from './WaterQualitySensor.css';
 import LineChart from '../LineChart';
 import FilterButtons from './FilterButtons';
-import DoughnutChart from '../DoughnutChart';
 import TableStructure from './TableStructure';
 import Loader from '../Loader';
-import WaterQualitySwitch from '../WaterQualitySwitch/WaterQualitySwitch';
-import WaterQualityBarChart from '../WaterQualityBarChart/WaterQualityBarChart';
+import WaterQualitySwitch from '../WaterQualitySwitch';
+import WaterQualityBarChart from './WaterQualityBarChart';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
@@ -23,7 +22,6 @@ class WaterQualitySensor extends PureComponent {
     currentQuality: PropTypes.string,
     dispatchChangeFilter: PropTypes.func.isRequired,
     error: PropTypes.string,
-    // isFetching: PropTypes.bool,
     eventsQuality: PropTypes.arrayOf(PropTypes.string),
     filter: PropTypes.string.isRequired,
     resetInterval: PropTypes.func.isRequired,
@@ -53,7 +51,6 @@ class WaterQualitySensor extends PureComponent {
       filter,
       error,
       critics,
-      // isFetching,
       waterStructure,
       currentQuality,
       dispatchChangeFilter,
@@ -136,14 +133,6 @@ class WaterQualitySensor extends PureComponent {
             <TableStructure />
           </Col>
         </Row>
-        {/* <Row> */}
-        {/*  <Col md={7} className={style.chartContainer}> */}
-        {/*    <DoughnutChart */}
-        {/*      waterStructure={waterStructure} */}
-        {/*      labels={waterStructureLabels} */}
-        {/*    /> */}
-        {/*  </Col> */}
-        {/* </Row> */}
       </Container>
     );
 

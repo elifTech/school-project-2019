@@ -1,10 +1,10 @@
 .container {
-  padding: 1em;
-  height: 17em;
-  width: 24em;
-  background-color: rgba(231, 249, 242, 0.34);
+  height: 100%;
+  background-color: rgba(239, 240, 243, 0.38);
   box-shadow: 0 0 8px 1px rgb(198, 199, 203);
-  border-radius: 0.5em;
-  color: #626364;
-  font: bold 16px serif;
+  padding: 1em;
+}
+
+.header {
+  color: rgb(96, 97, 98);
 }

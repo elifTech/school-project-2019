@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import s from './Dashboard.css';
-import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget/WaterQualityWidget';
+import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget';
 import CarbonWidget from '../carbonsensor/CarbonWidget/carbon-widget';
 
 class Dashboard extends PureComponent {

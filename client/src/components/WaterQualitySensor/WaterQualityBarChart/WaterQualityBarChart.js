@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Chart from 'chart.js';
 import PropTypes from 'prop-types';
-import { setData } from '../WaterQualitySensor/HelperChartData';
+import setData from '../HelperChartData';
 import 'chartjs-plugin-labels';
 
 class DoughnutChart extends PureComponent {
