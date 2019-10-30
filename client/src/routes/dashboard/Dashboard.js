@@ -7,6 +7,8 @@ import Link from '../../components/Link';
 import s from './Dashboard.css';
 import CarbonWidget from '../carbonsensor/CarbonWidget/CarbonWidget';
 import Widget from '../../components/Widgets/Widget';
+import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget/WaterQualityWidget';
+import WindWidget from '../../components/Widgets/Wind';
 
 class Dashboard extends PureComponent {
   static propTypes = {
@@ -31,12 +33,12 @@ class Dashboard extends PureComponent {
             </Col>
             <Col>
               <Link to="/wind">
-                <Widget />
+                <WindWidget />
               </Link>
             </Col>
             <Col>
               <Link to="/water-quality">
-                <Widget />
+                <WaterQualityWidget />
               </Link>
             </Col>
             <Col>

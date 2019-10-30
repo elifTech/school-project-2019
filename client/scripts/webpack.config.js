@@ -491,6 +491,7 @@ const serverConfig = {
         'server.js',
         'package.json',
         'dom-utils.js',
+        'routes/water-meter/WaterMeterMetrics',
       ],
       // Root directory (optional)
       root: ROOT_DIR,

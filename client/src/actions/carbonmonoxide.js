@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/consistent-function-scoping */
-import axios from 'axios';
+import axios from '../utils/fetch-with-auth';
 import {
   CARBON_MONOXIDE_SENSOR_DATA_LOADING,
   CARBON_MONOXIDE_SENSOR_DATA_SUCCESS,

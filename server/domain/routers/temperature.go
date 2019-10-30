@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
+	"school-project-2019/server/domain/middlewares"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -16,7 +17,7 @@ func TemperatureInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
 
-	router.GET("/temperature/ping", PingTemperature)
+	router.GET("/temperature/ping", middlewares.Authorize(PingTemperature))
 
 	router.POST("/temperature/poll", PollTemperature)
 
@@ -63,6 +64,14 @@ func PollTemperature(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 	}
 
 	temperature := devices.Temperature{}
+
+	//sensor, _ := temperature.Get()
+	//fmt.Printf("got sensor - %v \n ", sensor)
+	//
+	//if sensor.Status == devices.StatusOffline {
+	//  return
+	//}
+
 	err = temperature.CreateEvent(&event)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

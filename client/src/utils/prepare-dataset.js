@@ -113,13 +113,17 @@ export default (events, period) => {
           {
             ticks: {
               callback(value) {
-                return moment(value).format('HH:mm');
+                return moment(value).format('HH:mm, MMM D');
               },
             },
           },
         ],
         yAxes: [
           {
+            scaleLabel: {
+              display: true,
+              labelString: 'Speed, km/h',
+            },
             ticks: {
               beginAtZero: true,
               maxTicksLimit: 8,

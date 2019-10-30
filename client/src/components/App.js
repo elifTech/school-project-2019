@@ -12,6 +12,7 @@ const ContextType = {
   store: PropTypes.any,
   // eslint-disable-next-line react/forbid-prop-types
   storeSubscription: PropTypes.any,
+  token: PropTypes.string,
   ...ReduxProvider.childContextTypes,
 };
 

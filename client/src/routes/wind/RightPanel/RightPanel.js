@@ -30,7 +30,7 @@ class RightPanel extends React.PureComponent {
     if (events.length === 0) {
       return <WindStatus name={name} />;
     }
-    const { direction, beaufort } = events.slice(-1)[0];
+    const { direction, beaufort, power } = events.slice(-1)[0];
 
     return (
       <>
@@ -116,7 +116,7 @@ class RightPanel extends React.PureComponent {
             </defs>
           </svg>
         </WindCard>
-        <WindCard header={parseBeaufortValue(beaufort)}>
+        <WindCard header={`${parseBeaufortValue(beaufort)}, ${power} km/h`}>
           <svg width="180" height="100%" maxheight="134" viewBox="0 -20 90 170">
             <path
               d="M48.1273 84.4959C48.1273 84.4959 43.9762 92.2032 40.8729 95.8242C37.7697 99.9712 33.1349 103.592 33.1349 103.592L30.5555 129H51.1903L48.1273 84.4959Z"

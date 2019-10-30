@@ -73,7 +73,6 @@ async function onLocationChange(location, action) {
     if (currentLocation.key !== location.key) {
       return;
     }
-
     if (route.redirect) {
       history.replace(route.redirect);
       return;
