@@ -1,15 +1,13 @@
 /* eslint-disable react/no-unused-state */
 /* eslint-disable no-magic-numbers */
 import React, { Component } from 'react';
-import { Doughnut } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import format from 'moment';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import Switch from 'react-switch';
-import { Spinner, Alert } from 'react-bootstrap';
+import { Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import getWidgetData from './set-widget-dataset';
-import style from './carbon-widget.css';
+import style from '../../../components/Widgets/Widget.css';
 import {
   getCarbonSensorsData,
   changeCarbonStatus,
@@ -58,28 +56,32 @@ class Widget extends Component {
       from: format().subtract(1, 'hours'),
     });
     return (
-      <div className={style.card}>
-        <div className={style.cardHeader}>{info.Type}</div>
-        {error && events.length !== 0 && (
+      <div className={style.container}>
+        {error && (
           <Alert variant="danger">
             {error}
             <Spinner animation="border" role="status" />
           </Alert>
         )}
-        <div className={style.cardMain}>
-          {info.Name} ({this.parseStatus(info.Status)})
-          <Switch
-            onChange={this.statusOnClick(info.Status)}
-            checked={this.checkStatus(info.Status)}
-            handleDiameter={13}
-            uncheckedIcon={false}
-            checkedIcon={false}
-            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-            height={15}
-            width={40}
-          />
-          <Doughnut data={getWidgetData(events)} />
-          <div className={style.mainDescription}>
+        <div className={style.innerContainer}>
+          <Row>
+            <Col md={8} className={style.header}>
+              {info.Type}
+            </Col>
+            <Col md={2} className="ml-4">
+              <Switch
+                onChange={this.statusOnClick(info.Status)}
+                checked={this.checkStatus(info.Status)}
+                handleDiameter={20}
+                uncheckedIcon={false}
+                checkedIcon={false}
+                boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                height={15}
+                width={40}
+              />
+            </Col>
+          </Row>
+          <div className={style.sensor}>
             {info.Status === 1 && events.length !== 0 && (
               <span>
                 Last sync:

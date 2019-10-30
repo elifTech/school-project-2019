@@ -2,11 +2,10 @@ import React, { PureComponent } from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Row, Col } from 'react-bootstrap';
+import Link from '../../components/Link';
 import s from './Dashboard.css';
-import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget/WaterQualityWidget';
-import CarbonWidget from '../carbonsensor/CarbonWidget/carbon-widget';
+import Widget from '../../components/Widgets/Widget';
 
 class Dashboard extends PureComponent {
   static propTypes = {
@@ -21,14 +20,38 @@ class Dashboard extends PureComponent {
   render() {
     return (
       <div className={s.root}>
-        <div className={s.container}>Dashboard</div>
+        <div className={s.container}>Smart House Dashboard</div>
         <Container>
           <Row>
             <Col>
-              <WaterQualityWidget />
+              <Link to="/temperature">
+                <Widget />
+              </Link>
             </Col>
             <Col>
-              <CarbonWidget />
+              <Link to="/wind">
+                <Widget />
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/water-quality">
+                <Widget />
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/carbonmonoxide">
+                <Widget />
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/water-meter">
+                <Widget />
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/comingsoon">
+                <Widget />
+              </Link>
             </Col>
           </Row>
         </Container>
