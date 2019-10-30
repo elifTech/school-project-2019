@@ -33,7 +33,6 @@ const carbonSensorLoading = () => ({
 
 export const changeCarbonStatus = status => async dispatch => {
   try {
-    // alert(status);
     const { data } = await axios.put('http://localhost:8080/sensor/carbon', {
       Status: status ? 1 : 0,
     });
@@ -64,7 +63,7 @@ export const getCarbonSensorsData = () => async (dispatch, getState) => {
   }
 };
 
-export const setFilter = ({ from, value }) => async dispatch => {
+export const setBoundaries = ({ from, value }) => async dispatch => {
   dispatch(loadFilterData({ from, value }));
   try {
     const { data: events } = await axios.get(

@@ -7,7 +7,7 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 import Switch from 'react-switch';
 import { Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import style from '../../../components/Widgets/Widget.css';
+import style from './CarbonWidget.css';
 import {
   getCarbonSensorsData,
   changeCarbonStatus,
@@ -48,9 +48,21 @@ class Widget extends Component {
 
   render() {
     const { info, dispatchWidgetData, events, error } = this.props;
-    let sign;
+    let sign = 0;
+    let value = 'Low';
+    let dangStyle = style.Low;
     if (events.length !== 0) {
       sign = events.slice(-1)[0].signal;
+      if (sign > 150) {
+        value = 'High';
+        dangStyle = style.High;
+      } else if (sign > 50) {
+        value = 'Considerable';
+        dangStyle = style.Considerable;
+      } else {
+        value = 'Low';
+        dangStyle = style.Low;
+      }
     }
     dispatchWidgetData({
       from: format().subtract(1, 'hours'),
@@ -88,7 +100,8 @@ class Widget extends Component {
                 {format(events.slice(-1)[0].CreatedAt).format('DD-MM HH:mm:ss')}
               </span>
             )}
-            <br /> <b>Last value of signal: {sign}</b>
+            <div className={style.signal}>{sign}</div>
+            <div className={dangStyle}>Dangerous level: {value} </div>
           </div>
         </div>
       </div>
@@ -101,15 +114,6 @@ class Widget extends Component {
 
   checkStatus = status => {
     return status === 1 ? false : status === 0;
-  };
-
-  parseStatus = status => {
-    switch (status) {
-      case 0:
-        return 'Online';
-      default:
-        return 'Offline';
-    }
   };
 }
 

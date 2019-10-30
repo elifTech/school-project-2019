@@ -1,5 +1,5 @@
 import React from 'react';
-import CarbonSensor from './carbon';
+import CarbonSensor from './Carbon';
 import Layout from '../../components/Layout';
 import setCurrentTab from '../../actions/menu';
 import { getCarbonSensorsData } from '../../actions/carbonmonoxide';

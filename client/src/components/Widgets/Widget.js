@@ -52,15 +52,6 @@ class Widget extends Component {
   checkStatus = status => {
     return status === 1 ? false : status === 0;
   };
-
-  parseStatus = status => {
-    switch (status) {
-      case 0:
-        return 'Online';
-      default:
-        return 'Offline';
-    }
-  };
 }
 
 Widget.whyDidYouRender = true;

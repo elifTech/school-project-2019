@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import { Row, Col } from 'react-bootstrap';
 import Link from '../../components/Link';
 import s from './Dashboard.css';
+import CarbonWidget from '../carbonsensor/CarbonWidget/CarbonWidget';
 import Widget from '../../components/Widgets/Widget';
 
 class Dashboard extends PureComponent {
@@ -40,7 +41,7 @@ class Dashboard extends PureComponent {
             </Col>
             <Col>
               <Link to="/carbonmonoxide">
-                <Widget />
+                <CarbonWidget />
               </Link>
             </Col>
             <Col>
