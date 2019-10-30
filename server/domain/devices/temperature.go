@@ -101,7 +101,7 @@ func (t *Temperature) CreateSensor() error {
 	fmt.Printf("Creating Sensor: %v \n", err)
 
 	temperatureSensor := Sensor{
-		Name:   "My house",
+		Name:   "Temperature Sensor",
 		Type:   TemperatureSensor,
 		Status: StatusOffline,
 	}

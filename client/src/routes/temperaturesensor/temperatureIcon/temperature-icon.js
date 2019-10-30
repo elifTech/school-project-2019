@@ -5,52 +5,48 @@ import s from './temperature-icon.css';
 import iconHot from './Icons/hot.svg';
 import iconCold from './Icons/cold.svg';
 import iconNorm from './Icons/normal.svg';
+import question from './Icons/question.svg';
 
 let styleIcon = {
   marginLeft: '7em',
-  marginTop: '3em',
-};
-
-const styleForUndefined = {
-  marginTop: '9.5em',
+  marginTop: '2em',
 };
 
 function IconTemperature(props) {
   const { degree } = props;
-  if (degree !== undefined) {
-    let currentIcon;
 
-    const coldTemperature = 20;
-    const hotTemperature = 26;
+  let currentIcon;
 
-    if (degree <= coldTemperature) {
-      currentIcon = iconCold;
-      styleIcon = {
-        marginLeft: '6em',
-        marginTop: '3em',
-      };
-    } else if (degree >= hotTemperature) {
-      currentIcon = iconHot;
-      styleIcon = {
-        marginLeft: '6.5em',
-        marginTop: '3em',
-      };
-    } else {
-      currentIcon = iconNorm;
-      styleIcon = {
-        marginLeft: '7em',
-        marginTop: '3em',
-      };
-    }
+  const coldTemperature = 20;
+  const hotTemperature = 26;
 
-    return <img style={styleIcon} src={currentIcon} alt="temperature" />;
+  if (degree <= coldTemperature) {
+    currentIcon = iconCold;
+    styleIcon = {
+      marginLeft: '6em',
+      marginTop: '2em',
+    };
+  } else if (degree >= hotTemperature) {
+    currentIcon = iconHot;
+    styleIcon = {
+      marginLeft: '6.5em',
+      marginTop: '2em',
+    };
+  } else if (degree === undefined) {
+    currentIcon = question;
+    styleIcon = {
+      marginLeft: '3em',
+      marginTop: '2em',
+    };
+  } else {
+    currentIcon = iconNorm;
+    styleIcon = {
+      marginLeft: '7em',
+      marginTop: '2em',
+    };
   }
 
-  return (
-    <h1 style={styleForUndefined}>
-      Please, turn on your sensor to see relevant temperature
-    </h1>
-  );
+  return <img style={styleIcon} src={currentIcon} alt="temperature" />;
 }
 
 IconTemperature.propTypes = {

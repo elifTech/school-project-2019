@@ -53,7 +53,7 @@ func GenerateTemperatureEvent() {
 
 	payload := Temperature{
 		Degree:  degree,
-		Name:    "My house",
+		Name:    "Temperature Sensor",
 		Created: creationTime,
 		Event: map[string]string{
 			"sensor_type": "temperature",

@@ -16,13 +16,21 @@ import TemperatureContainer from './TemperatureContainer/TemperatureContainer';
 defaults.global.defaultFontFamily = 'Montserrat';
 
 const buttonsStyle = {
-  marginLeft: '5.5em',
+  marginLeft: '1.5em',
+  marginTop: '1em',
+};
+
+const startButtonStyle = {
+  marginLeft: '1.5em',
+};
+
+const textStyle = {
   marginTop: '1em',
 };
 
 const xAxeStyle = {
-  font: '20px serif',
-  paddingLeft: '17em',
+  font: '20px monserrat',
+  paddingLeft: '14.5em',
 };
 
 const options = {
@@ -41,7 +49,7 @@ const options = {
         scaleLabel: {
           display: true,
           fontColor: 'black',
-          fontFamily: 'serif',
+          fontFamily: 'monserrat',
           fontSize: 19,
           labelString: 'Degree °C',
         },
@@ -161,22 +169,25 @@ class TemperatureSensor extends Component {
         )}
         <div className="row">
           <div className="col-sm-7">
-            <h2>{info.Name}</h2>
             <h3>Port: {info.Status ? 'Close' : 'Open'}</h3>
             <hr />
           </div>
           <div className="col-sm-5">
-            <button
-              type="button"
-              className={classNames('btn', 'btn-lg', {
-                'btn-danger': !info.Status,
-                'btn-success': info.Status,
-              })}
-              checked={!info.Status}
-              onClick={this.handleOnClick}
-            >
-              {text}
-            </button>
+            <h2>
+              <b>Temperature Sensor</b>
+              <button
+                style={startButtonStyle}
+                type="button"
+                className={classNames('btn', 'btn-lg', {
+                  'btn-danger': !info.Status,
+                  'btn-success': info.Status,
+                })}
+                checked={!info.Status}
+                onClick={this.handleOnClick}
+              >
+                {text}
+              </button>
+            </h2>
           </div>
         </div>
 
@@ -238,13 +249,17 @@ class TemperatureSensor extends Component {
             <Icon degree={degree} />
             {degree !== undefined ? (
               info.Status ? (
-                <h1>
+                <h3 style={textStyle}>
                   Last temperature was {degree}°C <br /> At {created}
-                </h1>
+                </h3>
               ) : (
-                <h1>Current temperature {degree}°C</h1>
+                <h3 style={textStyle}>Current temperature {degree}°C</h3>
               )
-            ) : null}
+            ) : (
+              <h3 style={textStyle}>
+                Please, turn on your sensor to see relevant temperature
+              </h3>
+            )}
           </div>
         </div>
 

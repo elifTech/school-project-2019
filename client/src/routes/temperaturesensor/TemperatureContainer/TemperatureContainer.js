@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import s from './TemperatureContainer.css';
 
+const font = 'bold 20px monserrat';
 const innerContainer = {
   background: 'rgba(239,240,243,.38)',
   borderRadius: '0.5em',
@@ -13,7 +14,14 @@ const innerContainer = {
 };
 
 const sensor = {
-  font: 'bold 20px serif',
+  font,
+  height: '5em',
+  paddingLeft: '4.5em',
+  width: '22em',
+};
+
+const sensorUndefined = {
+  font,
   height: '5em',
   paddingLeft: '5.5em',
   width: '22em',
@@ -21,7 +29,7 @@ const sensor = {
 
 const header = {
   color: 'rgb(96,97,98)',
-  font: 'bold 20px serif',
+  font,
   textAlign: 'center',
 };
 
@@ -31,7 +39,9 @@ function TemperatureContainer(props) {
   return (
     <div style={innerContainer}>
       <div style={header}>{type} temperature</div>
-      <div style={sensor}>{degree === undefined ? `?` : `${degree} °C`}</div>
+      <div style={degree === undefined ? sensorUndefined : sensor}>
+        {degree === undefined ? `?` : `${degree} °C`}
+      </div>
     </div>
   );
 }
