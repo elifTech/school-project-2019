@@ -9,6 +9,7 @@ import CarbonMonoxideWidget from '../carbon-monoxide-sensor/CarbonMonoxideWidget
 import Widget from '../../components/Widgets/Widget';
 import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget/WaterQualityWidget';
 import WindWidget from '../../components/Widgets/Wind';
+import WaterConsumptionWidget from '../water-consumption/WaterConsumptionWidget';
 
 class Dashboard extends PureComponent {
   static propTypes = {
@@ -47,8 +48,8 @@ class Dashboard extends PureComponent {
               </Link>
             </Col>
             <Col>
-              <Link to="/water-meter">
-                <Widget />
+              <Link to="/water-consumption">
+                <WaterConsumptionWidget />
               </Link>
             </Col>
             <Col>

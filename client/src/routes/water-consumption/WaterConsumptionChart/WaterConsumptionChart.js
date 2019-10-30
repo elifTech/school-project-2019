@@ -5,11 +5,11 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { Bar } from 'react-chartjs-2';
 import classNames from 'classnames';
-import { applyFilter } from '../../../actions/water-meter';
-import s from './WaterMeterChart.css';
-import getWaterMeterDataSet from '../WaterMeterDataSet';
+import { setBoundaries } from '../../../actions/water-consumption';
+import s from './WaterConsumptionChart.css';
+import getWaterConsumptionDataSet from '../WaterConsumptionDataSet';
 
-class WaterMeterChart extends React.Component {
+class WaterConsumptionChart extends React.Component {
   static propTypes = {
     dispatchApplyFilter: PropTypes.func.isRequired,
     events: PropTypes.arrayOf(
@@ -27,12 +27,7 @@ class WaterMeterChart extends React.Component {
 
   render() {
     const { events, filter } = this.props;
-    const dataset = getWaterMeterDataSet(events, filter);
-
-    let lastSync = 'Disabled';
-    if (events.length > 0) {
-      lastSync = this.parseLastSync(events[0].Created);
-    }
+    const dataset = getWaterConsumptionDataSet(events, filter);
 
     return (
       <div className={s.container}>
@@ -86,7 +81,6 @@ class WaterMeterChart extends React.Component {
             <h3 className={s.heading}>
               Water consumption, <span>liters</span>
             </h3>
-            <span className={s.lastsync}>{lastSync}</span>
           </div>
           <div className={s.info}>
             <p>
@@ -111,40 +105,14 @@ class WaterMeterChart extends React.Component {
       value: period,
     });
   };
-
-  parseLastSync = lastSync => {
-    const inactiveTime = 3600;
-    const lsMoment = moment(lastSync);
-    const today = moment()
-      .clone()
-      .startOf('day');
-    const yesterday = moment()
-      .clone()
-      .subtract(1, 'days')
-      .startOf('day');
-    let day;
-    switch (true) {
-      case lsMoment.isSame(today, 'd'):
-        if (Math.abs(lsMoment.diff(moment(), 'seconds')) < inactiveTime)
-          return 'Active';
-        day = 'Today';
-        break;
-      case lsMoment.isSame(yesterday, 'd'):
-        day = 'Yesterday';
-        break;
-      default:
-        day = lsMoment.format('MMMM D');
-    }
-    return `${day}, ${lsMoment.format('HH:mm')}`;
-  };
 }
 
 export default connect(
   ({
-    waterMeter: {
+    waterConsumption: {
       events,
       filterOption: { value },
     },
   }) => ({ events, filter: value }),
-  { dispatchApplyFilter: applyFilter },
-)(withStyles(s)(WaterMeterChart));
+  { dispatchApplyFilter: setBoundaries },
+)(withStyles(s)(WaterConsumptionChart));

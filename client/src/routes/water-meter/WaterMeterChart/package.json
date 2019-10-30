@@ -1,6 +1,0 @@
-{
-  "name": "WaterMeterChart",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./WaterMeterChart.js"
-}
