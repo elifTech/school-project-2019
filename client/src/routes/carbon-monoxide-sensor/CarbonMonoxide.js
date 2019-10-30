@@ -217,9 +217,13 @@ class CarbonMonoxideSensor extends Component {
         <div className="col-sm-11">
           <BootstrapTable
             data={events}
+            height="540px"
+            containerClass="my-custom-class"
             pagination
             options={options}
+            striped
             hover
+            condense
             version="4"
           >
             <TableHeaderColumn dataField="eventId" dataSort isKey>
