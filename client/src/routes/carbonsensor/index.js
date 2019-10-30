@@ -1,10 +1,10 @@
 import React from 'react';
-import CarbonSensor from './carbon';
+import CarbonSensor from './Carbon';
 import Layout from '../../components/Layout';
 import setCurrentTab from '../../actions/menu';
 import { getCarbonSensorsData } from '../../actions/carbonmonoxide';
 
-const delay = 5000;
+const delay = 1000;
 
 export default function action({ store: { dispatch } }) {
   dispatch(setCurrentTab('Carbon Monoxide'));

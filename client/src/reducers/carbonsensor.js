@@ -27,12 +27,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         info: { ...state.info, Status: action.Status },
-        statusLoading: false,
+        isLoading: false,
       };
     case CARBON_MONOXIDE_SENSOR_DATA_LOADING:
-      return { ...state, loading: true };
+      return { ...state };
     case CARBON_MONOXIDE_SENSOR_DATA_FAILURE:
-      return { ...state, error: action.error, loading: false };
+      return { ...state, error: action.error, isLoading: false };
     case FILTER_DATA_LOADING:
       return {
         ...state,

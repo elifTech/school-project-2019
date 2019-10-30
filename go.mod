@@ -10,8 +10,10 @@ require (
 	github.com/gonum/lapack v0.0.0-20181123203213-e4cdc5a0bff9 // indirect
 	github.com/gonum/matrix v0.0.0-20181209220409-c518dec07be9 // indirect
 	github.com/gonum/stat v0.0.0-20181125101827-41a0da705a5b // indirect
+	github.com/gorilla/mux v1.6.2
 	github.com/jasonlvhit/gocron v0.0.0-20191021204008-47e27a9e0dc7 // indirect
 	github.com/jinzhu/gorm v1.9.11
+	github.com/lib/pq v1.1.1
 	github.com/rs/cors v1.7.0
 	github.com/subosito/gotenv v1.2.0 // indirect
 )
