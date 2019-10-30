@@ -3,17 +3,7 @@ import moment from 'moment';
 
 export default events => {
   const chartColor = '#96dbfa';
-  let backColor = '#96dbfa';
-  if (events.length !== 0) {
-    const sign = events.slice(-1)[0].degree;
-
-    if (sign > 150) {
-      backColor = '#ffa123';
-    }
-    if (sign > 300) {
-      backColor = '#ff0000';
-    }
-  }
+  const backColor = '#96dbfa';
 
   return {
     datasets: [

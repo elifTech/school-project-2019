@@ -11,19 +11,13 @@
   padding: 1em;
 }
 
-.sensor {
-  height: 10em;
-  width: 18em;
-  padding: 1em;
+.degree {
+  font-size: 14px;
+  text-align: center;
+  padding: 20px 0 20px;
 }
 
 .header {
   color: rgb(96, 97, 98);
   font: bold 20px;
-}
-
-.degree {
-  font-size: 32px;
-  text-align: center;
-  padding: 20px 0 20px;
 }

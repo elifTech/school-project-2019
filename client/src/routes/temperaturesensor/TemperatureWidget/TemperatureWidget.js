@@ -18,7 +18,6 @@ const styleSpiner = {
 class TemperatureWidget extends Component {
   static propTypes = {
     dispatchChangeStatus: PropTypes.func.isRequired,
-    dispatchWidgetData: PropTypes.func.isRequired,
     error: PropTypes.string.isRequired,
     events: PropTypes.arrayOf(
       PropTypes.shape({
@@ -39,6 +38,12 @@ class TemperatureWidget extends Component {
     }).isRequired,
   };
 
+  componentDidMount() {
+    getTemperatureSensorsData({
+      from: moment().subtract(1, 'hours'),
+    });
+  }
+
   handleOnClick = status => {
     const { dispatchChangeStatus } = this.props;
     if (status === 1) {
@@ -49,7 +54,7 @@ class TemperatureWidget extends Component {
   };
 
   render() {
-    const { info, dispatchWidgetData, events, error } = this.props;
+    const { info, events, error } = this.props;
 
     let degree;
     let createdAt;
@@ -60,9 +65,6 @@ class TemperatureWidget extends Component {
       );
     }
 
-    dispatchWidgetData({
-      from: moment().subtract(1, 'hours'),
-    });
     return (
       <div className={style.container}>
         {error && (
@@ -76,12 +78,12 @@ class TemperatureWidget extends Component {
         <div className={style.innerContainer}>
           <Row>
             <Col md={8} className={style.header}>
-              Sensors Name
+              Temperature Sensor
             </Col>
             <Col md={2} className="ml-4">
               <Switch
                 onChange={this.statusOnClick(info.Status)}
-                checked={this.checkStatus(info.Status)}
+                checked={info.Status === 1 ? false : info.Status === 0}
                 handleDiameter={20}
                 uncheckedIcon={false}
                 checkedIcon={false}
@@ -91,16 +93,18 @@ class TemperatureWidget extends Component {
               />
             </Col>
           </Row>
-          <div className={style.sensor}>
-            {info.Status === 1 && events.length !== 0 && (
-              <span>Last sync: {createdAt}</span>
+
+          <div className={style.degree}>
+            {info.Status === 1 && events.length !== 0 ? (
+              <span>
+                <h5>Last sync: {createdAt}</h5>
+                <h5>Last temperature: {degree} °C</h5>
+              </span>
+            ) : (
+              <h4>
+                Current temperature: <b>{degree} °C</b>
+              </h4>
             )}
-            <div className={style.degree}>
-              {info.Status === 1 && events.length !== 0 && (
-                <span>Last temperature: </span>
-              )}
-              {degree} °C
-            </div>
           </div>
         </div>
       </div>
@@ -110,10 +114,6 @@ class TemperatureWidget extends Component {
   statusOnClick(status) {
     return () => this.handleOnClick(status);
   }
-
-  checkStatus = status => {
-    return status === 1 ? false : status === 0;
-  };
 }
 
 TemperatureWidget.whyDidYouRender = true;
@@ -125,6 +125,5 @@ export default connect(
   }),
   {
     dispatchChangeStatus: changeTemperatureStatus,
-    dispatchWidgetData: getTemperatureSensorsData,
   },
 )(withStyles(style)(TemperatureWidget));
