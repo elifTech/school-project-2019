@@ -1,6 +1,0 @@
-{
-  "name": "WaterMeterWidget",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./WaterMeterWidget.js"
-}

@@ -3,14 +3,14 @@ import { reducer as formReducer } from 'redux-form';
 import menu from './menu';
 import carbonSensor from './carbonsensor';
 import windSensor from './wind-sensor';
-import waterMeter from './water-meter';
+import waterConsumption from './water-consumption';
 import waterQuality from './water-quality';
 
 export default combineReducers({
   carbonSensor,
   form: formReducer,
   menu,
-  waterMeter,
+  waterConsumption,
   waterQuality,
   windSensor,
 });

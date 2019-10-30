@@ -5,19 +5,20 @@
   justify-content: center;
   align-content: center;
   align-items: center;
+  min-width: 280px;
+  max-width: 380px;
   box-shadow: 0 0 8px 1px rgb(198, 199, 203);
   background-color: #f8f8f8;
   box-sizing: border-box;
   border-radius: 10px;
-  margin-bottom: 15px;
 }
 
 .metricsWraper {
   min-width: 75%;
-  margin: 15px;
-  padding: 10px;
+  margin: 5px;
+  padding: 5px;
   border-radius: 8px;
-  font-size: 42px;
+  font-size: 36px;
   text-align: center;
   background-color: #fff;
   box-sizing: border-box;
@@ -32,21 +33,40 @@
   text-align: center;
 }
 
+h3 {
+  font-size: 22px;
+  color: #555e81;
+}
+
 .metricsWraper h3 {
+  padding-bottom: 0;
   font-size: 18px;
   color: #3f496f;
   text-align: center;
 }
 
 .header {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 5px;
+}
+
+.header h1 {
+  display: inline;
   color: #3f496f;
-  font-size: 22px;
+  font-size: 18px;
+}
+
+.header switch {
+  right: 10px;
 }
 
 .indicator {
   height: 35px;
   width: 35px;
-  margin: 30px;
+  margin: 10px;
   border-radius: 50%;
   box-shadow: 0 0 10px 5px rgb(185, 185, 185);
 }
@@ -72,4 +92,18 @@
 
 .statusColorAlert {
   color: #cf5e5e;
+}
+
+.serverError {
+  position: absolute;
+  justify-content: center;
+  align-content: stretch;
+  align-items: center;
+  text-align: center;
+  font-size: 18px;
+  color: rgba(172, 80, 80, 0.952);
+  width: 90%;
+  height: 95%;
+  backdrop-filter: blur(6px);
+  z-index: 100;
 }

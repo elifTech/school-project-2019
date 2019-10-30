@@ -14,7 +14,7 @@ import qualityIcon from '../../assets/quality.svg';
 import websiteIcon from '../../assets/website.svg';
 import facebookIcon from '../../assets/facebook.svg';
 import carbonIcon from '../../assets/carbon.svg';
-import waterMeterIcon from '../../assets/water-meter.svg';
+import waterConsumptionIcon from '../../assets/water-consumption.svg';
 
 class Menu extends React.Component {
   static propTypes = {
@@ -108,8 +108,8 @@ class Menu extends React.Component {
       text: 'Carbon Monoxide',
     },
     {
-      icon: waterMeterIcon,
-      path: 'water-meter',
+      icon: waterConsumptionIcon,
+      path: 'water-consumption',
       text: 'Water Cons',
     },
   ];

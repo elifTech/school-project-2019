@@ -22,9 +22,9 @@ func WaterConsumptionInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
 
-	router.GET("/waterconsumption", GetWaterMeterSensor)
+	router.GET("/waterconsumption", GetWaterConsumptionSensor)
 
-	router.PUT("/waterconsumption", UpdateWaterMeter)
+	router.PUT("/waterconsumption", UpdateWaterConsumption)
 
 	router.POST("/waterconsumption/poll", PollWaterConsumption)
 
@@ -33,10 +33,10 @@ func WaterConsumptionInit(router *httprouter.Router) {
 	router.GET("/waterconsumption/events", QueryWaterConsumption)
 }
 
-// GetWaterMeterSensor finds first water meter device
-func GetWaterMeterSensor(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	watermeter := devices.WaterConsumption{}
-	device, err := watermeter.Get()
+// GetWaterConsumptionSensor finds first water meter device
+func GetWaterConsumptionSensor(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	waterconsumption := devices.WaterConsumption{}
+	device, err := waterconsumption.Get()
 	// testing custom error response
 	if err == devices.ErrNotFound {
 		http.Error(w, errors.New("the device is not found").Error(), http.StatusNotFound)
@@ -137,12 +137,12 @@ func QueryWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.
 
 }
 
-// UpdateWaterMeter changes water meter status
-func UpdateWaterMeter(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+// UpdateWaterConsumption changes water meter status
+func UpdateWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	defer r.Body.Close()
 
-	waterMeter := devices.WaterConsumption{}
-	_, err := waterMeter.Get()
+	waterConsumption := devices.WaterConsumption{}
+	_, err := waterConsumption.Get()
 	if err == devices.ErrNotFound {
 		http.Error(w, "the device is not found", http.StatusNotFound)
 		return
@@ -161,7 +161,7 @@ func UpdateWaterMeter(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 		return
 	}
 
-	updatedStatus, err := waterMeter.UpdateWaterMeterStatus(data.Status)
+	updatedStatus, err := waterConsumption.UpdateWaterConsumptionStatus(data.Status)
 	fmt.Println("status", updatedStatus)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import s from './Dashboard.css';
 import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget/WaterQualityWidget';
 import CarbonWidget from '../carbonsensor/CarbonWidget/carbon-widget';
-import WaterMeterWidget from '../water-meter/WaterMeterWidget';
+import WaterConsumptionWidget from '../water-consumption/WaterConsumptionWidget';
 
 class Dashboard extends PureComponent {
   static propTypes = {
@@ -32,7 +32,7 @@ class Dashboard extends PureComponent {
               <CarbonWidget />
             </Col>
             <Col>
-              <WaterMeterWidget />
+              <WaterConsumptionWidget />
             </Col>
           </Row>
         </Container>

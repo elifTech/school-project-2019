@@ -9,7 +9,7 @@ import fpGroupBy from 'lodash/fp/groupBy';
 import sumBy from 'lodash/sumBy';
 import o from 'odometer/themes/odometer-theme-default.css';
 
-const WaterMeterMetrics = ({ events }) => {
+const WaterConsumptionMetrics = ({ events }) => {
   let summEvents = events;
   summEvents = flow(
     fpMap(item => {
@@ -33,7 +33,7 @@ const WaterMeterMetrics = ({ events }) => {
   );
 };
 
-WaterMeterMetrics.propTypes = {
+WaterConsumptionMetrics.propTypes = {
   events: PropTypes.arrayOf(
     PropTypes.shape({
       Consumption: PropTypes.number.isRequired,
@@ -43,7 +43,7 @@ WaterMeterMetrics.propTypes = {
 };
 
 export default withStyles(o)(
-  connect(({ waterMeter: { events } }) => ({
+  connect(({ waterConsumption: { events } }) => ({
     events,
-  }))(WaterMeterMetrics),
+  }))(WaterConsumptionMetrics),
 );

@@ -1,10 +1,10 @@
 import moment from 'moment';
 import {
-  REQUEST_WATERMETER_EVENTS,
-  GOT_WATERMETER_EVENTS,
-  FAIL_WATERMETER_EVENTS,
-  UPDATE_WATERMETER_STATUS,
-  LOADING_WATERMETER_STATUS,
+  REQUEST_WATERCONSUMPTION_EVENTS,
+  GOT_WATERCONSUMPTION_EVENTS,
+  FAIL_WATERCONSUMPTION_EVENTS,
+  UPDATE_WATERCONSUMPTION_STATUS,
+  LOADING_WATERCONSUMPTION_STATUS,
   LOADING_FILTER_DATA,
 } from '../constants';
 
@@ -24,14 +24,14 @@ const initialState = {
   statusLoading: false,
 };
 
-export default function waterMeter(state = initialState, action) {
+export default function waterConsumption(state = initialState, action) {
   switch (action.type) {
-    case REQUEST_WATERMETER_EVENTS:
+    case REQUEST_WATERCONSUMPTION_EVENTS:
       return {
         ...state,
         loading: true,
       };
-    case GOT_WATERMETER_EVENTS:
+    case GOT_WATERCONSUMPTION_EVENTS:
       return {
         ...state,
         ...action.payload,
@@ -40,21 +40,21 @@ export default function waterMeter(state = initialState, action) {
         loading: false,
       };
 
-    case FAIL_WATERMETER_EVENTS:
+    case FAIL_WATERCONSUMPTION_EVENTS:
       return {
         ...state,
         error: action.error,
         loading: false,
       };
 
-    case UPDATE_WATERMETER_STATUS:
+    case UPDATE_WATERCONSUMPTION_STATUS:
       return {
         ...state,
         info: { ...state.info, Status: action.status },
         statusLoading: false,
       };
 
-    case LOADING_WATERMETER_STATUS:
+    case LOADING_WATERCONSUMPTION_STATUS:
       return {
         ...state,
         statusLoading: true,

@@ -3,32 +3,32 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import s from './WaterMeterIndicator.css';
+import s from './WaterConsumptionIndicator.css';
 
-let waterMeterMetrics;
+let waterConsumptionMetrics;
 if (process.env.BROWSER) {
   // eslint-disable-next-line global-require
-  const WaterMeterMetrics = require('../WaterMeterMetrics').default;
-  waterMeterMetrics = <WaterMeterMetrics />;
+  const WaterConsumptionMetrics = require('../WaterConsumptionMetrics').default;
+  waterConsumptionMetrics = <WaterConsumptionMetrics />;
 }
-function WaterMeterIndicator({ status }) {
+function WaterConsumptionIndicator({ status }) {
   let animate;
   let waterStatus;
-  let waterMeterIndicatorStyle;
+  let waterConsumptionIndicatorStyle;
 
   switch (status) {
     case 0:
-      waterMeterIndicatorStyle = '#848a8c';
+      waterConsumptionIndicatorStyle = '#848a8c';
       waterStatus = 'Offline';
       animate = 0;
       break;
     case 1:
-      waterMeterIndicatorStyle = 'url(#grad1)';
+      waterConsumptionIndicatorStyle = 'url(#grad1)';
       animate = 'indefinite';
       waterStatus = 'Online';
       break;
     default:
-      waterMeterIndicatorStyle = '#848a8c';
+      waterConsumptionIndicatorStyle = '#848a8c';
       waterStatus = 'Alert!';
       animate = 0;
   }
@@ -37,7 +37,7 @@ function WaterMeterIndicator({ status }) {
     <div className={s.container}>
       <div className={s.metricsWraper}>
         <h3>Metrics for selected period</h3>
-        {waterMeterMetrics} <h2>liters</h2>
+        {waterConsumptionMetrics} <h2>liters</h2>
       </div>
       <div className={s.indicatorWraper}>
         <div className={s.waves}>
@@ -54,7 +54,7 @@ function WaterMeterIndicator({ status }) {
               <stop offset="100%" stopColor="#0083B0" />
             </linearGradient>
             <path
-              fill={waterMeterIndicatorStyle}
+              fill={waterConsumptionIndicatorStyle}
               d="
           M0 67
           C 273,183
@@ -134,12 +134,12 @@ function WaterMeterIndicator({ status }) {
   );
 }
 
-WaterMeterIndicator.propTypes = {
+WaterConsumptionIndicator.propTypes = {
   status: PropTypes.number.isRequired,
 };
 
 export default withStyles(s)(
-  connect(({ waterMeter: { info: { Status } } }) => ({
+  connect(({ waterConsumption: { info: { Status } } }) => ({
     status: Status,
-  }))(WaterMeterIndicator),
+  }))(WaterConsumptionIndicator),
 );

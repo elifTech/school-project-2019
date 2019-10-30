@@ -14,16 +14,16 @@ import (
 	"time"
 )
 
-// WaterMeterStatus struct for checking device status
-type WaterMeterStatus struct {
+// WaterConsumptionStatus struct for checking device status
+type WaterConsumptionStatus struct {
 	Status int
 }
 
-// GenerateWaterMeterEvent generate random water consumption event
-func GenerateWaterMeterEvent() {
+// GenerateWaterConsumptionEvent generate random water consumption event
+func GenerateWaterConsumptionEvent() {
 	err := statusCheck()
 	if err != nil {
-		fmt.Printf("Water meter status is incorrect: %v\n", err)
+		fmt.Printf("Water consumption status is incorrect: %v\n", err)
 		return
 	}
 
@@ -41,7 +41,7 @@ func GenerateWaterMeterEvent() {
 	payloadJSON, err := json.Marshal(map[string]interface{}{
 		"name":        "Water Mater Main",
 		"consumption": randomConsumtion,
-		"WaterMeterEvent": map[string]string{
+		"WaterConsumptionEvent": map[string]string{
 			"sensor_type": "WaterConsumption",
 		},
 	})
@@ -50,11 +50,11 @@ func GenerateWaterMeterEvent() {
 		fmt.Println("Could not convert to JSON")
 	}
 
-	fmt.Println("Water meter random value is ", randomConsumtion)
+	fmt.Println("Water consumption random value is ", randomConsumtion)
 
 	req, err := http.Post("http://localhost:8080/waterconsumption/poll", "application/json", bytes.NewBuffer(payloadJSON))
 	if err != nil {
-		fmt.Println("Error creating water meter event ")
+		fmt.Println("Error creating water consumption event ")
 	}
 	defer req.Body.Close()
 
@@ -64,7 +64,7 @@ func GenerateWaterMeterEvent() {
 		return
 	}
 
-	fmt.Println("Water meter event created ", string(response))
+	fmt.Println("Water consumption event created ", string(response))
 }
 
 func statusCheck() error {
@@ -78,14 +78,14 @@ func statusCheck() error {
 		return err
 	}
 
-	var event WaterMeterStatus
+	var event WaterConsumptionStatus
 	err = json.Unmarshal(data, &event)
 	if err != nil {
 		return err
 	}
 
 	if event.Status == 0 {
-		return errors.New("Water Meter Sensor is offline ")
+		return errors.New("Water consumption Sensor is offline ")
 	} else if event.Status == 2 {
 		floodAlert()
 		turnStatusBack()
@@ -132,7 +132,7 @@ func turnStatusBack() {
 
 	client := &http.Client{}
 
-	statusBack := WaterMeterStatus{
+	statusBack := WaterConsumptionStatus{
 		Status: 1,
 	}
 
@@ -140,7 +140,7 @@ func turnStatusBack() {
 
 	request, err := http.NewRequest(http.MethodPut, "http://localhost:8080/waterconsumption", bytes.NewBuffer(payloadJSON))
 	if err != nil {
-		fmt.Println("Error creating water meter event ")
+		fmt.Println("Error creating water consumption event ")
 	}
 	defer request.Body.Close()
 
