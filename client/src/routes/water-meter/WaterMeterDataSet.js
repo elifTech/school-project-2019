@@ -34,17 +34,6 @@ const breakIntoGroups = (events, period) => {
     .value();
 };
 
-const getBarColor = groups => {
-  const barColors = ['#3c9ecf', '#3f496f'];
-  const j = barColors.length;
-  if (groups.length > barColors.length) {
-    for (let i = barColors.length; i < groups.length; i += 1) {
-      barColors.push(barColors[i - j]);
-    }
-  }
-  return barColors;
-};
-
 export default function getWaterMeterDataSet(events, period) {
   const groups = breakIntoGroups(events, period);
   const dataValue = groups.map(({ Consumption }) => Consumption);
@@ -54,7 +43,7 @@ export default function getWaterMeterDataSet(events, period) {
     data: {
       datasets: [
         {
-          backgroundColor: getBarColor(groups),
+          backgroundColor: '#3c9ecf',
           data: dataValue,
         },
       ],

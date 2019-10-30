@@ -11,7 +11,10 @@ import Slider from 'rc-slider';
 import getChartData from './chart-dataset';
 import Icon from './carbonIcon/carbon-icon';
 import Loader from '../../components/Loader/Loader';
-import { setFilter, changeCarbonStatus } from '../../actions/carbonmonoxide';
+import {
+  setBoundaries,
+  changeCarbonStatus,
+} from '../../actions/carbonmonoxide';
 import style from './Carbon.css';
 
 defaults.global.defaultFontFamily = 'Montserrat';
@@ -151,7 +154,7 @@ class CarbonMonoxideSensor extends Component {
           <div className="col-sm-12">
             <h3>{info.Name}</h3>
             <h5>{info.Type} (ppm)</h5>
-            <span>Port: {this.parseStatus(info.Status)}</span>
+            <span>Port: {info.Status ? 'Close' : 'Open'}</span>
             <hr />
           </div>
         </div>
@@ -184,11 +187,11 @@ class CarbonMonoxideSensor extends Component {
 
           <div className="col-sm-5">
             <div className={style.poster}>
-              <button type="submit" className="btn btn-outline-info">
+              <button type="button" className="btn btn-outline-info">
                 Tutorial
               </button>
               <div className={style.descr}>
-                <b>Carbon Monoxide level (ppm)</b>
+                <b>Carbon Monoxide level (Parts Per Million)</b>
                 <li>0 - Normal</li>
                 <li>9 - Max allowable (short term)</li>
                 <li>10-24 - Investigate source</li>
@@ -206,7 +209,7 @@ class CarbonMonoxideSensor extends Component {
             <button
               type="button"
               className="btn btn-outline-primary"
-              checked={this.parseStatus(info.Status)}
+              checked={!info.Status}
               onClick={this.statusOnClick(info.Status)}
             >
               ON / OFF
@@ -257,15 +260,6 @@ class CarbonMonoxideSensor extends Component {
   statusOnClick(status) {
     return () => this.handleOnClick(status);
   }
-
-  parseStatus = status => {
-    switch (status) {
-      case 0:
-        return 'Open';
-      default:
-        return 'Close';
-    }
-  };
 }
 
 export default connect(
@@ -286,5 +280,8 @@ export default connect(
     isLoading,
     visibleAlert,
   }),
-  { dispatchChangeStatus: changeCarbonStatus, dispatchSetFilter: setFilter },
+  {
+    dispatchChangeStatus: changeCarbonStatus,
+    dispatchSetFilter: setBoundaries,
+  },
 )(withStyles(sliderStyle, style)(CarbonMonoxideSensor));

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
 import WindChart from './WindChart';
 import Logger from './Logger';
+
 import RightPanel from './RightPanel';
 import Loader from '../../components/Loader';
 import s from './Wind.css';

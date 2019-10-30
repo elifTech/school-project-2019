@@ -23,7 +23,6 @@ func TemperatureInit(router *httprouter.Router) {
 	router.GET("/temperature/filter/events", FilterTemperatureEvents)
 	router.PUT("/sensor/temperature", UpdateTemperatureSensor)
 	router.POST("/sensor/temperature/poll", PollTemperature)
-
 }
 
 //
@@ -144,6 +143,14 @@ func PollTemperature(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 	}
 
 	temperature := devices.Temperature{}
+
+	//sensor, _ := temperature.Get()
+	//fmt.Printf("got sensor - %v \n ", sensor)
+	//
+	//if sensor.Status == devices.StatusOffline {
+	//  return
+	//}
+
 	err = temperature.CreateEvent(&event)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

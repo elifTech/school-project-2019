@@ -1,6 +1,5 @@
 
 .container {
-  height: 97.5%;
   padding: 26px 32px;
   margin: 5px 0;
   background-color: #f8f8f8;
@@ -50,7 +49,7 @@
 }
 
 .chartWraper {
-  height: 490px;
+  height: 350px;
 }
 
 .buttonWraper {

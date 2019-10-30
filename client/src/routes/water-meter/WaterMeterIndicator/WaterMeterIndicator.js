@@ -4,8 +4,13 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import s from './WaterMeterIndicator.css';
-import WaterMeterMetrics from '../WaterMeterMetrics';
 
+let waterMeterMetrics;
+if (process.env.BROWSER) {
+  // eslint-disable-next-line global-require
+  const WaterMeterMetrics = require('../WaterMeterMetrics').default;
+  waterMeterMetrics = <WaterMeterMetrics />;
+}
 function WaterMeterIndicator({ status }) {
   let animate;
   let waterStatus;
@@ -32,7 +37,7 @@ function WaterMeterIndicator({ status }) {
     <div className={s.container}>
       <div className={s.metricsWraper}>
         <h3>Metrics for selected period</h3>
-        <WaterMeterMetrics /> <h2>liters</h2>
+        {waterMeterMetrics} <h2>liters</h2>
       </div>
       <div className={s.indicatorWraper}>
         <div className={s.waves}>
