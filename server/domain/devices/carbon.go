@@ -101,7 +101,7 @@ func (t *Carbon) CreateSensor() error {
 	fmt.Printf("Creating Sensor: %v \n", err)
 
 	carbonSensor := Sensor{
-		Name:   "ASPR 650: Kithen Room",
+		Name:   "ASPR 650: Kitchen Room",
 		Type:   CarbonSensor,
 		Status: StatusOffline,
 	}

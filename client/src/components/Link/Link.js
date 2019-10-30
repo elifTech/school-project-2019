@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import withStyles from 'isomorphic-style-loader/withStyles';
 import history from '../../history';
+import style from './Link.css';
 
 function isLeftClickEvent(event) {
   return event.button === 0;
@@ -67,4 +69,4 @@ class Link extends React.PureComponent {
   }
 }
 
-export default memo(Link);
+export default withStyles(style)(memo(Link));

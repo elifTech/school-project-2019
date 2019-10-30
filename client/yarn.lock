@@ -2527,6 +2527,11 @@ cookie@0.4.0:
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.0.tgz#beb437e7022b3b6d49019d088665303ebe9c14ba"
   integrity sha512-+Hp8fLp57wnUSt0tY0tHEXh4voZRDnoIrZPqlo3DPiI4y9lwg/jqx+1Om94/W6ZaPDOUbnjOt/99w66zk+l1Xg==
 
+cookie@^0.1.2:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.1.5.tgz#6ab9948a4b1ae21952cd2588530a4722d4044d7c"
+  integrity sha1-armUiksa4hlSzSWIUwpHItQETXw=
+
 copy-concurrently@^1.0.0:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/copy-concurrently/-/copy-concurrently-1.0.5.tgz#92297398cae34937fcafd6ec8139c18051f0b5e0"
@@ -5443,6 +5448,14 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
+isomorphic-cookie@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/isomorphic-cookie/-/isomorphic-cookie-1.2.4.tgz#b23cc170b4430be1af7cef659bcb77776c8cc351"
+  integrity sha512-Ua/H7NL/NqJyhM14gOisDwPQt5HCNohl23/i8g68EoItOoPQEydG+ZJ0A0i815FSiUQ+0ImtSLdo6d1psus/IQ==
+  dependencies:
+    cookie "^0.1.2"
+    lodash.pick "^4.4.0"
+
 isomorphic-style-loader@~5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/isomorphic-style-loader/-/isomorphic-style-loader-5.1.0.tgz#4845f90bb9828f3dfecc82d0574c9ed01bbaba2d"
@@ -5828,6 +5841,11 @@ lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+
+lodash.pick@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
+  integrity sha1-UvBWEP/53tQiYRRB7R/BI6AwAbM=
 
 lodash.snakecase@^4.1.1:
   version "4.1.1"
@@ -6626,7 +6644,7 @@ object.values@^1.1.0:
     function-bind "^1.1.1"
     has "^1.0.3"
 
-odometer@^0.4.8:
+odometer@0.4.8, odometer@^0.4.8:
   version "0.4.8"
   resolved "https://registry.yarnpkg.com/odometer/-/odometer-0.4.8.tgz#2f6703bf4c6b384c278236d04d4bc8171abe4374"
   integrity sha1-L2cDv0xrOEwngjbQTUvIFxq+Q3Q=
