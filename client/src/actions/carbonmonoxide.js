@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/consistent-function-scoping */
-import axios from '../utils/fetch-with-auth';
+import apiClient from '../utils/fetch-with-auth';
 import {
   CARBON_MONOXIDE_SENSOR_DATA_LOADING,
   CARBON_MONOXIDE_SENSOR_DATA_SUCCESS,
@@ -34,7 +34,7 @@ const carbonSensorLoading = () => ({
 
 export const changeCarbonStatus = status => async dispatch => {
   try {
-    const { data } = await axios.put(`${apiURL}/carbon`, {
+    const { data } = await apiClient.put(`${apiURL}/carbon`, {
       Status: status ? 1 : 0,
     });
     dispatch(updateCarbonStatus(data));
@@ -52,8 +52,8 @@ export const getCarbonSensorsData = () => async (dispatch, getState) => {
   } = getState();
   try {
     const [{ data: info }, { data: events }] = await Promise.all([
-      axios.get(`${apiURL}/carbon`),
-      axios.get(`${apiURL}/carbon/filter/events`, from && { from }),
+      apiClient.get(`${apiURL}/carbon`),
+      apiClient.get(`${apiURL}/carbon/filter/events`, from && { from }),
     ]);
     dispatch(carbonSensorSuccess({ events, info }));
   } catch (error) {
@@ -64,7 +64,7 @@ export const getCarbonSensorsData = () => async (dispatch, getState) => {
 export const setBoundaries = ({ from, value }) => async dispatch => {
   dispatch(loadFilterData({ from, value }));
   try {
-    const { data: events } = await axios.get(
+    const { data: events } = await apiClient.get(
       `http://localhost:8080/carbon/filter/events`,
       {
         from,
@@ -79,8 +79,8 @@ export const setBoundaries = ({ from, value }) => async dispatch => {
 export const getWidgetsData = () => async dispatch => {
   try {
     const [{ data: info }, { data: events }] = await Promise.all([
-      axios.get('http://localhost:8080/carbon'),
-      axios.get('http://localhost:8080/carbon/ping'),
+      apiClient.get('http://localhost:8080/carbon'),
+      apiClient.get('http://localhost:8080/carbon/ping'),
     ]);
     dispatch(carbonSensorSuccess({ events, info }));
   } catch (error) {
