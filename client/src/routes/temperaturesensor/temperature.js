@@ -187,9 +187,6 @@ class TemperatureSensor extends Component {
               <p style={xAxeStyle}>Time</p>
             </div>
 
-            {/* const defaultButton = 'btn btn-secondary btn-lg';
-const activeButton = 'btn btn-primary btn-lg'; */}
-
             <div className="col-sm-11" style={buttonsStyle}>
               <button
                 type="button"
@@ -239,13 +236,15 @@ const activeButton = 'btn btn-primary btn-lg'; */}
           </div>
           <div className="col-sm-5">
             <Icon degree={degree} />
-            {info.Status ? (
-              <h1>
-                Last temperature was {degree}°C <br /> At {created}
-              </h1>
-            ) : (
-              <h1>Current temperature {degree}°C</h1>
-            )}
+            {degree !== undefined ? (
+              info.Status ? (
+                <h1>
+                  Last temperature was {degree}°C <br /> At {created}
+                </h1>
+              ) : (
+                <h1>Current temperature {degree}°C</h1>
+              )
+            ) : null}
           </div>
         </div>
 
