@@ -3,7 +3,7 @@ import format from 'moment';
 
 export default events => {
   let backColor = '#96dbfa';
-  if (events.length !== 0) {
+  if (events.length > 1) {
     const sign = events.slice(-1)[0].signal;
 
     if (sign > 50) {
