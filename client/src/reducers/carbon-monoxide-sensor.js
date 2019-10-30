@@ -14,7 +14,7 @@ const initialState = {
   filterOption: {
     from: moment().subtract(1, 'hours'),
   },
-  info: { Name: '', Type: '', status: 1 },
+  info: { Name: '', Status: 1, Type: '' },
   isLoading: true,
   isVisible: false,
 };

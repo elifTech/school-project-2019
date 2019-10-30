@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
+	"school-project-2019/server/domain/middlewares"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -16,13 +17,11 @@ import (
 //Initialisation all routers
 func CarbonInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
-	//db = database
-
-	router.GET("/sensor/carbon/ping", PingCarbon)
+	router.GET("/carbon/ping", middlewares.Authorize(PingCarbon))
 	router.GET("/carbon", GetCarbonStatus)
-	router.GET("/carbon/filter/events", FilterCarbonEvents)
-	router.PUT("/sensor/carbon", UpdateCarbonSensor)
-	router.POST("/sensor/carbon/poll", PollCarbon)
+	router.GET("/carbon/filter/events", middlewares.Authorize(FilterCarbonEvents))
+	router.PUT("/carbon", middlewares.Authorize(UpdateCarbonSensor))
+	router.POST("/carbon/poll", PollCarbon)
 
 }
 
@@ -71,7 +70,6 @@ func PingCarbon(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(response)
 
-	//fmt.Fprint(w, fmt.Sprintf("Pong... %v  ---- ERR: %v \n", device, err))
 }
 
 //
@@ -107,7 +105,6 @@ func UpdateCarbonSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Par
 	}
 
 	r.ParseForm()
-	//status, convErr := strconv.Atoi(r.Form.Get("status"))
 	errStatus := json.NewDecoder(r.Body).Decode(&carbon)
 
 	if errStatus != nil || carbon.Status != 0 && carbon.Status != 1 {
@@ -120,7 +117,7 @@ func UpdateCarbonSensor(w http.ResponseWriter, r *http.Request, _ httprouter.Par
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println("Carbon status was changed!", carbon.Status)
+	//fmt.Println("Carbon status was changed!", carbon.Status)
 	w.WriteHeader(http.StatusOK)
 }
 
