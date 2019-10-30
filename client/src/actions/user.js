@@ -1,5 +1,8 @@
+/* eslint-disable promise/prefer-await-to-then */
 /* eslint-disable unicorn/consistent-function-scoping */
 import axios from 'axios';
+import isomorphicCookie from 'isomorphic-cookie';
+import moment from 'moment';
 import history from '../history';
 import { SET_USER_MESSAGE, apiURL } from '../constants';
 
@@ -15,51 +18,55 @@ const resetMessage = () => ({
   type: SET_USER_MESSAGE,
 });
 
-export const login = ({ email, password }) => async dispatch => {
-  try {
-    const StatusOK = 200;
-    const response = await axios.post(
+export const login = ({ email, password }) => dispatch => {
+  setTimeout(() => dispatch(resetMessage()), DELAY);
+  const cookieExpires = 15;
+  return axios
+    .post(
       `${apiURL}/authenticate`,
       JSON.stringify({
         email,
         password,
       }),
-    );
-    if (response.status === StatusOK) {
-      dispatch(setUserMessage('You are logged in.'));
-    } else {
-      dispatch(setUserMessage('Sorry, try again!'));
-    }
-    setTimeout(() => dispatch(resetMessage()), DELAY);
-  } catch (error) {
-    dispatch(setUserMessage('Invalid email or password.'));
-    setTimeout(() => dispatch(resetMessage()), DELAY);
-    console.error(error.message);
-  }
+    )
+    .then(response => {
+      isomorphicCookie.save('user_token', response.data.Token, {
+        expires: moment()
+          .add(cookieExpires, 'minute')
+          .toDate(),
+        secure: false,
+      });
+      return dispatch(setUserMessage('You are logged in.'));
+    })
+    .catch(error => {
+      dispatch(setUserMessage(error.response.data));
+      return error.toJSON();
+    });
 };
 
-export const signup = ({ email, password }) => async dispatch => {
-  try {
-    const response = await axios.post(
+export const signup = ({ email, password }) => dispatch => {
+  setTimeout(() => dispatch(resetMessage()), DELAY);
+  return axios
+    .post(
       `${apiURL}/register`,
       JSON.stringify({
         email,
         password,
       }),
-    );
-    dispatch(setUserMessage(response.data));
-    setTimeout(() => dispatch(resetMessage()), DELAY);
-    return response;
-  } catch (error) {
-    dispatch(setUserMessage(error.message));
-    setTimeout(() => dispatch(resetMessage()), DELAY);
-    return error;
-  }
+    )
+    .then(response => {
+      dispatch(setUserMessage(response.data));
+      return response;
+    })
+    .catch(error => {
+      dispatch(setUserMessage(error.response.data));
+      return error.toJSON();
+    });
 };
 
 export const signout = () => dispatch => {
+  isomorphicCookie.remove('user_token');
   history.push('/login');
-
   dispatch(setUserMessage('Signed out!'));
   setTimeout(() => dispatch(resetMessage()), DELAY);
 };

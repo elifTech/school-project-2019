@@ -73,8 +73,6 @@ app.get('*', async (request, response, next) => {
       // I should not use `history` on server.. but how I do redirection? follow universal-router
     });
 
-    // console.log(request.cookies);
-
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
     const context = {
@@ -85,7 +83,6 @@ app.get('*', async (request, response, next) => {
       // You can access redux through react-redux connect
       store,
       storeSubscription: null,
-      token: request.cookies.token,
     };
 
     const route = await router.resolve(context);

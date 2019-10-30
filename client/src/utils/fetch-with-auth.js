@@ -1,15 +1,14 @@
 import axios from 'axios';
+import isomorphicCookie from 'isomorphic-cookie';
 import history from '../history';
 
 const authHeader = {
-  Authorization: `Bearer:${
-    process.env.BROWSER ? localStorage.getItem('token') : ''
-  }`,
+  Authorization: `Bearer:${isomorphicCookie.load('user_token')}`,
 };
 
 const authorize = response => {
-  // console.log(document.cookie);
   if (response.Message) {
+    isomorphicCookie.remove('user_token');
     history.push('/login');
   }
 };

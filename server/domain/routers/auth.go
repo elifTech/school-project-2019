@@ -2,6 +2,7 @@ package routers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"school-project-2019/server/domain/devices"
@@ -16,7 +17,7 @@ type Credentials struct {
 }
 
 func AuthInit(router *httprouter.Router) {
-	router.POST("/api/authenticate", middlewares.Authenticate)
+	router.POST("/authenticate", middlewares.Authenticate)
 	router.POST("/register", RegisterUser)
 }
 
@@ -32,6 +33,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 
 	err = json.Unmarshal(rBytes, user)
 	if err != nil {
+		fmt.Println("1", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}

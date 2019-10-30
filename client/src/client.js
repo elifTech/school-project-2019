@@ -38,7 +38,6 @@ const context = {
   // http://redux.js.org/docs/basics/UsageWithReact.html
   store: configureStore(window.App.state, { history }),
   storeSubscription: null,
-  token: document.cookie.token,
 };
 
 const container = document.getElementById('app');

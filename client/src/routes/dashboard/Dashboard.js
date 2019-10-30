@@ -3,6 +3,7 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import s from './Dashboard.css';
 import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget/WaterQualityWidget';
+import WindWidget from '../../components/Widgets/Wind';
 import CarbonWidget from '../carbonsensor/CarbonWidget/carbon-widget';
 
 class Dashboard extends PureComponent {
@@ -21,6 +22,7 @@ class Dashboard extends PureComponent {
         <div className={s.container}>Dashboard</div>
         <WaterQualityWidget />
         <CarbonWidget />
+        <WindWidget />
       </div>
     );
   }

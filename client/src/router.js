@@ -4,9 +4,6 @@ import routes from './routes';
 
 const router = new UniversalRouter(routes, {
   resolveRoute(context, parameters) {
-    if (context.route.protected && !context.token) {
-      return { redirect: '/login' };
-    }
     if (typeof context.route.load === 'function') {
       return context.route
         .load()

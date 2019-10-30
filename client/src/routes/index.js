@@ -1,6 +1,5 @@
 /* eslint-disable global-require */
-import React from 'react';
-import AuthContainer from '../components/Authorization';
+import isomorphicCookie from 'isomorphic-cookie';
 
 const routes = [
   {
@@ -23,7 +22,7 @@ const routes = [
     async action({ next }) {
       // Execute each child route until one of them return the result
       const route = await next();
-      route.component = <AuthContainer>{route.component}</AuthContainer>;
+      if (!isomorphicCookie.load('user_token')) route.redirect = '/login';
 
       // Provide default values for title, description etc.
       route.title = `${route.title || 'Untitled Page'}`;
