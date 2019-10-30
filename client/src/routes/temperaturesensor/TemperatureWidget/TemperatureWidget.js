@@ -83,7 +83,7 @@ class TemperatureWidget extends Component {
             <Col md={2} className="ml-4">
               <Switch
                 onChange={this.statusOnClick(info.Status)}
-                checked={info.Status === 1 ? false : info.Status === 0}
+                checked={info.Status !== 1}
                 handleDiameter={20}
                 uncheckedIcon={false}
                 checkedIcon={false}
