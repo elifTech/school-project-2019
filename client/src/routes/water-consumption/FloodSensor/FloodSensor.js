@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import { alertWaterMeterStatus } from '../../../actions/water-meter';
+import { alertWaterConsumptionStatus } from '../../../actions/water-consumption';
 import s from './FloodSensor.css';
 
 const statusAlert = status => {
@@ -15,7 +15,7 @@ const statusAlert = status => {
   }
 };
 
-const FloodSensor = ({ status, dispatchChangeWaterMeterStatus }) => {
+const FloodSensor = ({ status, dispatchChangeWaterConsumptionStatus }) => {
   let floodStatus;
   switch (status) {
     case 0:
@@ -54,7 +54,7 @@ const FloodSensor = ({ status, dispatchChangeWaterMeterStatus }) => {
         type="button"
         name="provoke flood"
         className={s.floodButton}
-        onClick={dispatchChangeWaterMeterStatus}
+        onClick={dispatchChangeWaterConsumptionStatus}
       >
         Provoke flood
       </button>
@@ -63,19 +63,19 @@ const FloodSensor = ({ status, dispatchChangeWaterMeterStatus }) => {
 };
 
 FloodSensor.propTypes = {
-  dispatchChangeWaterMeterStatus: PropTypes.func.isRequired,
+  dispatchChangeWaterConsumptionStatus: PropTypes.func.isRequired,
   status: PropTypes.number.isRequired,
 };
 
 export default withStyles(s)(
   connect(
     ({
-      waterMeter: {
+      waterConsumption: {
         info: { Status },
       },
     }) => ({
       status: Status,
     }),
-    { dispatchChangeWaterMeterStatus: alertWaterMeterStatus },
+    { dispatchChangeWaterConsumptionStatus: alertWaterConsumptionStatus },
   )(FloodSensor),
 );

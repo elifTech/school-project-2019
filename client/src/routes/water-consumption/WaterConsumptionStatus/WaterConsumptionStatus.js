@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { connect } from 'react-redux';
-import { changeWaterMeterStatus } from '../../../actions/water-meter';
-import s from './WaterMeterStatus.css';
+import { changeWaterConsumptionStatus } from '../../../actions/water-consumption';
+import s from './WaterConsumptionStatus.css';
 
 const parseStatus = status => {
   switch (status) {
@@ -16,12 +16,16 @@ const parseStatus = status => {
   }
 };
 
-const WaterMeterStatus = ({ name, status, dispatchChangeWaterMeterStatus }) => (
+const WaterConsumptionStatus = ({
+  name,
+  status,
+  dispatchChangeWaterConsumptionStatus,
+}) => (
   <div className={s.container}>
     <h1 className={s.header}>{name}</h1>
     <Switch
       checked={parseStatus(status)}
-      onChange={dispatchChangeWaterMeterStatus}
+      onChange={dispatchChangeWaterConsumptionStatus}
       onColor="#BCC4D7"
       onHandleColor="#3c9ecf"
       handleDiameter={21}
@@ -35,8 +39,8 @@ const WaterMeterStatus = ({ name, status, dispatchChangeWaterMeterStatus }) => (
   </div>
 );
 
-WaterMeterStatus.propTypes = {
-  dispatchChangeWaterMeterStatus: PropTypes.func.isRequired,
+WaterConsumptionStatus.propTypes = {
+  dispatchChangeWaterConsumptionStatus: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   status: PropTypes.number.isRequired,
 };
@@ -44,12 +48,12 @@ WaterMeterStatus.propTypes = {
 export default withStyles(s)(
   connect(
     ({
-      waterMeter: {
+      waterConsumption: {
         info: { Status },
       },
     }) => ({
       status: Status,
     }),
-    { dispatchChangeWaterMeterStatus: changeWaterMeterStatus },
-  )(WaterMeterStatus),
+    { dispatchChangeWaterConsumptionStatus: changeWaterConsumptionStatus },
+  )(WaterConsumptionStatus),
 );

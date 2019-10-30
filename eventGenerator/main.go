@@ -25,7 +25,7 @@ func generate(seconds int, functions ...func()) {
 func main() {
 	gotenv.Load()
 	generate(5, GenerateWaterQualityEvent, GenerateWindEvent, GenerateCarbonEvent)
-	generate(60, GenerateWaterMeterEvent)
+	generate(60, GenerateWaterConsumptionEvent)
 	log.Fatal(http.ListenAndServe(":1234", nil))
 
 }

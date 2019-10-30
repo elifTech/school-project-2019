@@ -5,13 +5,13 @@ import { Container, Row, Col } from 'react-bootstrap';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import { defaults } from 'react-chartjs-2';
 import Loader from '../../components/Loader';
-import WaterMeterChart from './WaterMeterChart';
+import WaterConsumptionChart from './WaterConsumptionChart';
 import RightPanel from './RightPanel';
-import s from './WaterMeter.css';
+import s from './WaterConsumption.css';
 
 defaults.global.defaultFontFamily = 'Montserrat';
 
-class WaterMeter extends React.Component {
+class WaterConsumption extends React.Component {
   static propTypes = {
     error: PropTypes.string.isRequired,
     handleUnmount: PropTypes.func.isRequired,
@@ -38,7 +38,7 @@ class WaterMeter extends React.Component {
             Server unavailable
           </div>
           <Col md={8}>
-            <WaterMeterChart />
+            <WaterConsumptionChart />
           </Col>
           <Col md={4}>
             <RightPanel />
@@ -58,8 +58,10 @@ class WaterMeter extends React.Component {
   }
 }
 
-export default connect(({ waterMeter: { statusLoading, loading, error } }) => ({
-  error,
-  isLoading: loading,
-  isStatusLoading: statusLoading,
-}))(withStyles(s)(React.memo(WaterMeter)));
+export default connect(
+  ({ waterConsumption: { statusLoading, loading, error } }) => ({
+    error,
+    isLoading: loading,
+    isStatusLoading: statusLoading,
+  }),
+)(withStyles(s)(React.memo(WaterConsumption)));

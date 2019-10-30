@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/withStyles';
-import WaterMeterStatus from '../WaterMeterStatus';
-import WaterMeterIndicator from '../WaterMeterIndicator';
+import WaterConsumptionStatus from '../WaterConsumptionStatus';
+import WaterConsumptionIndicator from '../WaterConsumptionIndicator';
 import FloodSensor from '../FloodSensor';
 
 import s from './RightPanel.css';
@@ -17,9 +17,9 @@ class RightPanel extends React.PureComponent {
     const { name } = this.props;
     return (
       <div className={s.container}>
-        <WaterMeterStatus name={name} />
+        <WaterConsumptionStatus name={name} />
         <div>
-          <WaterMeterIndicator />
+          <WaterConsumptionIndicator />
         </div>
         <div>{<FloodSensor />}</div>
       </div>
@@ -29,7 +29,7 @@ class RightPanel extends React.PureComponent {
 
 export default connect(
   ({
-    waterMeter: {
+    waterConsumption: {
       info: { Name },
     },
   }) => ({
