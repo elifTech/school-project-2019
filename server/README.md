@@ -30,3 +30,10 @@ Create user and schema for the work
 2) Save it somewhere in cookies
 3) Per each request add Authorization header
 `(KEY) Authorization - (VALUE) Bearer:TOKEN_HERE`
+Implement gotenv
+
+Create .env file in server root directory
+
+Set relevant key values(see .env.example)
+
+For additional info look at github.com/subosito/gotenv

@@ -1,23 +1,37 @@
 
 .container {
   padding: 26px 32px;
+  margin: 5px 0;
   background-color: #f8f8f8;
   box-sizing: border-box;
   border-radius: 10px;
   color: #3f496f;
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   padding: 0 15px;
+}
+
+.info p {
+  display: block;
+  font-size: 14px;
+  color: #a9a9a9;
 }
 
 .heading {
   margin-bottom: 0;
-  font-size: 16px;
+  color: #555e81;
+  font-size: 24px;
+}
+
+.heading span {
+  margin-bottom: 0;
+  font-size: 18px;
 }
 
 .lastsync {
@@ -28,11 +42,14 @@
 .chartContainer {
   width: 100%;
   flex-basis: 70%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fff;
   box-shadow: 0 0 8px 1px rgb(198, 199, 203);
 }
 
 .chartWraper {
-  min-height: 180px;
+  height: 350px;
 }
 
 .buttonWraper {
@@ -51,7 +68,7 @@
   text-align: center;
   border: none;
   border-radius: 6px;
-  box-shadow: -10px 7px 30px rgba(63, 73, 111, 0.1);
+  box-shadow: -2px 5px 15px rgba(63, 73, 111, 0.39);
   transition: all 0.3s ease;
 }
 
@@ -63,5 +80,5 @@
 .filterButton:hover {
   background-color: #3f496f;
   color: #fff;
-  box-shadow: -10px 7px 30px rgba(63, 73, 111, 0.2);
+  box-shadow: -2px 5px 15px rgba(63, 73, 111, 0.39);
 }

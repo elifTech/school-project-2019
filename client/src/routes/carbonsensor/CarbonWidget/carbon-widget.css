@@ -5,6 +5,7 @@
   overflow: hidden;             /* Fixes the corners */
   display: flex;                /* Children use Flexbox */
   flex-direction: column;       /* Rotate Axis */
+  height: 100%;
 }
 
 .cardHeader {

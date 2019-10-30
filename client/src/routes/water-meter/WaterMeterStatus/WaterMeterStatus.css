@@ -2,6 +2,12 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
 }
 
 .header {

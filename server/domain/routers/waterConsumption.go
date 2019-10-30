@@ -12,12 +12,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-// Data ...
+// Data struct for status processing
 type Data struct {
 	Status devices.SensorState
 }
 
-//WaterConsumptionInit ...
+//WaterConsumptionInit initializes water consumption routes
 func WaterConsumptionInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
@@ -33,7 +33,7 @@ func WaterConsumptionInit(router *httprouter.Router) {
 	router.GET("/waterconsumption/events", QueryWaterConsumption)
 }
 
-// GetWaterMeterSensor ...
+// GetWaterMeterSensor finds first water meter device
 func GetWaterMeterSensor(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	watermeter := devices.WaterConsumption{}
 	device, err := watermeter.Get()
@@ -81,7 +81,7 @@ func PollWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.P
 	fmt.Fprintf(w, "%v", event)
 }
 
-//AllWaterConsumption ...
+//AllWaterConsumption finds all water meter events
 func AllWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	waterconsumptionEvent := devices.WaterConsumption{}
 	device, err := waterconsumptionEvent.GetAll()
@@ -101,7 +101,7 @@ func AllWaterConsumption(w http.ResponseWriter, r *http.Request, ps httprouter.P
 
 }
 
-//QueryWaterConsumption ...
+//QueryWaterConsumption finds  and groups all water meter events for specified period
 func QueryWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	q := r.URL.Query()
 	from := q.Get("from")
@@ -137,7 +137,7 @@ func QueryWaterConsumption(w http.ResponseWriter, r *http.Request, _ httprouter.
 
 }
 
-// UpdateWaterMeter ...
+// UpdateWaterMeter changes water meter status
 func UpdateWaterMeter(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	defer r.Body.Close()
 

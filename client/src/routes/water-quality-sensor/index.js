@@ -9,7 +9,7 @@ import {
   getWaterStructure,
 } from '../../actions/water-quality';
 
-const INTERVAL = 2000;
+const INTERVAL = 1000;
 
 export default async function action({ store: { dispatch } }) {
   dispatch(setCurrentTab('Water Quality'));
