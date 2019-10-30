@@ -5,19 +5,18 @@ import menu from './menu';
 import temperatureSensor from './temperaturesensor';
 
 import user from './user';
-import carbonSensor from './carbonsensor';
+import carbonMonoxideSensor from './carbon-monoxide-sensor';
 import windSensor from './wind-sensor';
-import waterMeter from './water-meter';
-
+import waterConsumption from './water-consumption';
 import waterQuality from './water-quality';
 
 export default combineReducers({
-  carbonSensor,
+  carbonMonoxideSensor,
   form: formReducer,
   menu,
   temperatureSensor,
   user,
-  waterMeter,
+  waterConsumption,
   waterQuality,
   windSensor,
 });

@@ -1,0 +1,48 @@
+.container {
+  width: 20em;
+  padding: 0 0 40px;
+}
+
+.innerContainer {
+  background: rgba(239, 240, 243, 0.38);
+  border-radius: 0.5em;
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+  height: 14em;
+  padding: 1em;
+}
+
+.sensor {
+  height: 10em;
+  width: 18em;
+  padding: 1em;
+}
+
+.header {
+  color: rgb(96, 97, 98);
+  font: bold 20px;
+}
+
+.Low {
+  font: bold;
+  color: #399703;
+}
+
+.Considerable {
+  font: bold;
+  color: #ffa60069;
+}
+
+.High {
+  font: bold;
+  color: rgb(255, 0, 0);
+}
+
+.signal {
+  font-size: 36px;
+  text-align: center;
+  padding: 40px 0 0;
+  background: url('https://my.marshall.com/Content/Images/Icons/spinner_blue.gif');
+  background-size: 40px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+}

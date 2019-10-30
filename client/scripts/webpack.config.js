@@ -491,7 +491,7 @@ const serverConfig = {
         'server.js',
         'package.json',
         'dom-utils.js',
-        'routes/water-meter/WaterMeterMetrics',
+        'routes/water-consumption/WaterConsumptionMetrics',
       ],
       // Root directory (optional)
       root: ROOT_DIR,

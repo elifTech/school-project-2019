@@ -50,13 +50,12 @@ func GenerateCarbonEvent() {
 		fmt.Errorf("Couldn`t convert a request body to json \n", err)
 		return
 	}
-	req, err := http.Post("http://localhost:8080/sensor/carbon/poll", "application/json", bytes.NewBuffer(payloadJSON))
+	req, err := http.Post("http://localhost:8080/carbon/poll", "application/json", bytes.NewBuffer(payloadJSON))
 
 	if err != nil {
 		fmt.Errorf("Can't create a carbon event", err)
 		return
 	}
-	fmt.Println("Carbon event was created:", bytes.NewBuffer(payloadJSON))
 	req.Body.Close()
 	minValue = 50.0
 }

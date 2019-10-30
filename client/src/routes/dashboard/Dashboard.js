@@ -5,11 +5,12 @@ import Container from 'react-bootstrap/Container';
 import { Row, Col } from 'react-bootstrap';
 import Link from '../../components/Link';
 import s from './Dashboard.css';
-import CarbonWidget from '../carbonsensor/CarbonWidget/CarbonWidget';
+import CarbonMonoxideWidget from '../carbon-monoxide-sensor/CarbonMonoxideWidget/CarbonMonoxideWidget';
 import Widget from '../../components/Widgets/Widget';
 import TemperatureWidget from '../temperaturesensor/TemperatureWidget/TemperatureWidget';
 import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget/WaterQualityWidget';
 import WindWidget from '../../components/Widgets/Wind';
+import WaterConsumptionWidget from '../water-consumption/WaterConsumptionWidget';
 
 class Dashboard extends PureComponent {
   static propTypes = {
@@ -44,12 +45,12 @@ class Dashboard extends PureComponent {
             </Col>
             <Col>
               <Link to="/carbonmonoxide">
-                <CarbonWidget />
+                <CarbonMonoxideWidget />
               </Link>
             </Col>
             <Col>
-              <Link to="/water-meter">
-                <Widget />
+              <Link to="/water-consumption">
+                <WaterConsumptionWidget />
               </Link>
             </Col>
             <Col>

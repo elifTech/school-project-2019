@@ -25,13 +25,13 @@ func (WaterConsumption) TableName() string {
 }
 
 func init() {
-	fmt.Printf("Initializing %s sensor... \n", WaterMeter)
+	fmt.Printf("Initializing %s sensor... \n", WaterConsumptionSensor)
 }
 
 // Get finds first water meter device
 func (wc *WaterConsumption) Get() (*WaterConsumption, error) {
 	device := new(WaterConsumption)
-	err := Storage.Where(&Sensor{Type: WaterMeter}).First(&device).Error
+	err := Storage.Where(&Sensor{Type: WaterConsumptionSensor}).First(&device).Error
 	if err != nil {
 		// returning custom DB error message
 		err = ErrNotFound
@@ -40,10 +40,20 @@ func (wc *WaterConsumption) Get() (*WaterConsumption, error) {
 	return device, err
 }
 
+// AllWaterConsumptionEvents struct for water meter querying
+type AllWaterConsumptionEvents struct {
+	EventID     uint
+	Created     time.Time
+	Consumption float32
+}
+
 // GetAll finds all water meter events
-func (wc *WaterConsumption) GetAll() (*[]WaterConsumptionEvent, error) {
-	events := new([]WaterConsumptionEvent)
-	err := Storage.Table("water_consumption_events").Where("sensor_type = ?", WaterMeter).Find(&events).Error
+func (wc *WaterConsumption) GetAll() (*[]AllWaterConsumptionEvents, error) {
+	events := new([]AllWaterConsumptionEvents)
+	var err error
+	query := Storage.Table("water_consumption_events")
+	query = query.Select("date_trunc('hour', created) as created, sum(consumption) as consumption, max(event_id) as event_id")
+	err = query.Group("date_trunc('hour', created)").Find(&events).Error
 	if err != nil {
 		// returning custom DB error message
 		err = ErrNotFound
@@ -57,7 +67,7 @@ func (wc *WaterConsumption) FindOneEvent(query WaterConsumptionEvent) (*WaterCon
 	event := new(WaterConsumptionEvent)
 
 	if len(query.SensorType) == 0 {
-		query.SensorType = WaterMeter
+		query.SensorType = WaterConsumptionSensor
 	}
 	err := Storage.Where(&query).First(&event).Error
 	if err != nil {
@@ -80,12 +90,12 @@ func (wc *WaterConsumption) CreateSensor() error {
 
 	fmt.Printf("Creating Sensor: %v \n", err)
 
-	waterMeter := Sensor{
-		Name:   "Water Meter",
-		Type:   WaterMeter,
+	waterConsumption := Sensor{
+		Name:   "Water Consumption",
+		Type:   WaterConsumptionSensor,
 		Status: StatusOffline,
 	}
-	return Storage.Create(&waterMeter).Error
+	return Storage.Create(&waterConsumption).Error
 }
 
 // CreateEvent creates water meter event with relevant payload
@@ -93,7 +103,7 @@ func (wc *WaterConsumption) CreateEvent(payload *WaterConsumptionEvent) (err err
 
 	// event should be populate with sensor type
 	if len(payload.SensorType) == 0 {
-		payload.SensorType = WaterMeter
+		payload.SensorType = WaterConsumptionSensor
 	}
 	// a good example: we are returning the error directly from the Create method
 	return Storage.Create(&payload).Error
@@ -122,8 +132,8 @@ func (wc *WaterConsumption) QueryEvents(from string, to string) (*[]QueryWaterCo
 	return &events, err
 }
 
-// UpdateWaterMeterStatus changes water meter status
-func (wc *WaterConsumption) UpdateWaterMeterStatus(status SensorState) (SensorState, error) {
+// UpdateWaterConsumptionStatus changes water meter status
+func (wc *WaterConsumption) UpdateWaterConsumptionStatus(status SensorState) (SensorState, error) {
 	if status != StatusOnline && status != StatusOffline && status != StatusFailure {
 		return StatusFailure, ErrBadStatus
 	}

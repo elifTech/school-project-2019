@@ -1,0 +1,6 @@
+{
+  "name": "WaterConsumptionChart",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./WaterConsumptionChart.js"
+}
