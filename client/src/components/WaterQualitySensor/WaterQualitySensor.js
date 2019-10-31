@@ -12,8 +12,8 @@ import LineChart from '../LineChart';
 import FilterButtons from './FilterButtons';
 import TableStructure from './TableStructure';
 import Loader from '../Loader';
-import WaterQualitySwitch from '../WaterQualitySwitch/WaterQualitySwitch';
-import WaterQualityBarChart from '../WaterQualityBarChart/WaterQualityBarChart';
+import WaterQualitySwitch from '../WaterQualitySwitch';
+import WaterQualityBarChart from './WaterQualityBarChart';
 
 class WaterQualitySensor extends PureComponent {
   static propTypes = {
@@ -22,9 +22,9 @@ class WaterQualitySensor extends PureComponent {
     currentQuality: PropTypes.string,
     dispatchChangeFilter: PropTypes.func.isRequired,
     error: PropTypes.string,
-    // isFetching: PropTypes.bool,
     eventsQuality: PropTypes.arrayOf(PropTypes.string),
     filter: PropTypes.string.isRequired,
+    isDataLoaded: PropTypes.bool.isRequired,
     resetInterval: PropTypes.func.isRequired,
     time: PropTypes.arrayOf(PropTypes.string),
     waterStructure: PropTypes.arrayOf(PropTypes.string),
@@ -52,11 +52,11 @@ class WaterQualitySensor extends PureComponent {
       filter,
       error,
       critics,
-      // isFetching,
       waterStructure,
       currentQuality,
       dispatchChangeFilter,
       waterStructureLabels,
+      isDataLoaded,
     } = this.props;
 
     const alert = (
@@ -135,18 +135,10 @@ class WaterQualitySensor extends PureComponent {
             <TableStructure />
           </Col>
         </Row>
-        {/* <Row> */}
-        {/*  <Col md={7} className={style.chartContainer}> */}
-        {/*    <DoughnutChart */}
-        {/*      waterStructure={waterStructure} */}
-        {/*      labels={waterStructureLabels} */}
-        {/*    /> */}
-        {/*  </Col> */}
-        {/* </Row> */}
       </Container>
     );
 
-    if (eventsQuality.length === 0 && !error) return <Loader />;
+    if (!isDataLoaded && !error) return <Loader />;
     if (eventsQuality.length > 0 && error)
       return (
         <div>

@@ -1,82 +1,61 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactSpeedometer from 'react-d3-speedometer';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { connect } from 'react-redux';
 import Alert from 'react-bootstrap/Alert';
-import { segmentColors } from '../../WaterQualitySensor/HelperChartData';
-import WaterQualitySwitch from '../../WaterQualitySwitch/WaterQualitySwitch';
+import withStyles from 'isomorphic-style-loader/withStyles';
+import { Spinner } from 'react-bootstrap';
+import classNames from 'classnames';
+import WaterQualitySwitch from '../../WaterQualitySwitch';
 import { FIXED } from '../../../selectors/water-quality-selectors';
-// import style from './WaterQualityWidget.css';
+import style from './WaterQualityWidget.css';
+import water from '../../../assets/h2o.png';
 
-const container = {
-  width: '24em',
-};
+const MAXQUALITY = 11;
+const MINQUALITY = 4.5;
+const AVGMIN = 6.5;
+const AVGMAX = 8.5;
 
-const innerContainer = {
-  background: 'rgba(239,240,243,.38)',
-  borderRadius: '0.5em',
-  boxShadow: '0 0 8px 1px rgb(198, 199, 203)',
-  height: '16em',
-  padding: '1em',
-};
-
-const sensor = {
-  height: '16em',
-  width: '22em',
-};
-
-const header = {
-  color: 'rgb(96,97,98)',
-  font: 'bold 20px serif',
-};
+function checkColor(value) {
+  if (value < MINQUALITY || value > MAXQUALITY) return style.danger;
+  if (value < AVGMIN || value > AVGMAX) return style.warn;
+  return style.ok;
+}
 
 function WaterQualityWidget({ value, error }) {
-  const alert = (
-    <div>
-      <Alert variant="danger" className="m-0 text-center">
-        <span>There is some problem with sensor</span>
-      </Alert>
-    </div>
-  );
-
-  const content = (
-    <div style={innerContainer}>
-      <Row>
-        <Col md={9} style={header}>
-          Water quality
-        </Col>
-        <Col md={2} className="ml-4">
-          <WaterQualitySwitch />
-        </Col>
-      </Row>
-      <div style={sensor}>
-        <ReactSpeedometer
-          value={Number(value)}
-          segmentColors={segmentColors}
-          minValue={1}
-          maxValue={14}
-          segments={500}
-          fluidWidth
-          maxSegmentLabels={5}
-          needleHeightRatio={0.7}
-          needleTransitionDuration={2000}
-          needleTransition="easeLinear"
-          currentValueText="#{value} pH"
-          currentValuePlaceholderStyle={'#{value}'}
-        />
+  return (
+    <div className={style.container}>
+      {error && (
+        <Alert variant="danger">
+          {error}
+          <Spinner animation="border" role="status" />
+        </Alert>
+      )}
+      <div className={style.innerContainer}>
+        <Row>
+          <Col md={8} className={style.header}>
+            Water Quality Sensor
+          </Col>
+          <Col md={2} className="ml-4">
+            <WaterQualitySwitch />
+          </Col>
+        </Row>
+        <div className={style.sensor}>
+          <div>
+            <img src={water} alt="menu-item" />
+          </div>
+          <p>
+            Current quality:
+            <span className={classNames(style.value, checkColor(value))}>
+              {' '}
+              {value} pH
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );
-  if (value && error)
-    return (
-      <div style={container}>
-        {alert}
-        {content}
-      </div>
-    );
-  return <div style={container}>{content}</div>;
 }
 
 WaterQualityWidget.propTypes = {
@@ -96,4 +75,4 @@ WaterQualityWidget.whyDidYouRender = true;
 export default connect(
   mapStateToProps,
   {},
-)(React.memo(WaterQualityWidget));
+)(withStyles(style)(React.memo(WaterQualityWidget)));

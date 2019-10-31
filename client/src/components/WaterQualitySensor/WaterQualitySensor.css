@@ -11,7 +11,8 @@
 .chartHeader {
   margin: 0;
   padding: 2%;
-  font: bold 16px serif;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .chartContainer {
@@ -60,11 +61,11 @@
 
 .criticValue {
   padding-top: 5px;
-  font: 25px serif;
+  font-size: 20px;
 }
 
 .rightContainerStructure {
-  font: 17px serif;
+  font-size: 15px;
   padding: 0;
   box-shadow: 0 0 8px 1px rgb(198, 199, 203);
 }

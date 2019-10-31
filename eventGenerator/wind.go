@@ -48,6 +48,10 @@ func GenerateWindEvent() {
 	if windPower < 1 {
 		windPower = 20.0
 	}
+
+	if windPower > 120 {
+		windPower = 120.0
+	}
 	var beaufortValue uint8 = uint8(math.Round(windPower / 10))
 	if beaufortValue == 0 {
 		beaufortValue = 1

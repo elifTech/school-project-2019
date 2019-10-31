@@ -6,66 +6,64 @@ import { connect } from 'react-redux';
 import { alertWaterConsumptionStatus } from '../../../actions/water-consumption';
 import s from './FloodSensor.css';
 
-const statusAlert = status => {
-  switch (status) {
-    case 2:
-      return true;
-    default:
-      return false;
-  }
-};
+class FloodSensor extends React.Component {
+  static propTypes = {
+    dispatchChangeWaterConsumptionStatus: PropTypes.func.isRequired,
+    status: PropTypes.number.isRequired,
+  };
 
-const FloodSensor = ({ status, dispatchChangeWaterConsumptionStatus }) => {
-  let floodStatus;
-  switch (status) {
-    case 0:
-      floodStatus = 'Offline';
-      break;
-    case 1:
-      floodStatus = 'Ok';
-      break;
-    case 2:
-      floodStatus = 'Alert!';
-      break;
-    default:
-  }
-  return (
-    <div className={s.container}>
-      <h1 className={s.header}>Flood sensor</h1>
-      <div
-        className={classNames(s.indicator, {
-          [s.indicatorOff]: status === 0,
-          [s.indicatorOK]: status === 1,
-          [s.indicatorAlert]: statusAlert(status),
-        })}
-      />
-      <h3>
-        Status:{' '}
-        <span
-          className={classNames({
-            [s.statusColorOk]: status === 1,
-            [s.statusColorAlert]: statusAlert(status),
+  render() {
+    const { status, dispatchChangeWaterConsumptionStatus } = this.props;
+    return (
+      <div className={s.container}>
+        <h1 className={s.header}>Flood sensor</h1>
+        <div
+          className={classNames(s.indicator, {
+            [s.indicatorOff]: status === 0,
+            [s.indicatorOK]: status === 1,
+            [s.indicatorAlert]: status === 2,
           })}
+        />
+        <h3>
+          Status:{' '}
+          <span
+            className={classNames({
+              [s.statusColorOk]: status === 1,
+              [s.statusColorAlert]: status === 2,
+            })}
+          >
+            {this.getStatus()}
+          </span>
+        </h3>
+        <button
+          type="button"
+          name="provoke flood"
+          className={s.floodButton}
+          onClick={dispatchChangeWaterConsumptionStatus}
         >
-          {floodStatus}
-        </span>
-      </h3>
-      <button
-        type="button"
-        name="provoke flood"
-        className={s.floodButton}
-        onClick={dispatchChangeWaterConsumptionStatus}
-      >
-        Provoke flood
-      </button>
-    </div>
-  );
-};
+          Provoke flood
+        </button>
+      </div>
+    );
+  }
 
-FloodSensor.propTypes = {
-  dispatchChangeWaterConsumptionStatus: PropTypes.func.isRequired,
-  status: PropTypes.number.isRequired,
-};
+  getStatus() {
+    let floodStatus;
+    const { status } = this.props;
+    switch (status) {
+      case 1:
+        floodStatus = 'Ok';
+        break;
+      case 2:
+        floodStatus = 'Alert';
+        break;
+
+      default:
+        floodStatus = 'Offline';
+    }
+    return floodStatus;
+  }
+}
 
 export default withStyles(s)(
   connect(

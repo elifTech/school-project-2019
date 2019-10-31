@@ -19,10 +19,11 @@ const routes = [
     path: '/signup',
   },
   {
-    async action({ next }) {
+    async action({ next, token }) {
       // Execute each child route until one of them return the result
       const route = await next();
-      if (!isomorphicCookie.load('user_token')) route.redirect = '/login';
+      if (!isomorphicCookie.load('user_token') && !token)
+        route.redirect = '/login';
 
       // Provide default values for title, description etc.
       route.title = `${route.title || 'Untitled Page'}`;

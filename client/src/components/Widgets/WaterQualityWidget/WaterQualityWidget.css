@@ -1,10 +1,42 @@
 .container {
-  padding: 1em;
-  height: 17em;
-  width: 24em;
-  background-color: rgba(231, 249, 242, 0.34);
-  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+  width: 20em;
+  padding: 0 0 40px;
+}
+
+.innerContainer {
+  background: rgba(239, 240, 243, 0.38);
   border-radius: 0.5em;
-  color: #626364;
-  font: bold 16px serif;
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+  height: 14em;
+  padding: 1em;
+}
+
+.sensor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 10em;
+  width: 18em;
+  padding: 1em;
+}
+
+.header {
+  color: rgb(96, 97, 98);
+}
+
+.value {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.ok {
+  color: rgba(137, 211, 92, 0.88);
+}
+
+.warn {
+  color: rgba(238, 234, 79, 0.95);
+}
+
+.danger {
+  color: rgba(228, 66, 58, 0.93);
 }
