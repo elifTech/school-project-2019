@@ -7,15 +7,6 @@ import { connect } from 'react-redux';
 import { changeWaterConsumptionStatus } from '../../../actions/water-consumption';
 import s from './WaterConsumptionStatus.css';
 
-const parseStatus = status => {
-  switch (status) {
-    case 1:
-      return true;
-    default:
-      return false;
-  }
-};
-
 const WaterConsumptionStatus = ({
   name,
   status,
@@ -24,7 +15,7 @@ const WaterConsumptionStatus = ({
   <div className={s.container}>
     <h1 className={s.header}>{name}</h1>
     <Switch
-      checked={parseStatus(status)}
+      checked={status === 1}
       onChange={dispatchChangeWaterConsumptionStatus}
       onColor="#BCC4D7"
       onHandleColor="#3c9ecf"

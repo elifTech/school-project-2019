@@ -32,7 +32,7 @@ class WaterConsumptionWidget extends React.Component {
         <div className={s.header}>
           <h1>{name}</h1>
           <Switch
-            checked={this.getSwitch()}
+            checked={status === 1}
             onChange={handleWaterConsumptionStatus}
             onColor="#BCC4D7"
             onHandleColor="#3c9ecf"
@@ -72,16 +72,6 @@ class WaterConsumptionWidget extends React.Component {
     );
   }
 
-  getSwitch() {
-    const { status } = this.props;
-    switch (status) {
-      case 1:
-        return true;
-      default:
-        return false;
-    }
-  }
-
   getStatus() {
     let floodStatus;
     const { status } = this.props;
@@ -94,7 +84,7 @@ class WaterConsumptionWidget extends React.Component {
         break;
 
       default:
-        floodStatus = 'offline';
+        floodStatus = 'Offline';
     }
     return floodStatus;
   }
