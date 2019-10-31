@@ -29,7 +29,7 @@
 
 .Considerable {
   font: bold;
-  color: #ffa60069;
+  color: #ffa600dc;
 }
 
 .High {
@@ -40,7 +40,7 @@
 .signal {
   font-size: 36px;
   text-align: center;
-  padding: 40px 0 0;
+  padding: 40px 0 10px;
   background: url('https://my.marshall.com/Content/Images/Icons/spinner_blue.gif');
   background-size: 40px;
   background-repeat: no-repeat;

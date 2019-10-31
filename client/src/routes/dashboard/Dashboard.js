@@ -43,8 +43,6 @@ class Dashboard extends PureComponent {
                 <WaterQualityWidget />
               </Link>
             </Col>
-          </Row>
-          <Row>
             <Col>
               <Link to="/carbonmonoxide">
                 <CarbonMonoxideWidget />
