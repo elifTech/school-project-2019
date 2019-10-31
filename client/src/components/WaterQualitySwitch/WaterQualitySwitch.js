@@ -4,14 +4,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { changeStatus } from '../../actions/water-quality';
 
-const checkStatus = status => {
-  return status === 0 ? false : status === 1;
-};
-
 const WaterQualitySwitch = ({ status, dispatchChangeStatus }) => (
   <Switch
     onChange={dispatchChangeStatus}
-    checked={checkStatus(status)}
+    checked={!!status}
     handleDiameter={20}
     uncheckedIcon={false}
     checkedIcon={false}

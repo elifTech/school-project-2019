@@ -6,7 +6,7 @@ export const FIXED = 2;
 const getFormatDate = filter => {
   switch (filter) {
     case 'second':
-      return 'HH:mm';
+      return 'H:m:ss';
     case 'hour':
       return 'M.DD HH';
     case 'day':
@@ -31,25 +31,33 @@ const getEvents = state => {
 
 export const getFixedQuality = createSelector(
   [getEvents],
-  events => events.map(({ quality }) => quality.toFixed(FIXED)),
+  events => events.reverse().map(({ quality }) => quality.toFixed(FIXED)),
 );
 
 export const getMax = createSelector(
   [getEvents],
-  events => Math.max(...events.map(({ quality }) => quality.toFixed(FIXED))),
+  events => {
+    if (events.length === 0) return 0;
+    return Math.max(...events.map(({ quality }) => quality.toFixed(FIXED)));
+  },
 );
 
 export const getMin = createSelector(
   [getEvents],
-  events => Math.min(...events.map(({ quality }) => quality.toFixed(FIXED))),
+  events => {
+    if (events.length === 0) return 0;
+    return Math.min(...events.map(({ quality }) => quality.toFixed(FIXED)));
+  },
 );
 export const getEventsTime = createSelector(
   [getEvents],
   events => {
     const selectedFilter = events.map(({ filter }) => filter)[0];
-    return events.map(({ period }) =>
-      moment(period).format(getFormatDate(selectedFilter)),
-    );
+    return events
+      .reverse()
+      .map(({ period }) =>
+        moment(period).format(getFormatDate(selectedFilter)),
+      );
   },
 );
 

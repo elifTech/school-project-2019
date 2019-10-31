@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import queryString from 'query-string';
 import {
   WATER_QUALITY_REQUEST_EVENTS,
@@ -9,7 +8,12 @@ import {
   WATER_QUALITY_FILTER,
   WATER_QUALITY_SUCCESS_STRUCTURE,
   WATER_QUALITY_SUCCESS_CURRENT,
+  WATER_QUALITY_SUCCESS_LOADED,
+  apiURL,
 } from '../constants';
+import apiClient from '../utils/fetch-with-auth';
+
+const NO_CONTENT = 204;
 
 const getEventsRequest = () => {
   return {
@@ -33,6 +37,12 @@ const getEventsFailure = error => {
     type: WATER_QUALITY_FAIL_EVENTS,
   };
 };
+const setDataLoaded = isLoaded => {
+  return {
+    isLoaded,
+    type: WATER_QUALITY_SUCCESS_LOADED,
+  };
+};
 
 export function getEvents() {
   return async (dispatch, getState) => {
@@ -40,13 +50,13 @@ export function getEvents() {
     const { waterQuality } = getState();
     const query = queryString.stringify({ period: waterQuality.filter });
     try {
-      const response = await fetch(
-        `http://localhost:8080/water_quality/event?${query}`,
+      const { data } = await apiClient.get(
+        `${apiURL}/water_quality/event?${query}`,
       );
-      const events = await response.json();
-      return dispatch(getEventsSuccess(events));
+      dispatch(setDataLoaded(true));
+      return dispatch(getEventsSuccess(data));
     } catch (error) {
-      return dispatch(getEventsFailure(error));
+      return dispatch(getEventsFailure(error.message));
     }
   };
 }
@@ -64,15 +74,15 @@ export function getCurrentEvent() {
     const { waterQuality } = getState();
     dispatch(getEventsRequest());
     try {
-      const currentResponse = await fetch(
-        `http://localhost:8080/water_quality/current`,
-      );
-      const { quality } = await currentResponse.json();
+      const response = await apiClient.get(`${apiURL}/water_quality/current`);
+      if (response.status === NO_CONTENT)
+        return dispatch(getCurrentQualitySuccess(0));
       if (!waterQuality.info.Status)
         return dispatch(getCurrentQualitySuccess(0));
-      return dispatch(getCurrentQualitySuccess(quality));
+      const { data } = response;
+      return dispatch(getCurrentQualitySuccess(data.quality));
     } catch (error) {
-      return dispatch(getEventsFailure(error));
+      return dispatch(getEventsFailure(error.message));
     }
   };
 }
@@ -87,13 +97,14 @@ const getInfoSuccess = info => {
 
 export function getInfo() {
   return async dispatch => {
+    dispatch(setDataLoaded(false));
     dispatch(getEventsRequest());
     try {
-      const response = await fetch(`http://localhost:8080/water_quality/ping`);
-      const { Name, Status } = await response.json();
+      const { data } = await apiClient.get(`${apiURL}/water_quality/ping`);
+      const { Name, Status } = data;
       return dispatch(getInfoSuccess({ Name, Status }));
     } catch (error) {
-      return dispatch(getEventsFailure(error));
+      return dispatch(getEventsFailure(error.message));
     }
   };
 }
@@ -110,13 +121,14 @@ export function getWaterStructure() {
   return async dispatch => {
     dispatch(getEventsRequest());
     try {
-      const response = await fetch(
-        `http://localhost:8080/water_quality/structure`,
-      );
-      const { Ca, Na, Mg, K } = await response.json();
-      return dispatch(getWaterStructureSuccess({ Ca, K, Mg, Na }));
+      const response = await apiClient.get(`${apiURL}/water_quality/structure`);
+      if (response.status !== NO_CONTENT) {
+        const { Ca, Na, Mg, K } = response.data;
+        return dispatch(getWaterStructureSuccess({ Ca, K, Mg, Na }));
+      }
+      return 0;
     } catch (error) {
-      return dispatch(getEventsFailure(error));
+      return dispatch(getEventsFailure(error.message));
     }
   };
 }
@@ -141,22 +153,13 @@ export function changeFilter(filter) {
 export function changeStatus(newStatus) {
   return async dispatch => {
     dispatch(getEventsRequest());
-    const body = { Status: newStatus ? 1 : 0 };
     try {
-      const response = await fetch(
-        `http://localhost:8080/water_quality/status`,
-        {
-          body: JSON.stringify(body),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          method: 'PUT',
-        },
-      );
-      const { Status } = await response.json();
-      return dispatch(changeStatusSuccess(Status));
+      const { data } = await apiClient.put(`${apiURL}/water_quality/status`, {
+        Status: newStatus ? 1 : 0,
+      });
+      return dispatch(changeStatusSuccess(data.Status));
     } catch (error) {
-      return dispatch(getEventsFailure(error));
+      return dispatch(getEventsFailure(error.message));
     }
   };
 }

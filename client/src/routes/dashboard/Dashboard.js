@@ -2,12 +2,13 @@ import React, { PureComponent } from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
-import { Row, Col } from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Link from '../../components/Link';
 import s from './Dashboard.css';
 import CarbonMonoxideWidget from '../carbon-monoxide-sensor/CarbonMonoxideWidget/CarbonMonoxideWidget';
 import Widget from '../../components/Widgets/Widget';
-import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget/WaterQualityWidget';
+import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget';
 import WindWidget from '../../components/Widgets/Wind';
 import WaterConsumptionWidget from '../water-consumption/WaterConsumptionWidget';
 

@@ -73,8 +73,8 @@ func (w *WaterQuality) GetPeriodEvents(period string) ([]PeriodEvent, error) {
 	err := Storage.Table("water_quality_events").
 		Select("date_trunc(?, created) as period, avg(quality) as quality", period).
 		Group("period").
-		Order("period").
-		Limit(50).
+		Order("period desc").
+		Limit(30).
 		Scan(&events).Error
 	if err != nil {
 		err = ErrNotFound
@@ -97,13 +97,10 @@ func (w *WaterQuality) GetWaterStructure() (*WaterStructure, error) {
 	return lastDayEvent, err
 }
 
-func (w *WaterQuality) FindOneEvent(query WaterQualityEvent) (*WaterQualityEvent, error) {
+func (w *WaterQuality) FindOneEvent() (*WaterQualityEvent, error) {
 	event := new(WaterQualityEvent)
 
-	if len(query.SensorType) == 0 {
-		query.SensorType = WaterQualitySensor
-	}
-	err := Storage.Where(&query).First(&event).Error
+	err := Storage.First(&event).Error
 	if err != nil {
 		// returning custom DB error message
 		err = ErrNotFound
@@ -145,7 +142,6 @@ func (w *WaterQuality) ChangeSensorStatus(status SensorState) (SensorState, erro
 func (w *WaterQuality) CreateEvent(payload *WaterQualityEvent) (err error) {
 	sensor, _ := w.Get()
 	if sensor.Status != StatusOnline {
-		fmt.Printf("Water quality sensor is offline \n")
 		return errors.New("sensor is offline")
 	}
 	// event should be populate with sensor type
@@ -153,9 +149,6 @@ func (w *WaterQuality) CreateEvent(payload *WaterQualityEvent) (err error) {
 		payload.SensorType = WaterQualitySensor
 	}
 	err = Storage.Create(&payload).Error
-	if err == nil {
-		fmt.Printf("New event for water quality sensor is created \n")
-	}
 	return err
 }
 
@@ -176,3 +169,5 @@ func (w *WaterQuality) GetCritical() (Critic, error) {
 	}
 	return critic, err
 }
+
+
