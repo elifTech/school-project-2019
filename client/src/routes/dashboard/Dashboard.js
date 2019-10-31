@@ -6,10 +6,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Link from '../../components/Link';
 import s from './Dashboard.css';
-import CarbonWidget from '../carbonsensor/CarbonWidget/CarbonWidget';
+import CarbonMonoxideWidget from '../carbon-monoxide-sensor/CarbonMonoxideWidget/CarbonMonoxideWidget';
 import Widget from '../../components/Widgets/Widget';
 import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget';
 import WindWidget from '../../components/Widgets/Wind';
+import WaterConsumptionWidget from '../water-consumption/WaterConsumptionWidget';
 
 class Dashboard extends PureComponent {
   static propTypes = {
@@ -44,12 +45,12 @@ class Dashboard extends PureComponent {
             </Col>
             <Col>
               <Link to="/carbonmonoxide">
-                <CarbonWidget />
+                <CarbonMonoxideWidget />
               </Link>
             </Col>
             <Col>
-              <Link to="/water-meter">
-                <Widget />
+              <Link to="/water-consumption">
+                <WaterConsumptionWidget />
               </Link>
             </Col>
             <Col>
