@@ -1,51 +1,90 @@
 import React from 'react';
-import axios from 'axios';
-import moment from 'moment';
-import { apiURL } from '../../../constants';
+import PropTypes from 'prop-types';
+import withStyles from 'isomorphic-style-loader/withStyles';
+import Switch from 'react-switch';
+import { Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import {
+  getWindSensorData,
+  changeWindStatus,
+} from '../../../actions/wind-sensor';
+import { parseDirection } from '../../../utils/wind-right-panel';
+import style from './wind-widget.css';
 
 class WindWidget extends React.Component {
-  state = {
-    events: [],
-    info: {},
+  static propTypes = {
+    dispatchChangeStatus: PropTypes.func.isRequired,
+    dispatchGetInfo: PropTypes.func.isRequired,
+    events: PropTypes.arrayOf(
+      PropTypes.shape({
+        direction: PropTypes.number,
+        power: PropTypes.number,
+      }),
+    ).isRequired,
+    info: PropTypes.shape({
+      Status: PropTypes.number.isRequired,
+    }).isRequired,
   };
 
   componentDidMount() {
-    const queries = [
-      axios.get(`${apiURL}/wind/events`, {
-        params: {
-          from: moment()
-            .local()
-            .toJSON(),
-          to: moment()
-            .subtract(1, 'minute')
-            .local()
-            .toJSON(),
-        },
-      }),
-      axios.get(`${apiURL}/wind`),
-    ];
-
-    Promise.all(queries)
-      // eslint-disable-next-line promise/prefer-await-to-then
-      .then(([{ data: events }, { data: info }]) =>
-        this.setState({ events, info }),
-      )
-      .catch(console.error);
+    const { dispatchGetInfo } = this.props;
+    dispatchGetInfo();
   }
 
+  handleChangeStatus = () => {
+    const { dispatchChangeStatus, info } = this.props;
+    dispatchChangeStatus(!info.Status);
+  };
+
   render() {
-    const { events, info } = this.state;
+    const { events, info } = this.props;
+
     return (
-      <div>
-        <h5>Wind Sensor</h5>
-        <div>{info.Status}</div>
-        <div>Current wind speed: {events[0] && events.slice(-1)[0].power}</div>
-        <div>
-          Current wind direction: {events[0] && events.slice(-1)[0].direction}
+      <div className={style.container}>
+        <div className={style.innerContainer}>
+          <Row>
+            <Col md={8} className={style.header}>
+              Wind Sensor
+            </Col>
+            <Col md={2} className="ml-4">
+              <Switch
+                checked={info.Status === 1}
+                onChange={this.handleChangeStatus}
+                handleDiameter={20}
+                uncheckedIcon={false}
+                checkedIcon={false}
+                boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                height={15}
+                width={40}
+              />
+            </Col>
+          </Row>
+          <div className={style.sensor}>
+            <b>
+              {events.length === 0
+                ? 'Currently sensor is disabled'
+                : `Current power: ${events.slice(-1)[0].power}`}
+            </b>
+            <b>
+              {events.length !== 0 &&
+                `Current direction: ${parseDirection(
+                  events.slice(-1)[0].direction,
+                )}`}
+            </b>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default WindWidget;
+export default connect(
+  ({ windSensor: { events, info } }) => ({
+    events,
+    info,
+  }),
+  {
+    dispatchChangeStatus: changeWindStatus,
+    dispatchGetInfo: getWindSensorData,
+  },
+)(withStyles(style)(WindWidget));
