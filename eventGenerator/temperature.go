@@ -3,7 +3,9 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"math"
 	"math/rand"
 
@@ -23,7 +25,7 @@ var r1 *rand.Rand = rand.New(s1)
 var degree float32 = float32(r1.NormFloat64()*2 + 22)
 
 func GenerateTemperatureEvent() {
-	err := checkSensorsStatus()
+	err := checkSensorsStatusTemperature()
 	if err != nil {
 		fmt.Printf("Couldn`t get a sensor's status: %v\n", err)
 		return
@@ -87,4 +89,27 @@ func toFixed(num float64, precision int) float64 {
 
 func round(num float64) int {
 	return int(num + math.Copysign(0.5, num))
+}
+
+func checkSensorsStatusTemperature() error {
+	res, err := http.Get("http://localhost:8080/temperature")
+	if err != nil {
+		fmt.Errorf("Couldn`t get a sensor's status", err)
+		return err
+	}
+
+	data, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	var event Status
+	err = json.Unmarshal(data, &event)
+	if err != nil {
+		return err
+	}
+	if event.Status == 1 {
+		return errors.New("The port was closed!")
+	}
+	return nil
 }
