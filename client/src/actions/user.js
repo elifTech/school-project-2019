@@ -20,7 +20,7 @@ const resetMessage = () => ({
 
 export const login = ({ email, password }) => dispatch => {
   setTimeout(() => dispatch(resetMessage()), DELAY);
-  const cookieExpires = 15;
+  const cookieExpires = 60;
   return axios
     .post(
       `${apiURL}/authenticate`,
@@ -39,7 +39,8 @@ export const login = ({ email, password }) => dispatch => {
       return dispatch(setUserMessage('You are logged in.'));
     })
     .catch(error => {
-      dispatch(setUserMessage(error.response.data));
+      const { response } = error;
+      if (response) dispatch(setUserMessage(response.data));
       return error.toJSON();
     });
 };
