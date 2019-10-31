@@ -82,7 +82,7 @@ class Menu extends React.Component {
     },
     {
       icon: temperatureIcon,
-      path: 'temperature',
+      path: 'temperaturesensor',
       text: 'Temperature',
     },
     {

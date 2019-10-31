@@ -39,7 +39,7 @@ func Connect() (*gorm.DB, error) {
 
 	err = db.DB().Ping()
 	if err != nil {
-		return nil, fmt.Errorf("Can't ping the DB: %v ", err)
+		return nil, fmt.Errorf("can't ping the DB: %v \n", err)
 	}
 
 	Storage = db

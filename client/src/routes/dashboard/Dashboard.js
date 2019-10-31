@@ -8,6 +8,7 @@ import Link from '../../components/Link';
 import s from './Dashboard.css';
 import CarbonMonoxideWidget from '../carbon-monoxide-sensor/CarbonMonoxideWidget/CarbonMonoxideWidget';
 import Widget from '../../components/Widgets/Widget';
+import TemperatureWidget from '../temperaturesensor/TemperatureWidget/TemperatureWidget';
 import WaterQualityWidget from '../../components/Widgets/WaterQualityWidget';
 import WindWidget from '../../components/Widgets/Wind';
 import WaterConsumptionWidget from '../water-consumption/WaterConsumptionWidget';
@@ -29,8 +30,8 @@ class Dashboard extends PureComponent {
         <Container>
           <Row>
             <Col>
-              <Link to="/temperature">
-                <Widget />
+              <Link to="/temperaturesensor">
+                <TemperatureWidget />
               </Link>
             </Col>
             <Col>

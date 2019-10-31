@@ -64,7 +64,6 @@ func main() {
 		return
 	}
 
-	// init server
 	err = s.Devices.WaterQuality.CreateSensor()
 	if err != nil {
 		log.Fatal(fmt.Printf("Error creating : %s %v \n", devices.WaterQualitySensor, err))
