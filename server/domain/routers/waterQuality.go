@@ -18,9 +18,9 @@ func WaterQualityInit(router *httprouter.Router) {
 	router.PUT("/water_quality/status", middlewares.Authorize(ChangeWaterQualityStatus))
 	router.POST("/water_quality/event", CreateWaterQualityEvent)
 	router.GET("/water_quality/event", middlewares.Authorize(GetPeriodEvents))
-	router.GET("/water_quality/current", GetCurrent)
+	router.GET("/water_quality/current", middlewares.Authorize(GetCurrent))
 	router.GET("/water_quality/critic", GetCritic)
-	router.GET("/water_quality/structure", GetWaterStructure)
+	router.GET("/water_quality/structure", middlewares.Authorize(GetWaterStructure))
 
 	router.GET("/water_quality/events", GetEvents)
 
