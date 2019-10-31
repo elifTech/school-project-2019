@@ -8,15 +8,11 @@ import Switch from 'react-switch';
 import { Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import style from './CarbonMonoxideWidget.css';
-import {
-  getCarbonSensorsData,
-  changeCarbonStatus,
-} from '../../../actions/carbonmonoxide';
+import { changeCarbonStatus } from '../../../actions/carbonmonoxide';
 
 class Widget extends Component {
   static propTypes = {
     dispatchChangeStatus: PropTypes.func.isRequired,
-    dispatchWidgetData: PropTypes.func.isRequired,
     error: PropTypes.string.isRequired,
     events: PropTypes.arrayOf(
       PropTypes.shape({
@@ -46,7 +42,7 @@ class Widget extends Component {
   };
 
   render() {
-    const { info, dispatchWidgetData, events, error } = this.props;
+    const { info, events, error } = this.props;
     let sign = 0;
     let value = 'Low';
     let dangStyle = style.Low;
@@ -63,9 +59,7 @@ class Widget extends Component {
         dangStyle = style.Low;
       }
     }
-    dispatchWidgetData({
-      from: format().subtract(1, 'hours'),
-    });
+
     return (
       <div className={style.container}>
         {error && (
@@ -129,6 +123,5 @@ export default connect(
   }),
   {
     dispatchChangeStatus: changeCarbonStatus,
-    dispatchWidgetData: getCarbonSensorsData,
   },
 )(withStyles(style)(Widget));
