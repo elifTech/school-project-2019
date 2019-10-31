@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"school-project-2019/server/domain/devices"
 	"time"
+	"school-project-2019/server/domain/middlewares"
 
 	//"time"
 	"github.com/julienschmidt/httprouter"
@@ -18,10 +19,10 @@ func TemperatureInit(router *httprouter.Router) {
 	// our DB instance passed as a local variable
 	//db = database
 
-	router.GET("/sensor/temperature/ping", PingTemperature)
+	router.GET("/sensor/temperature/ping", middlewares.Authorize(PingTemperature))
 	router.GET("/temperature", GetTemperatureStatus)
-	router.GET("/temperature/filter/events", FilterTemperatureEvents)
-	router.PUT("/sensor/temperature", UpdateTemperatureSensor)
+	router.GET("/temperature/filter/events", middlewares.Authorize(FilterTemperatureEvents))
+	router.PUT("/sensor/temperature", middlewares.Authorize(UpdateTemperatureSensor))
 	router.POST("/sensor/temperature/poll", PollTemperature)
 }
 
