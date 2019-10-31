@@ -3,7 +3,6 @@ import Dashboard from './Dashboard';
 import Layout from '../../components/Layout';
 import setCurrentTab from '../../actions/menu';
 import { getCurrentEvent, getInfo } from '../../actions/water-quality';
-import { getAllWaterConsumptionEvents } from '../../actions/water-consumption';
 import { getCarbonSensorsData } from '../../actions/carbonmonoxide';
 
 const INTERVAL = 2000;
@@ -14,7 +13,6 @@ export default async function action({ store: { dispatch } }) {
 
   const startIntervalInitialData = setInterval(() => {
     dispatch(getCurrentEvent());
-    dispatch(getAllWaterConsumptionEvents());
     dispatch(getCarbonSensorsData());
   }, INTERVAL);
 
