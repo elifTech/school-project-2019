@@ -8,6 +8,7 @@ import {
   getWindSensorData,
   changeWindStatus,
 } from '../../../actions/wind-sensor';
+import { parseDirection } from '../../../utils/wind-right-panel';
 import style from './wind-widget.css';
 
 class WindWidget extends React.Component {
@@ -16,7 +17,7 @@ class WindWidget extends React.Component {
     dispatchGetInfo: PropTypes.func.isRequired,
     events: PropTypes.arrayOf(
       PropTypes.shape({
-        direction: PropTypes.s,
+        direction: PropTypes.number,
         power: PropTypes.number,
       }),
     ).isRequired,
@@ -37,7 +38,7 @@ class WindWidget extends React.Component {
 
   render() {
     const { events, info } = this.props;
-    // console.log(events, info);
+
     return (
       <div className={style.container}>
         <div className={style.innerContainer}>
@@ -66,7 +67,9 @@ class WindWidget extends React.Component {
             </b>
             <b>
               {events.length !== 0 &&
-                `Current direction: ${events.slice(-1)[0].direction}`}
+                `Current direction: ${parseDirection(
+                  events.slice(-1)[0].direction,
+                )}`}
             </b>
           </div>
         </div>
