@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { connect } from 'react-redux';
-import Alert from 'react-bootstrap/Alert';
 import withStyles from 'isomorphic-style-loader/withStyles';
-import { Spinner } from 'react-bootstrap';
 import classNames from 'classnames';
 import WaterQualitySwitch from '../../WaterQualitySwitch';
 import { FIXED } from '../../../selectors/water-quality-selectors';
@@ -23,15 +21,15 @@ function checkColor(value) {
   return style.ok;
 }
 
-function WaterQualityWidget({ value, error }) {
+const inlineImg = {
+  backgroundImage: `url(${water})`,
+  height: '128px',
+  width: '128px',
+};
+
+function WaterQualityWidget({ value }) {
   return (
     <div className={style.container}>
-      {error && (
-        <Alert variant="danger">
-          {error}
-          <Spinner animation="border" role="status" />
-        </Alert>
-      )}
       <div className={style.innerContainer}>
         <Row>
           <Col md={8} className={style.header}>
@@ -42,10 +40,8 @@ function WaterQualityWidget({ value, error }) {
           </Col>
         </Row>
         <div className={style.sensor}>
-          <div>
-            <img src={water} alt="menu-item" />
-          </div>
-          <p>
+          <div style={inlineImg} />
+          <p className={style.current}>
             Current quality:
             <span className={classNames(style.value, checkColor(value))}>
               {' '}
@@ -59,15 +55,12 @@ function WaterQualityWidget({ value, error }) {
 }
 
 WaterQualityWidget.propTypes = {
-  error: PropTypes.string,
   value: PropTypes.string,
 };
 WaterQualityWidget.defaultProps = {
-  error: '',
   value: null,
 };
 const mapStateToProps = state => ({
-  error: state.waterQuality.error,
   value: state.waterQuality.currentQuality.toFixed(FIXED),
 });
 

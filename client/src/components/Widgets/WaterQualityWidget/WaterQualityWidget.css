@@ -12,16 +12,20 @@
 }
 
 .sensor {
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 10em;
   width: 18em;
   padding: 1em;
 }
 
 .header {
   color: rgb(96, 97, 98);
+}
+
+.current {
+  margin: 0.5em 0 0 0;
 }
 
 .value {

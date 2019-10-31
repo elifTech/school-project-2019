@@ -54,6 +54,7 @@
     "reselect": "~4.0.0",
     "serialize-javascript": "~1.9.0",
     "universal-router": "~8.2.1",
+    "url-loader": "^2.2.0",
     "whatwg-fetch": "~3.0.0"
   },
   "devDependencies": {
