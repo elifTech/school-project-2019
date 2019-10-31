@@ -115,7 +115,6 @@ class TemperatureSensor extends Component {
     const { events, info, isLoading, error } = this.props;
     let { isVisible } = this.props;
     const { selectedPeriod } = this.state;
-
     const text = info.Status ? 'ON' : 'OFF';
 
     let degree;
@@ -134,6 +133,12 @@ class TemperatureSensor extends Component {
       average = (
         degreeArray.reduce((a, b) => a + b, 0) / degreeArray.length
       ).toFixed(1);
+    } else {
+      degree = 0;
+      created = '';
+      min = 0;
+      max = 0;
+      average = 0;
     }
 
     if (error && events.length === 0) {
