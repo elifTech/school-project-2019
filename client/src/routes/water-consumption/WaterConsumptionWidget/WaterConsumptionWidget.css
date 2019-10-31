@@ -1,66 +1,32 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-  min-width: 280px;
-  max-width: 380px;
+  width: 20em;
+  padding: 0 0 40px;
+}
+
+.innerContainer {
+  background: rgba(239, 240, 243, 0.38);
+  border-radius: 0.5em;
   box-shadow: 0 0 8px 1px rgb(198, 199, 203);
-  background-color: #f8f8f8;
-  box-sizing: border-box;
-  border-radius: 10px;
+  height: 14em;
+  padding: 1em;
 }
 
-.metricsWraper {
-  min-width: 75%;
-  margin: 5px;
-  padding: 5px;
-  border-radius: 8px;
-  font-size: 36px;
+.sensor {
   text-align: center;
-  background-color: #fff;
-  box-sizing: border-box;
-  color: #3f496f;
-  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
-}
-
-.metricsWraper h2 {
-  box-sizing: border-box;
-  font-size: 18px;
-  color: #707796;
-  text-align: center;
-}
-
-h3 {
-  font-size: 22px;
-  color: #555e81;
-}
-
-.metricsWraper h3 {
-  padding-bottom: 0;
-  font-size: 18px;
-  color: #3f496f;
-  text-align: center;
+  height: 10em;
+  width: 18em;
+  padding: 1em;
 }
 
 .header {
+  color: rgb(96, 97, 98);
+  font: bold 20px;
+}
+
+.indicatorWraper {
   display: flex;
+  justify-content: center;
   width: 100%;
-  justify-content: space-around;
-  align-items: center;
-  padding-top: 5px;
-}
-
-.header h1 {
-  display: inline;
-  color: #3f496f;
-  font-size: 18px;
-}
-
-.header switch {
-  right: 10px;
 }
 
 .indicator {
