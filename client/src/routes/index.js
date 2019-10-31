@@ -51,13 +51,17 @@ const routes = [
       },
       {
         load: () =>
-          import(/* webpackChunkName: 'carbonsensor' */ './carbonsensor'),
+          import(
+            /* webpackChunkName: 'carbonsensor' */ './carbon-monoxide-sensor'
+          ),
         path: '/carbonmonoxide',
       },
       {
         load: () =>
-          import(/* webpackChunkName: 'water-meter' */ './water-meter'),
-        path: '/water-meter',
+          import(
+            /* webpackChunkName: 'water-consumption' */ './water-consumption'
+          ),
+        path: '/water-consumption',
       },
       // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
       {

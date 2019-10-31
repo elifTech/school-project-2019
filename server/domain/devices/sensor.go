@@ -24,11 +24,11 @@ const (
 // }
 // Sensors ...
 const (
-	CarbonSensor       string = "Carbon Monoxide"
-	TemperatureSensor  string = "temperature"
-	WaterMeter         string = "waterConsumption"
-	WindSensor         string = "wind"
-	WaterQualitySensor string = "waterQuality"
+	CarbonSensor           string = "Carbon Monoxide"
+	TemperatureSensor      string = "temperature"
+	WaterConsumptionSensor string = "waterConsumption"
+	WindSensor             string = "wind"
+	WaterQualitySensor     string = "waterQuality"
 )
 
 // Sensor ...
@@ -60,6 +60,7 @@ func (s *Sensor) FindManySensors() ([]Sensor, error) {
 	}
 	return sensors, err
 }
+
 // BeforeSave sets current time if Created field is empty
 func (e *Event) BeforeSave() (err error) {
 	if e.Created.IsZero() {
