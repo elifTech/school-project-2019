@@ -46,7 +46,7 @@ func Authenticate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 
-	expirationTime := time.Now().Add(15 * time.Minute)
+	expirationTime := time.Now().Add(60 * time.Minute)
 	json.NewEncoder(w).Encode(JwtToken{Token: signedTokenString(user, expirationTime)})
 }
 

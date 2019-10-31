@@ -60,17 +60,22 @@ class WindWidget extends React.Component {
             </Col>
           </Row>
           <div className={style.sensor}>
-            <b>
-              {events.length === 0
-                ? 'Currently sensor is disabled'
-                : `Current power: ${events.slice(-1)[0].power}`}
-            </b>
-            <b>
-              {events.length !== 0 &&
-                `Current direction: ${parseDirection(
-                  events.slice(-1)[0].direction,
-                )}`}
-            </b>
+            {info.Status && events.length > 0 ? (
+              <div>
+                <b>{`Current power: ${events.slice(-1)[0].power}`}</b>
+                <br />
+                <b>
+                  {`Current direction: ${parseDirection(
+                    events.slice(-1)[0].direction,
+                  )}`}
+                </b>
+              </div>
+            ) : // eslint-disable-next-line unicorn/no-nested-ternary
+            info.Status ? (
+              <b>No current events</b>
+            ) : (
+              <b>Currently sensor is disabled</b>
+            )}
           </div>
         </div>
       </div>

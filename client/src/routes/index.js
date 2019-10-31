@@ -45,6 +45,13 @@ const routes = [
       {
         load: () =>
           import(
+            /* webpackChunkName: 'temperaturesensor' */ './temperaturesensor'
+          ),
+        path: '/temperaturesensor',
+      },
+      {
+        load: () =>
+          import(
             /* webpackChunkName: 'water-quality-sensor' */ './water-quality-sensor'
           ),
         path: '/water-quality',

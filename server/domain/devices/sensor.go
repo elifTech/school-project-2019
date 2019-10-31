@@ -32,6 +32,7 @@ const (
 )
 
 // Sensor ...
+
 type Sensor struct {
 	gorm.Model
 	SensorID uint `gorm:"primary_key;AUTO_INCREMENT"`
@@ -40,7 +41,10 @@ type Sensor struct {
 	Status   SensorState
 }
 
+// Request represents a request to run a command.
+
 // Event ...
+
 type Event struct {
 	gorm.Model
 	EventID    uint      `gorm:"primary_key;AUTO_INCREMENT" json:"eventId"`
@@ -48,7 +52,6 @@ type Event struct {
 	SensorType string    `json:"device_type"`
 }
 
-// FindManySensors ...
 func (s *Sensor) FindManySensors() ([]Sensor, error) {
 	var sensors []Sensor
 
@@ -59,6 +62,7 @@ func (s *Sensor) FindManySensors() ([]Sensor, error) {
 		err = ErrNotFound
 	}
 	return sensors, err
+
 }
 
 // BeforeSave sets current time if Created field is empty

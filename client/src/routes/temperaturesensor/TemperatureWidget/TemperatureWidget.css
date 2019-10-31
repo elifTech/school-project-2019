@@ -1,0 +1,23 @@
+.container {
+  width: 20em;
+  padding: 0 0 40px;
+}
+
+.innerContainer {
+  background: rgba(239, 240, 243, 0.38);
+  border-radius: 0.5em;
+  box-shadow: 0 0 8px 1px rgb(198, 199, 203);
+  height: 14em;
+  padding: 1em;
+}
+
+.degree {
+  font-size: 14px;
+  text-align: center;
+  padding: 20px 0 20px;
+}
+
+.header {
+  color: rgb(96, 97, 98);
+  font: bold 20px;
+}

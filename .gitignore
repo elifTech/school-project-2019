@@ -30,6 +30,12 @@ yarn-error.log*
 generator/**/go.sum
 **/*.exe
 server/server
+generator/
+generator/temperature/temperature.exe
+!generator/**/*.go
+server/server.exe
+generator/temperature/temperature.exe
+
 generator/generator
 eventGenerator/eventGenerator
 eventGenerator/values
